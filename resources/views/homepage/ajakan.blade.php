@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>WarasWaris</title>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
@@ -56,8 +57,8 @@
             align-items: center;
             justify-content: space-between;
             background: #ffffff;
-            transition: background-color 2s ease;
-            transition: color 2s ease;
+            transition: background-color 1s ease;
+            transition: color 1s ease;
             font-family: 'Poppins', sans-serif;
             font-size: 21px;
             font-weight: 700;
@@ -91,6 +92,7 @@
 </head>
 <body>
     <div id="bluebox">
+        <i class="ri-surgical-mask-line" style="color: #ffffff; font-size: 225px; position: absolute; top: 25px; right: 0px;"></i>
         <div id="isi">
             <div id="judul">
                 <h1>Bergabung dengan Klinik WarasWaris</h1>
@@ -100,12 +102,9 @@
             </div>
         </div>
         <div id="button">
-            <button type="button" id="buttonDaftar" >Gabung Klinik WarasWaris
-                <i  class="ri-arrow-right-double-line"
-                    style="color: #ffffff; font-size: 21px; padding: 20px 20px; background-color: #5A81FA; border-radius: 100%; display: flex;">
-                </i>
-            </button>
+            <button type="button" id="buttonDaftar" >Gabung Klinik WarasWaris<i class="ri-arrow-right-double-line"></i></button>
         </div>
+        <i class="fa-solid fa-user-doctor fa-2xl" style="color: #ffffff; font-size: 300px; padding: 0px 40px; margin-top: -150px;"></i>
     </div>
 </body>
 </html>
