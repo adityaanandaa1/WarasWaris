@@ -13,3 +13,7 @@ Route::get('/home', function () {
 Route::get('/layanan', function () {
     return view('homepage.layanan');
 });
+
+Route::get('/ajakan', function () {
+    return view('homepage.ajakan');
+});
