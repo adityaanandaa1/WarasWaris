@@ -6,10 +6,14 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>WarasWaris</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
+        body {
+            background-image: linear-gradient(to bottom, #CEDEFF 0%, #FFFFFF 20%);
+        }
+        
         #judul {
             height: 240px;
             padding-left: 100px;
@@ -92,22 +96,22 @@
     <div id="isi">
         <!-- Layanan 1 -->
         <div class="layanan">
-            <button type="button" class="buttonLayanan"><i class="fa-solid fa-stethoscope" style="color: #5a81fa;"></i></button>
+            <button type="button" class="buttonLayanan"><i class="ri-stethoscope-line" style="color: #5A81FA; font-size: 30px;"></i></button>
             <p>Dokter kami siap memberikan diagnosis dan penanganan terbaik dengan pendekatan yang ramah serta terpercaya.</p>
         </div>
         <!-- Layanan 2 -->
         <div class="layanan">
-            <button type="button" class="buttonLayanan"><i class="fa-solid fa-location-dot fa-xl" style="color: #5a81fa;"></i></button>
+            <button type="button" class="buttonLayanan"><i class="ri-map-pin-line" style="color: #5A81FA; font-size: 30px;"></i></button>
             <p>Klinik kami mudah dijangkau dan dilengkapi fasilitas yang nyaman untuk menunjang kebutuhan pasien.</p>
         </div>
         <!-- Layanan 3 -->
         <div class="layanan">
-            <button type="button" class="buttonLayanan"><i class="fa-regular fa-calendar-days fa-xl" style="color: #5a81fa;"></i></button>
+            <button type="button" class="buttonLayanan"><i class="ri-draft-line" style="color: #5A81FA; font-size: 30px;"></i></button>
             <p>Pesan jadwal konsultasi Anda secara online, dapatkan nomor antrean otomatis, dan datang sesuai waktu tanpa menunggu lama.</p>
         </div>
     </div>
     <div id="button">
-        <button type="button" id="lihatLayanan">Lihat Layanan Pasien Kami</button>
+        <button type="button" id="lihatLayanan">Lihat Layanan Pasien Kami</button>          <!-- BUTTTON LAYANAN -->
     </div>
 </body>
 </html>
