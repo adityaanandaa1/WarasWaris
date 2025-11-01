@@ -11,13 +11,13 @@
 
     <style>
         #judul {
-            height: 220px;
+            height: 240px;
             padding-left: 100px;
             padding-top: 50px;
         }
 
         #subjudul {
-            width: 55%;
+            width: 60%;
         }
 
         #intijudul {
@@ -27,16 +27,18 @@
         h1 {
             font-family: 'Poppins', sans-serif;
             font-size: 31px;
+            color: #5A81FA;
         }
 
         p {
             font-family: 'Poppins', sans-serif;
             font-size: 20px;
+            color: #464646;
         }
 
         #isi {
             width: 90%;
-            height: 200px;
+            height: 350px;
             padding-left: 100px;
         }
 
@@ -44,6 +46,37 @@
             display: flex;
             align-items: center;
             gap: 20px;
+            width: 70%;
+        }
+
+        .buttonLayanan {
+            background-color: #ffffff;
+            padding: 20px 20px;
+            border-radius: 100%;
+            border: none;
+            box-shadow:0 8px 16px 0 rgba(0,0,0,0.6)
+        }
+
+        #button {
+            padding-left: 100px;
+            height: 125px;
+        }
+
+        #lihatLayanan {
+            background-color: #87A3FB;
+            transition: background-color 0.5s ease;
+            font-family: 'Poppins', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: #ffffff;
+            padding: 30px 50px;
+            border-radius: 30px;
+            border: none;
+            box-shadow:0 8px 16px 0 rgba(0,0,0,0.6)
+        }
+
+        #lihatLayanan:hover {
+            background-color: #5A81FA;
         }
     </style>
 </head>
@@ -59,20 +92,22 @@
     <div id="isi">
         <!-- Layanan 1 -->
         <div class="layanan">
-            <i class="fa-solid fa-stethoscope fa-2xl" style="color: #5a81fa;"></i>
+            <button type="button" class="buttonLayanan"><i class="fa-solid fa-stethoscope" style="color: #5a81fa;"></i></button>
             <p>Dokter kami siap memberikan diagnosis dan penanganan terbaik dengan pendekatan yang ramah serta terpercaya.</p>
         </div>
         <!-- Layanan 2 -->
         <div class="layanan">
-            <i class="bi bi-geo-alt" style="color: #5a81fa;"></i>
+            <button type="button" class="buttonLayanan"><i class="fa-solid fa-location-dot fa-xl" style="color: #5a81fa;"></i></button>
             <p>Klinik kami mudah dijangkau dan dilengkapi fasilitas yang nyaman untuk menunjang kebutuhan pasien.</p>
         </div>
         <!-- Layanan 3 -->
         <div class="layanan">
-            Icon
+            <button type="button" class="buttonLayanan"><i class="fa-regular fa-calendar-days fa-xl" style="color: #5a81fa;"></i></button>
             <p>Pesan jadwal konsultasi Anda secara online, dapatkan nomor antrean otomatis, dan datang sesuai waktu tanpa menunggu lama.</p>
         </div>
     </div>
-    <button type="button">Lihat Layanan Pasien Kami</button>
+    <div id="button">
+        <button type="button" id="lihatLayanan">Lihat Layanan Pasien Kami</button>
+    </div>
 </body>
 </html>
