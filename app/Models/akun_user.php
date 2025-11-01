@@ -7,14 +7,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
+class akun_user extends Authenticatable
 {
     use HasFactory, Notifiable;
 
     /**
-     * The attributes that are mass assignable.
-     * 
-     * Kolom-kolom yang boleh diisi secara massal (bulk insert/update)
+     * Kolom-kolom yang boleh diisi (bulk insert/update)
      */
     protected $fillable = [
         'email',
@@ -23,8 +21,6 @@ class User extends Authenticatable
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
-     * 
      * Kolom yang disembunyikan saat data dikonversi ke JSON/Array
      */
     protected $hidden = [
@@ -45,14 +41,13 @@ class User extends Authenticatable
         ];
     }
 
-    // ========== RELASI ==========
     
     /**
      * Relasi: User bisa punya banyak Pasien (hasMany)
      * 
      * Contoh penggunaan: $user->pasiens (dapat semua pasien dalam 1 akun)
      */
-    public function pasiens()
+    public function Data_pasiens()
     {
         return $this->hasMany(data_pasien::class);
     }
@@ -62,7 +57,7 @@ class User extends Authenticatable
      * 
      * Contoh: $user->dokter (jika role = dokter)
      */
-    public function dokter()
+    public function Data_dokter()
     {
         return $this->hasOne(data_dokter::class);
     }
@@ -72,7 +67,7 @@ class User extends Authenticatable
      * 
      * Contoh: $user->resepsionis (jika role = resepsionis)
      */
-    public function resepsionis()
+    public function Resepsionis()
     {
         return $this->hasOne(data_resepsionis::class);
     }

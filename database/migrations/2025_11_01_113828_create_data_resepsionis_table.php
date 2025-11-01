@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('data_resepsionis', function (Blueprint $table) {
             $table->id();
+
+            $table->foreignId('id_akun')
+                  ->constrained('akun_users')
+                  ->onDelete('cascade'); 
+            $table->string('nama_resepsionis');
             $table->timestamps();
         });
     }

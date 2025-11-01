@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('akun_users', function (Blueprint $table) {
             $table->id(); // id (primary Key, auto Increment)
             $table->string('email')->unique(); // email unik untuk login
             $table->string('password'); // password (akan di-hash)
@@ -41,7 +41,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('akun_users');
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
     }
