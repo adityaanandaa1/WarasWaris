@@ -17,3 +17,7 @@ Route::get('/layanan', function () {
 Route::get('/ajakan', function () {
     return view('homepage.ajakan');
 });
+
+Route::get('/alamat', function () {
+    return view('homepage.alamat');
+});
