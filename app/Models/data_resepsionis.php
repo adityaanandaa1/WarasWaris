@@ -9,7 +9,7 @@ class data_resepsionis extends Model
 {
     use HasFactory;
 
-    protected $table = 'resepsionis';
+    protected $table = 'data_resepsionis';
 
     protected $fillable = [
         'id_akun',
