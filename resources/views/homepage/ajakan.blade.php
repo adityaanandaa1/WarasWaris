@@ -62,6 +62,7 @@
             font-family: 'Poppins', sans-serif;
             font-size: 21px;
             font-weight: 700;
+            text-decoration: none;
             color: #5A81FA;
             border: none;
             border-radius: 200px;
@@ -76,6 +77,7 @@
             border-radius: 50%;
             padding: 10px;
             font-size: 20px;
+            text-decoration: none;
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -102,7 +104,10 @@
             </div>
         </div>
         <div id="button">
-            <button type="button" id="buttonDaftar" >Gabung Klinik WarasWaris<i class="ri-arrow-right-double-line"></i></button>
+            <a href="#" id="buttonDaftar" class="btn">
+                Lihat Layanan Pasien Kami
+                <i class="ri-arrow-right-double-line"></i>
+            </a>
         </div>
         <i class="fa-solid fa-user-doctor fa-2xl" style="color: #ffffff; font-size: 300px; padding: 0px 40px; margin-top: -150px;"></i>
     </div>

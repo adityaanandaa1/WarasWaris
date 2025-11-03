@@ -72,6 +72,7 @@
             font-family: 'Poppins', sans-serif;
             font-size: 20px;
             font-weight: 700;
+            text-decoration: none;
             color: #ffffff;
             padding: 30px 50px;
             border-radius: 30px;
@@ -111,7 +112,9 @@
         </div>
     </div>
     <div id="button">
-        <button type="button" id="lihatLayanan">Lihat Layanan Pasien Kami</button>          <!-- BUTTTON LAYANAN -->
+        <a href="#" id="lihatLayanan" class="btn">
+            Lihat Layanan Pasien Kami
+        </a>
     </div>
 </body>
 </html>
