@@ -1,18 +1,50 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Beranda</title>
-    <style>
-        body {
-            background-color: #CEDEFF;
-        }
-    </style>
-</head>
-<body>
-                <!-- Login Form -->
+@extends('layouts.app')
+
+@section('title', 'Login - WarasWaris')
+
+@section('content')
+<div class="min-h-screen flex">
+    
+    <!-- LEFT SIDE - Welcome Section -->
+    <div class="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-blue-600 to-blue-800 p-12 items-center justify-center">
+        <div class="text-white max-w-md">
+            <h1 class="text-4xl font-bold mb-4">Selamat Datang</h1>
+            <h2 class="text-3xl font-semibold mb-6">di Waras Waris</h2>
+            <p class="text-blue-100 text-lg leading-relaxed">
+                Sistem Manajemen Praktik Dokter yang memudahkan Anda dalam mengelola kesehatan keluarga
+            </p>
+        </div>
+    </div>
+
+    <!-- RIGHT SIDE - Login Form -->
+    <div class="w-full lg:w-1/2 flex items-center justify-center p-8">
+        <div class="w-full max-w-md">
+            
+            <!-- Logo & Title -->
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-gray-900">Masuk</h2>
+                <p class="text-gray-600 mt-2">Masuk ke akun Anda untuk melanjutkan</p>
+            </div>
+
+            <!-- Error Messages -->
+            @if($errors->any())
+                <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6">
+                    <ul class="list-disc list-inside">
+                        @foreach($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            <!-- Success Message -->
+            @if(session('success'))
+                <div class="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg mb-6">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            <!-- Login Form -->
             <form action="{{ route('login.post') }}" method="POST" class="space-y-6">
                 @csrf
                 
@@ -68,5 +100,9 @@
                     MASUK
                 </button>
             </form>
-</body>
-</html>
+
+        </div>
+    </div>
+
+</div>
+@endsection
