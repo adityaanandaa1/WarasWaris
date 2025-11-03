@@ -21,3 +21,7 @@ Route::get('/ajakan', function () {
 Route::get('/alamat', function () {
     return view('homepage.alamat');
 });
+
+Route::get('/jadwal', function () {
+    return view('homepage.jadwal');
+});
