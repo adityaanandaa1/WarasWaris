@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
         $this->call([ // Jalankan seeder yang didaftarkan
             user_seeder::class, // Seeder untuk User, Dokter, Resepsionis
             jadwal_praktik_seeder::class, // Seeder untuk Jadwal Praktik
+            pasien_seeder::class,
         ]);
     }
 }

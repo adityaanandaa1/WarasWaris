@@ -7,6 +7,6 @@
     <title>Document</title>
 </head>
 <body>
-    
+    <h1>INI DASHBOARD PASIEN</h1>
 </body>
 </html>
