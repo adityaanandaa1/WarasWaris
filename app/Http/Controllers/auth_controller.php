@@ -97,7 +97,7 @@ class auth_controller extends Controller
     
     private function redirectToDashboard()
     {
-        $role = Auth::akun_user()->role;
+        $role = Auth::user()->role;
 
         switch ($role) {
             case 'pasien':
@@ -107,7 +107,7 @@ class auth_controller extends Controller
             case 'resepsionis':
                 return redirect()->route('resepsionis.dashboard');
             default:
-                return redirect()->route('auth.login');
+                return redirect()->route('login');
         }
     }
 
