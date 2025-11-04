@@ -27,6 +27,10 @@ Route::get('/jadwal', function () {
     return view('homepage.jadwal');
 });
 
+Route::get('/aboutus', function () {
+    return view('homepage.aboutus');
+});
+
 Route::get('/login', [auth_controller::class, 'tampilkan_login'])->name('login');
 Route::post('/login', [auth_controller::class, 'login'])->middleware('guest')->name('login.post');
 
