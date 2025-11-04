@@ -77,9 +77,16 @@ class auth_controller extends Controller
 
         // Buat user baru dengan role pasien
         $user = akun_user::firstOrCreate(
-        ['email' => $request->email], // kunci unik
-        ['password' => Hash::make($request->password), 'role' => 'pasien'] // hanya dipakai saat create
-);
+            ['email' => $request->email], // kunci unik
+            ['password' => Hash::make($request->password), 'role' => 'pasien'] // hanya dipakai saat create
+        );
+
+        // Login otomatis setelah register
+        Auth::login($user);
+
+        // Redirect ke halaman isi biodata
+        return redirect()->route('pasien.tambah_biodata')
+            ->with('success', 'Registrasi berhasil! Silakan lengkapi biodata Anda.');
     }
 
     public function logout(Request $request)

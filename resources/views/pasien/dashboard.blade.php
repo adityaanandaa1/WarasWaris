@@ -30,7 +30,6 @@
     </style>
 </head>
 <body>
-<<<<<<< HEAD
 
     <div class="halaman">Dashboard</div>
     <div class="tanggal">{{ \Carbon\Carbon::now()->format('d F Y') }}</div>
@@ -39,13 +38,11 @@
         <p><b>Selamat datang!</b></p>
         <p>Konsultasikan kesehatanmu sekarang juga!</p>
     </div>
-=======
     <h1>INI DASHBOARD PASIEN</h1>
     <form action="{{ route('logout') }}" method="POST" style="display:inline">
     @csrf
     <button type="submit">Keluar</button>
     </form>
->>>>>>> f8c2bae6f126737dfa55b9d6e2545a762d993a94
 
 </body>
 </html>
