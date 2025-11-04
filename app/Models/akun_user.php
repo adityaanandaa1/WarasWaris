@@ -41,15 +41,12 @@ class akun_user extends Authenticatable
         ];
     }
 
-    
-    /**
-     * Relasi: User bisa punya banyak Pasien (hasMany)
-     * 
-     * Contoh penggunaan: $user->pasiens (dapat semua pasien dalam 1 akun)
-     */
-    public function Data_pasiens()
+    protected $table = 'akun_users';
+
+    public function pasiens()
     {
-        return $this->hasMany(data_pasien::class);
+        // SESUAIKAN foreign key: 'id_akun' atau 'user_id' tergantung migrasi kamu
+        return $this->hasMany(\App\Models\data_pasien::class, 'id_akun');
     }
 
     /**
