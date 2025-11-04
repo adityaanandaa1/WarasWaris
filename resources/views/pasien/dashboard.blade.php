@@ -38,6 +38,11 @@
         <p><b>Selamat datang!</b></p>
         <p>Konsultasikan kesehatanmu sekarang juga!</p>
     </div>
+    <h1>INI DASHBOARD PASIEN</h1>
+    <form action="{{ route('logout') }}" method="POST" style="display:inline">
+    @csrf
+    <button type="submit">Keluar</button>
+    </form>
 
 </body>
 </html>

@@ -76,11 +76,10 @@ class auth_controller extends Controller
         ]);
 
         // Buat user baru dengan role pasien
-        $user = akun_user::updateOrCreate([
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role' => 'pasien',
-        ]);
+        $user = akun_user::firstOrCreate(
+        ['email' => $request->email], // kunci unik
+        ['password' => Hash::make($request->password), 'role' => 'pasien'] // hanya dipakai saat create
+);
     }
 
     public function logout(Request $request)
@@ -97,18 +96,14 @@ class auth_controller extends Controller
     
     private function redirectToDashboard()
     {
-        $role = Auth::user()->role;
+        $role = strtolower(trim((string) optional(\Illuminate\Support\Facades\Auth::user())->role));
 
-        switch ($role) {
-            case 'pasien':
-                return redirect()->route('pasien.dashboard');
-            case 'dokter':
-                return redirect()->route('dokter.dashboard');
-            case 'resepsionis':
-                return redirect()->route('resepsionis.dashboard');
-            default:
-                return redirect()->route('login');
-        }
+        return match ($role) {
+        'dokter'      => redirect()->route('dokter.dashboard'),
+        'pasien'      => redirect()->route('pasien.dashboard'),
+        'resepsionis' => redirect()->route('resepsionis.dashboard'),
+        default       => redirect()->route('login'),
+    };
     }
 
    
