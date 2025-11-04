@@ -44,8 +44,23 @@ Route::post('/logout', [auth_controller::class, 'logout'])
     ->name('logout')
     ->middleware('auth');
 
+//dashboard pasien
 Route::middleware(['auth', 'role:pasien'])->prefix('pasien')->name('pasien.')->group(function () {
     Route::get('/dashboard', function () {
         return view('pasien.dashboard');
+    })->name('dashboard');
+});
+
+// Dashboard Dokter
+Route::middleware(['auth', 'role:dokter'])->prefix('dokter')->name('dokter.')->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dokter.dashboard');
+    })->name('dashboard');
+});
+
+// Dashboard Resepsionis
+Route::middleware(['auth', 'role:resepsionis'])->prefix('resepsionis')->name('resepsionis.')->group(function () {
+    Route::get('/dashboard', function () {
+        return view('resepsionis.dashboard');
     })->name('dashboard');
 });

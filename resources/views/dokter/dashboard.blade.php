@@ -7,6 +7,11 @@
     <title>Document</title>
 </head>
 <body>
-    
+    <h1>ini dashboard dokter</h1>
+    <form action="{{ route('logout') }}" method="POST" style="display:inline">
+    @csrf
+    <button type="submit">Keluar</button>
+    </form>
+
 </body>
 </html>
