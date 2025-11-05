@@ -14,7 +14,7 @@ use Carbon\Carbon;
 
 class reservasi_controller extends Controller
 {
-    public function index(Request $request)
+    public function index_reservasi(Request $request)
     {
         $user = Auth::user();
         $pasiens = $user->pasiens;
@@ -46,7 +46,7 @@ class reservasi_controller extends Controller
 
         // Jika tidak ada jadwal atau klinik tutup
         if (!$jadwal || !$jadwal->is_active) {
-            return view('pasien.reservasi.index', [
+            return view('pasien.index_reservasi', [
                 'pasiens' => $pasiens,
                 'pasien_aktif' => $pasien_aktif,
                 'tanggal_dipilih' => $tanggal_dipilih,
@@ -61,8 +61,8 @@ class reservasi_controller extends Controller
 
         // Jika belum ada antrian untuk hari itu, buat baru
         if (!$antrian) {
-            $antrian = Antrian::create([
-                'tanggal' => $tanggal_dipilih->format('Y-m-d'),
+            $antrian = antrian::firstOrCreate([
+                'tanggal_antrian' => today()->toDateString(),
                 'nomor_sekarang' => 0,
                 'total_antrian' => 0,
             ]);
@@ -74,7 +74,7 @@ class reservasi_controller extends Controller
             ->whereIn('status', ['menunggu', 'sedang_diperiksa'])
             ->first();
         
-        return view('pasien.reservasi.index', [
+        return view('pasien.index_reservasi', [
             'pasiens' => $pasiens,
             'pasien_aktif' => $pasien_aktif,
             'tanggal_dipilih' => $tanggal_dipilih,
@@ -87,12 +87,12 @@ class reservasi_controller extends Controller
     }
 
     //ambil no antrian
-    public function store(Request $request)
+    public function buat_reservasi(Request $request)
     {
         //validasi input
         $validated = $request->validate([
             'tanggal_reservasi' => 'required|date|after_or_equal:today',
-            'kelugan' => 'nullable|string|max:500',
+            'keluhan' => 'nullable|string|max:500',
         ],[
             'tanggal_reservasi.required' => 'Tanggal reservasi wajib dipilih',
             'tanggal_reservasi.after_or_equal' => 'Tidak dapat reservasi untuk tanggal yang sudah lewat',
@@ -106,7 +106,7 @@ class reservasi_controller extends Controller
         $reservasi_ditemukan = reservasi::where('id_pasien', $pasien_aktif->id)
             ->where('tanggal_reservasi', $tanggal->format('Y-m-d'))
             ->whereIn('status', ['menunggu', 'sedang_diperiksa'])
-            ->exist();
+            ->exists();
         
         if($reservasi_ditemukan) {
             return back()->withErrors([
@@ -129,6 +129,124 @@ class reservasi_controller extends Controller
         //gunakan transaction untuk konsistensi data
         DB::beginTransaction();
 
-        try {} catch()
+        try {
+            //ambil atau buat antrian
+            $antrian = antrian::firstOrCreate(
+                ['tanggal_antrian' => $tanggal->format('Y-m-d')],
+                ['nomor_sekarang' => 0, 'total_antrian' => 0]
+            );
+            
+            //hitung nomor berikutnya
+            $nomor_antrian = $antrian->total_antrian + 1;
+
+            //buat reservasi
+            $reservasi = reservasi::create([
+                'id_pasien' => $pasien_aktif->id,
+                'tanggal_antrian' => $tanggal->format('Y-m-d'),
+                'nomor_antrian' => $nomor_antrian,
+                'keluhan' => $validated['keluhan'],
+                'status' => 'menunggu',
+            ]);
+
+             // Update total antrian
+            $antrian->increment('total_antrian');
+            
+            DB::commit();
+            
+            return redirect()->route('pasien.index_reservasi', [
+                'tanggal' => $tanggal->format('Y-m-d')
+            ])->with('success', "Reservasi berhasil! Nomor antrian Anda: #{$nomor_antrian}");
+        } catch(\Exception $e) {
+         DB::rollBack();
+            
+            return back()->withErrors([
+                'error' => 'Terjadi kesalahan saat membuat reservasi. Silakan coba lagi.'
+            ]);
+        }
+    }
+
+    public function batalkan_reservasi($id)
+    {
+        $user = Auth::user();
+        $pasien_aktif = $this->get_pasien_aktif();
+
+        $reservasi = reservasi::where('id', $id)
+            ->where('id_pasien', $pasien_aktif->id)
+            ->whereIn('status', ['menunggu'])
+            ->firstOrFail();
+
+        $reservasi->update(['status' => 'batal']);
+        
+        // Update total antrian (decrement)
+        $antrian = antrian::where('tanggal_antrian', $reservasi->tanggal_reservasi)->first();
+        if ($antrian && $antrian->total_antrian > 0) {
+            $antrian->decrement('total_antrian');
+        }
+        
+        return redirect()->route('pasien.index_reservasi', [
+            'tanggal' => $reservasi->tanggal_reservasi
+        ])->with('success', 'Reservasi berhasil dibatalkan');
+    }
+
+    public function riwayat_reservasi()
+    {
+        $user = Auth::user();
+        $pasiens = $user->pasiens;
+        $pasien_aktif = $this->get_pasien_aktif();
+
+        // Ambil semua reservasi pasien aktif (urutkan terbaru)
+        $reservasis = Reservasi::where('id_pasien', $pasien_aktif->id)
+            ->orderBy('tanggal_reservasi', 'desc')
+            ->orderBy('created_at', 'desc')
+            ->paginate(30);
+        
+        return view('pasien.riwayat_reservasi', [
+            'pasiens' => $pasiens,
+            'pasien_aktif' => $pasien_aktif,
+            'reservasis' => $reservasis,
+        ]);
+    }
+
+     private function get_pasien_aktif()
+    {
+        $user = Auth::user();
+        $pasien_aktif_id = session('pasien_aktif_id');
+        
+        if ($pasien_aktif_id) {
+            $pasien = data_pasien::where('id', $pasien_aktif_id)
+                ->where('id_akun', $user->id)
+                ->first();
+            
+            if ($pasien) {
+                return $pasien;
+            }
+        }
+        
+        // Fallback ke pasien utama
+        $pasien_utama = $user->pasiens()->where('is_primary', true)->first();
+        
+        if ($pasien_utama) {
+            session(['pasien_aktif_id' => $pasien_utama->id]);
+        }
+        
+        return $pasien_utama;
+    }
+    
+    /**
+     * Konversi Carbon date ke nama hari dalam Bahasa Indonesia
+     */
+    private function get_nama_hari($tanggal)
+    {
+        $hari_inggris = [
+            'Monday', 'Tuesday', 'Wednesday', 'Thursday', 
+            'Friday', 'Saturday', 'Sunday'
+        ];
+        
+        $hari_indonesia = [
+            'Senin', 'Selasa', 'Rabu', 'Kamis', 
+            'Jumat', 'Sabtu', 'Minggu'
+        ];
+        
+        return str_replace($hari_inggris, $hari_indonesia, $tanggal->format('l'));
     }
 }

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->date('tanggal_antrian');
             $table->integer('nomor_sekarang');
+            $table->integer('total_antrian');
 
         // status slot nomor untuk kebutuhan ui
         $table->enum('status', [

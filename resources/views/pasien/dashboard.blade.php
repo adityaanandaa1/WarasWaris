@@ -231,7 +231,7 @@
                             </div>
                         </div>
                         <a 
-                            href="#"
+                            href="{{ route('pasien.index_reservasi') }}"
                             class="mt-4 block text-center px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition"
                         >
                             Buat Reservasi
@@ -252,7 +252,7 @@
                             </div>
                         </div>
                         <a 
-                            href="#"
+                            href="{{ route('pasien.riwayat_reservasi') }}"
                             class="mt-4 block text-center px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition"
                         >
                             Lihat Riwayat

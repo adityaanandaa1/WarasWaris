@@ -16,6 +16,7 @@ class antrian extends Model
         'id_reservasi',
         'tanggal_antrian',
         'nomor_sekarang',
+        'total_antrian',
         'status',
     ];
 

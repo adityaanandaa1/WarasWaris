@@ -35,7 +35,7 @@ class data_pasien extends Model
      * Cast tipe data otomatis
      */
     protected $casts = [
-        'tanggal_lahir' => 'date', // Otomatis jadi Carbon object
+        'tanggal_lahir_pasien' => 'date', // Otomatis jadi Carbon object
         'is_primary' => 'boolean', // Otomatis jadi true/false
     ];
 

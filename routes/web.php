@@ -47,7 +47,14 @@ Route::middleware(['auth', 'role:pasien'])
         Route::put('/biodata/{id}', [pasien_controller::class, 'update_biodata'])->name('update_biodata');
         Route::delete('/biodata/{id}', [pasien_controller::class, 'hapus_biodata'])->name('hapus_biodata');
         Route::post('/ganti-profil/{id}', [pasien_controller::class, 'ganti_profil'])->name('ganti_profil');
-    });
+        
+        Route::get('/reservasi', [App\Http\Controllers\Pasien\reservasi_controller::class, 'index_reservasi'])->name('index_reservasi');
+        Route::post('/reservasi', [App\Http\Controllers\Pasien\reservasi_controller::class, 'buat_reservasi'])->name('buat_reservasi');
+        Route::post('/reservasi/{id}/cancel', [App\Http\Controllers\Pasien\reservasi_controller::class, 'batalkan_reservasi'])->name('batalkan_reservasi');
+        Route::get('/reservasi/riwayat', [App\Http\Controllers\Pasien\reservasi_controller::class, 'riwayat_reservasi'])->name('riwayat_reservasi');
+});
+
+
 
 Route::get('/login', [auth_controller::class, 'tampilkan_login'])->name('login');
 Route::post('/login', [auth_controller::class, 'login'])->middleware('guest')->name('login.post');
