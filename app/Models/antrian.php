@@ -15,7 +15,7 @@ class antrian extends Model
         'id_pasien',
         'id_reservasi',
         'tanggal_antrian',
-        'nomor_antrian',
+        'nomor_sekarang',
         'status',
     ];
 

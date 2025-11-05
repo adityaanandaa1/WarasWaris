@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('antrians', function (Blueprint $table) {
             $table->id();
             $table->date('tanggal_antrian');
-            $table->integer('nomor_antrian');
+            $table->integer('nomor_sekarang');
 
         // status slot nomor untuk kebutuhan ui
         $table->enum('status', [
@@ -36,7 +36,7 @@ return new class extends Migration
         $table->timestamps();
 
         // Satu nomor unik per hari (dan per dokter bila dipakai)
-        $table->unique(['tanggal_antrian','nomor_antrian']);  
+        $table->unique(['tanggal_antrian','nomor_sekarang']);  
         $table->index(['tanggal_antrian','status']);
         });
     }

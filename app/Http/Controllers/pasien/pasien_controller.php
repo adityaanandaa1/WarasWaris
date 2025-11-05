@@ -96,7 +96,7 @@ class pasien_controller extends Controller
     }
 
 
-    //edit biodata pasien
+    //edit untuk menampilkan biodata pasien
     public function edit_biodata($id)
     {
         $user=Auth::user();
@@ -108,7 +108,7 @@ class pasien_controller extends Controller
         return view('pasien.edit_biodata', compact('pasien'));
     }
 
-    // update biodata pasien
+    // update biodata pasien mengirim ke db
     public function update_biodata(Request $request, $id)
     {
         $user = Auth::user();
