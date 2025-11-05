@@ -48,9 +48,9 @@ Route::middleware(['auth', 'role:pasien'])
 Route::get('/login', [auth_controller::class, 'tampilkan_login'])->name('login');
 Route::post('/login', [auth_controller::class, 'login'])->middleware('guest')->name('login.post');
 
-    // Register (khusus pasien)
-    Route::get('/register', [auth_controller::class, 'tampilkan_register'])->name('register');
-    Route::post('/register', [auth_controller::class, 'register'])->name('register.post');
+// Register (khusus pasien)
+Route::get('/register', [auth_controller::class, 'tampilkan_register'])->name('register');
+Route::post('/register', [auth_controller::class, 'register'])->name('register.post');
 
 
 // Logout (harus sudah login)

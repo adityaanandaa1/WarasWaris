@@ -170,6 +170,10 @@
                             </p>
                         </div>
                         <div>
+                            <p class="text-sm text-gray-500">Golongan Darah</p>
+                            <p class="font-medium text-gray-900">{{ $pasien_aktif->golongan_darah ?? '-' }}</p>
+                        </div>
+                        <div>
                             <p class="text-sm text-gray-500">Nomor Telepon</p>
                             <p class="font-medium text-gray-900">{{ $pasien_aktif->no_telepon }}</p>
                         </div>
@@ -186,6 +190,8 @@
                             <p class="font-medium text-gray-900">{{ $pasien_aktif->catatan_pasien ?? '-' }}</p>
                         </div>
                     </div>
+
+                    
 
                     <!-- Tombol Hapus (hanya untuk anggota keluarga) -->
                     @if(!$pasien_aktif->is_primary)

@@ -23,6 +23,7 @@ class data_pasien extends Model
         'nama_pasien',
         'tanggal_lahir_pasien',
         'jenis_kelamin',
+        'golongan_darah',
         'alamat',
         'no_telepon',
         'pekerjaan',

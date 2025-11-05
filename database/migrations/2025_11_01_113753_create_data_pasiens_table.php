@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('nama_pasien');
             $table->date('tanggal_lahir_pasien');
             $table->enum('jenis_kelamin', ['Laki-laki', 'Perempuan']); 
+            $table->enum('golongan_darah', ['A', 'B', 'AB', 'O']);
             $table->text('alamat');
             $table->string('no_telepon', 15); // Nomor telepon (max 15 digit)
             $table->string('pekerjaan')->nullable(); // boleh kosong
