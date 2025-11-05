@@ -32,6 +32,10 @@ Route::get('/aboutus', function () {
     return view('homepage.aboutus');
 });
 
+Route::get('/dbajax', function () {
+    return view('pasien.dbpakeajax');
+});
+
 // Biodata
 Route::middleware(['auth', 'role:pasien'])
     ->prefix('pasien')->name('pasien.')
@@ -71,3 +75,4 @@ Route::middleware(['auth', 'role:resepsionis'])->prefix('resepsionis')->name('re
         return view('resepsionis.dashboard');
     })->name('dashboard');
 });
+
