@@ -21,7 +21,7 @@
     
     @stack('styles')
 </head>
-<body class="bg-gray-50">
+<body>
     
     @yield('content')
     
