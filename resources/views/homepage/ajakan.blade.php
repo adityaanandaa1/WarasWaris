@@ -19,7 +19,7 @@
             </div>
 
             <div class="hero-button">
-                <a href="#" class="btn-ajakan">
+                <a href="{{ route('register') }}" class="btn-ajakan">
                     Gabung Klinik WarasWaris
                     <i class="ri-arrow-right-double-line"></i>
                 </a>

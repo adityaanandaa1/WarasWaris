@@ -5,31 +5,7 @@ use App\Http\Controllers\auth_controller;
 use App\Http\Controllers\pasien\pasien_controller;
 
 Route::get('/', function () {
-    return view('auth.login');
-});
-
-Route::get('/home', function () {
     return view('homepage');
-});
-
-Route::get('/layanan', function () {
-    return view('homepage.navbar');
-});
-
-Route::get('/ajakan', function () {
-    return view('homepage.ajakan');
-});
-
-Route::get('/alamat', function () {
-    return view('homepage.alamat');
-});
-
-Route::get('/jadwal', function () {
-    return view('homepage.jadwal');
-});
-
-Route::get('/aboutus', function () {
-    return view('homepage.aboutus');
 });
 
 Route::get('/dbajax', function () {

@@ -9,7 +9,7 @@
         </ul>
         
         <div class="navbar-actions">
-            <a href="#" class="btn-login">
+            <a href="{{ route('register') }}" class="btn-login">
                 Masuk
             </a>
         </div>
