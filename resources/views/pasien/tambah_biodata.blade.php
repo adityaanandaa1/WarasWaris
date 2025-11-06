@@ -3,15 +3,16 @@
 @section('title', 'Tambah Biodata - WarasWaris')
 
 @section('content')
-<div class="min-h-screen bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center p-4">
+
+<div class="min-h-screen bg-[#5A81FA]  flex items-center justify-center p-10">
     
     <!-- Modal Container -->
-    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-4xl relative">
+    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-7xl relative">
         
         <!-- Close Button (X) -->
         <a 
             href="{{ route('pasien.dashboard') }}"
-            class="absolute top-6 left-6 w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center text-gray-600 transition"
+            class="absolute top-6 left-6 w-8 h-8 bg-[#CEDEFF] hover:bg-gray-300 rounded-full flex items-center justify-center text-gray-600 font-bold transition"
         >
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
@@ -19,8 +20,8 @@
         </a>
 
         <!-- Header -->
-        <div class="text-center pt-12 pb-8 px-8">
-            <h1 class="text-3xl font-bold text-blue-600">
+        <div class="text-center pt-10 pb-8 px-8">
+            <h1 class="text-2xl font-bold text-[#5A81FA]">
                 @if($isPrimary)
                     Tambah Biodata Utama
                 @else
@@ -41,7 +42,7 @@
         @endif
 
         <!-- Form -->
-        <form action="{{ route('pasien.tambah_biodata') }}" method="POST" enctype="multipart/form-data" class="px-8 pb-8">
+        <form action="{{ route('pasien.tambah_biodata') }}" method="POST" enctype="multipart/form-data" class="px-20 pb-8">
             @csrf
             
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -51,7 +52,7 @@
                     
                     <!-- Nama Lengkap -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                        <label class="block text-sm font-medium text-gray-600 mb-2">
                             Nama Lengkap
                         </label>
                         <input 
@@ -67,14 +68,14 @@
                     <!-- Nama Wali (hanya untuk anggota keluarga) -->
                     @if(!$isPrimary)
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                        <label class="block text-sm font-medium text-gray-600 mb-2">
                             Nama Wali
                         </label>
                         <input 
                             type="text" 
                             value="{{ Auth::user()->pasiens->where('is_primary', true)->first()->nama_lpasien ?? 'Pemilik Akun' }}"
                             disabled
-                            class="w-full px-4 py-3 bg-gray-100 border-0 rounded-xl text-gray-600"
+                            class="w-full px-4 py-3 bg-gray-100 border-0 rounded-xl text-[#5A81FA]"
                         >
                     </div>
                     @endif
@@ -84,7 +85,7 @@
                         
                         <!-- Jenis Kelamin -->
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                            <label class="block text-sm font-medium text-gray-600 mb-2">
                                 Jenis Kelamin
                             </label>
                             <div class="relative">
@@ -107,7 +108,7 @@
 
                         <!-- No Telepon -->
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                            <label class="block text-sm font-medium text-gray-600 mb-2">
                                 No Telepon
                             </label>
                             <input 
@@ -127,7 +128,7 @@
                         
                         <!-- Tanggal Lahir -->
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                            <label class="block text-sm font-medium text-gray-600 mb-2">
                                 Tanggal Lahir
                             </label>
                             <div class="relative">
@@ -149,7 +150,7 @@
 
                         <!-- Golongan Darah -->
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                            <label class="block text-sm font-medium text-gray-600 mb-2">
                                 Golongan Darah
                             </label>
                             <div class="relative">
@@ -178,7 +179,7 @@
                         
                         <!-- Pekerjaan -->
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                            <label class="block text-sm font-medium text-gray-600 mb-2">
                                 Pekerjaan
                             </label>
                             <input 
@@ -192,7 +193,7 @@
 
                         <!-- Alamat -->
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                            <label class="block text-sm font-medium text-gray-600 mb-2">
                                 Alamat
                             </label>
                             <input 
@@ -209,7 +210,7 @@
 
                     <!-- Catatan -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                        <label class="block text-sm font-medium text-gray-600 mb-2">
                             Catatan
                         </label>
                         <textarea 
@@ -244,7 +245,7 @@
                     </div>
 
                     <!-- Upload Text -->
-                    <p class="text-sm font-medium text-gray-700 mb-1">Tambahkan Foto</p>
+                    <p class="text-sm font-medium text-gray-600 mb-1">Tambahkan Foto</p>
                     <p class="text-xs text-gray-500 text-center px-4">
                         (Fitur upload foto akan segera hadir)
                     </p>
