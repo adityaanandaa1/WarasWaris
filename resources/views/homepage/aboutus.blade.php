@@ -1,102 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>WarasWaris</title>
-
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
-    
-    <style>
-        body {
-            background-color: #CEDEFF;
-            display: flex;
-            margin-top: 40px;
-            margin-left: 100px;
-            margin-right: 100px;
-            height: 250px;
-        }
-        
-        .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            padding: 20px;
-        }
-
-        .right-group {
-            display: flex;
-            gap: 50px;
-            align-items: flex-start;
-        }
-
-        .clinic-tagline {
-            font-family: 'Poppins', sans-serif;
-            font-size: 16px;
-            line-height: 30px;
-            color: #464646;
-            width: 40%;
-        }
-
-        .about-links {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .section-title {
-            font-family: 'Poppins', sans-serif;
-            font-size: 24px;
-            color: #405FBD;
-            font-weight: bold;
-            text-align: center;
-        }
-
-        .about-links a {
-            font-family: 'Poppins', sans-serif;
-            font-size: 20px;
-            color: #464646;
-            text-decoration: none;  
-        }
-
-        .about-links a:hover {
-            text-decoration: underline;  
-        }
-
-        .contact-section {
-            font-family: 'Poppins', sans-serif;
-            font-size: 24px;
-            color: #405FBD;
-            font-weight: bold;
-        }
-
-        .contact-icons {
-            display: flex;
-            flex-direction: row;
-        }
-
-        .btn {
-            color: #464646;
-            text-decoration: none; 
-            padding: 10px; 
-            font-size: 35px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 35px;
-            height: 35px; 
-        }
-
-        .btn:hover {
-            background-color: #ffffff;
-            transition: background-color 0.5s ease;
-            border-radius: 100%;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
+<section id="aboutus">
+    <div class="container-about">
         <div class="card clinic-header">
             <div id="clinic-title">
                 <svg width="250" height="59" viewBox="0 0 250 59" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -120,24 +23,23 @@
             <div class="card about-section">
                 <h2 class="section-title">Tentang Kami</h2>
                 <nav class="about-links">
-                    <a href="#">Layanan Kami</a>
-                    <a href="#">Lokasi</a>
-                    <a href="#">Jadwal Klinik</a>
+                    <a href="#service">Layanan Kami</a>
+                    <a href="#schedule">Jadwal Klinik</a>
+                    <a href="#location">Lokasi</a>
                 </nav>
             </div>
         
             <div class="card contact-section">
                 <h2 class="section-title">Kontak</h2>
                 <div class="contact-icons">
-                    <a href="#" class="btn">
+                    <a href="#" class="btn-aboutus">
                         <i class="ri-whatsapp-line"></i>
                     </a>
-                    <a href="https://maps.app.goo.gl/mWeyBvYzmF6797bk7" class="btn">
+                    <a href="https://maps.app.goo.gl/mWeyBvYzmF6797bk7" class="btn-aboutus">
                         <i class="ri-map-2-line"></i>
                     </a>
                 </div>
             </div>
         </div>
     </div>
-</body>
-</html>
+</section>

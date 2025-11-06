@@ -1,69 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>WarasWaris</title>
-
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-    <style>
-        body {
-            margin-left: 100px;
-            margin-right: 100px;
-            margin-top: 60px
-        }
-        
-        .location-header {
-            display: flex;
-        }
-
-        .location-title {
-            padding-left: 10px;
-        }
-
-        .location-heading {
-            font-family: 'Poppins', sans-serif;
-            font-size: 28px;
-            color: #1F4DD9;
-            margin: 0;
-        }
-
-        .location-subheading {
-            font-family: 'Poppins', sans-serif;
-            font-size: 28px;
-            color: #5A81FA;
-            margin: 0;
-        }
-
-        .location-content {
-            display: flex;
-        }
-
-        .location-description {
-            font-family: 'Poppins', sans-serif;
-            font-size: 18px;
-            color: #464646;
-            padding-left: 90px;
-            padding-right: 240px;
-        }
-
-        .map-frame {
-            box-shadow: 0 5px 16px 0 rgba(0,0,0,0.6)
-        }
-
-        .map-caption{
-            font-family: 'Poppins', sans-serif;
-            font-size: 14px;
-            color: #5A81FA;
-            text-align: center;
-        }
-    </style>
-</head>
-<body>
-    <section class="location-header">
+<section id="location">
+    <div class="location-header">
         <svg width="78" height="82" viewBox="0 0 114 118" fill="none" xmlns="http://www.w3.org/2000/svg">
             <g filter="url(#filter0_f_130_13)">
                 <ellipse cx="57" cy="105.953" rx="23.4706" ry="8.04706" fill="#D9D9D9"/>
@@ -81,9 +17,9 @@
             <h1 class="location-heading">Lokasi Klinik</h1>
             <h2 class="location-subheading">Dr. Muh. Abd. Waris</h2>
         </div>
-    </section>
+    </div>
 
-    <section class="location-content">
+    <div class="location-content">
         <div class="location-description">
             <p>
                 Klinik kami berlokasi strategis di pusat Kecamatan Kaliwates, Jember. 
@@ -109,6 +45,5 @@
                 Klik pada peta untuk membuka arah menuju Klinik Dr. Muh. Abd. Waris di Google Maps.
             </p>
         </div>
-    </section>
-</body>
-</html>
+    </div>
+</section>

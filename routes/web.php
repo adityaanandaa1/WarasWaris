@@ -13,7 +13,7 @@ Route::get('/home', function () {
 });
 
 Route::get('/layanan', function () {
-    return view('homepage.layanan');
+    return view('homepage.navbar');
 });
 
 Route::get('/ajakan', function () {
