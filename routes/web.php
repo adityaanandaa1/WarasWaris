@@ -17,6 +17,7 @@ Route::middleware(['auth', 'role:pasien'])
     ->prefix('pasien')->name('pasien.')
     ->group(function () {
         Route::get('/dashboard', [pasien_controller::class, 'dashboard'])->name('dashboard');
+        Route::get('/dashboardtest', [pasien_controller::class, 'dashboardtest'])->name('dashboardtest');
         Route::get('/biodata/tambah', [pasien_controller::class, 'tambah_biodata'])->name('tambah_biodata');
         Route::post('/biodata/simpan', [pasien_controller::class, 'simpan_biodata'])->name('simpan_biodata');
         Route::get('/biodata/{id}/edit', [pasien_controller::class, 'edit_biodata'])->name('edit_biodata');

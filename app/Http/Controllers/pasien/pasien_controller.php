@@ -6,27 +6,87 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\data_pasien;
+use App\Models\antrian;
+use App\Models\jadwal_praktik;
+use App\Models\reservasi;
 
 class pasien_controller extends Controller
 {
     //tampilkan dashboard pasien
-    public function dashboard()
-    {
-        $user = Auth::user();
-
-        //ambil pasien dalam akun ini
-        $pasiens = $user->pasiens()->get();
-
-        if (! $user->pasiens()->exists()) {
+    public function dashboardtest()
+{
+    $user = Auth::user();
+    $pasiens = $user->data_pasiens; // Sesuaikan dengan nama relasi Anda
+    
+    $pasiens = $user->pasiens ?? collect();
+    if ($pasiens->isEmpty()) {
         return redirect()->route('pasien.tambah_biodata');
-        }
-
-        $pasiens = $user->pasiens()->get();
-        $pasien_aktif = $this->get_pasien_aktif();
-
-        //compact berfungsi variabel $pasiens dan $pasien_aktif dikirim ke view pasien.dashboard
-        return view('pasien.dashboard', compact('pasiens', 'pasien_aktif'));
     }
+    
+    $pasien_aktif = $this->get_pasien_aktif();
+    
+    // Ambil data untuk tab reservasi
+    $tanggal_dipilih = today();
+    $nama_hari = $this->get_nama_hari($tanggal_dipilih);
+    
+    // Cek jadwal
+    $jadwal = jadwal_praktik::where('hari', $nama_hari)->first();
+    $klinik_tutup = !$jadwal || !$jadwal->is_active;
+    
+    // Ambil antrian
+    $antrian = Antrian::where('tanggal_antrian', today())->first();
+    if (!$antrian) {
+        $antrian = Antrian::create([
+            'tanggal_antrian' => today(),
+            'nomor_sekarang' => 0,
+            'total_antrian' => 0,
+        ]);
+    }
+    
+    // Cek reservasi aktif
+    $reservasi_aktif = Reservasi::where('id_pasien', $pasien_aktif->id)
+        ->where('tanggal_reservasi', today())
+        ->whereIn('status', ['menunggu', 'sedang_diperiksa'])
+        ->first();
+    
+    // Ambil riwayat reservasi
+    $reservasis = Reservasi::where('id_pasien', $pasien_aktif->id)
+        ->orderBy('tanggal_reservasi', 'desc')
+        ->limit(10)
+        ->get();
+    
+    // Cek reminder
+    $reminder_aktif = null;
+    if ($reservasi_aktif && $antrian) {
+        $selisih = $reservasi_aktif->nomor_antrian - $antrian->nomor_sekarang;
+        if ($selisih <= 2 && $selisih > 0) {
+            $reminder_aktif = (object) [
+                'nomor_antrian' => $reservasi_aktif->nomor_antrian,
+                'selisih' => $selisih,
+            ];
+        }
+    }
+    
+    return view('pasien.dashboardtest', compact(
+        'pasiens',
+        'pasien_aktif',
+        'tanggal_dipilih',
+        'nama_hari',
+        'jadwal',
+        'klinik_tutup',
+        'antrian',
+        'reservasi_aktif',
+        'reservasis',
+        'reminder_aktif'
+    ));
+}
+
+private function get_nama_hari($tanggal)
+{
+    $hariInggris = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+    $hariIndonesia = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
+    return str_replace($hariInggris, $hariIndonesia, $tanggal->format('l'));
+}
 
     //tampilkan form untuk pasien baru atau anggota keluarga
     public function tambah_biodata()

@@ -17,7 +17,7 @@ class RedirectIfAuthenticated
                 $role = Auth::guard($guard)->user()->role ?? null;
 
                 return redirect(match ($role) {
-                    'pasien'      => route('pasien.dashboard'),
+                    'pasien'      => route('pasien.dashboardtest'),
                     'dokter'      => route('dokter.dashboard'),
                     'resepsionis' => route('resepsionis.dashboard'),
                     default       => route('login'),
