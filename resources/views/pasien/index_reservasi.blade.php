@@ -214,7 +214,7 @@
                                         <br>Keluhan: {{ $reservasi_aktif->keluhan ?? '-' }}
                                     </p>
                                     
-                                    @if($reservasiAktif->status == 'menunggu')
+                                    @if($reservasi_aktif->status == 'menunggu')
                                         <form action="{{ route('pasien.batalkan_reservasi', $reservasi_aktif->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin membatalkan reservasi?')">
                                             @csrf
                                             <button 

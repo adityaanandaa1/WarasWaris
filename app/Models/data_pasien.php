@@ -47,7 +47,7 @@ class data_pasien extends Model
      * Kebalikan dari hasMany di User
      * Contoh: $pasien->user (ambil data akun pemilik)
      */
-    public function akun()
+    public function user()
     {
         return $this->belongsTo(\App\Models\akun_user::class, 'id_akun');
     }
