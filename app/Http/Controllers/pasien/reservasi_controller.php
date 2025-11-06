@@ -153,7 +153,7 @@ class reservasi_controller extends Controller
             
             DB::commit();
             
-            return redirect()->route('pasien.index_reservasi', [
+            return redirect()->route('pasien.dashboard', [
                 'tanggal' => $tanggal->format('Y-m-d')
             ])->with('success', "Reservasi berhasil! Nomor antrian Anda: #{$nomor_antrian}");
         } catch(\Exception $e) {
@@ -183,7 +183,7 @@ class reservasi_controller extends Controller
             $antrian->decrement('total_antrian');
         }
         
-        return redirect()->route('pasien.index_reservasi', [
+        return redirect()->route('pasien.dashboard', [
             'tanggal' => $reservasi->tanggal_reservasi
         ])->with('success', 'Reservasi berhasil dibatalkan');
     }

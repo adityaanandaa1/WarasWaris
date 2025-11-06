@@ -45,7 +45,6 @@ class akun_user extends Authenticatable
 
     public function pasiens()
     {
-        // SESUAIKAN foreign key: 'id_akun' atau 'user_id' tergantung migrasi kamu
         return $this->hasMany(\App\Models\data_pasien::class, 'id_akun');
     }
 

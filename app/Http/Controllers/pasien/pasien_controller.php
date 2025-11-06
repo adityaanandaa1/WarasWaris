@@ -13,7 +13,7 @@ use App\Models\reservasi;
 class pasien_controller extends Controller
 {
     //tampilkan dashboard pasien
-    public function dashboardtest()
+    public function dashboard()
 {
     $user = Auth::user();
     $pasiens = $user->data_pasiens; // Sesuaikan dengan nama relasi Anda
@@ -67,7 +67,7 @@ class pasien_controller extends Controller
         }
     }
     
-    return view('pasien.dashboardtest', compact(
+    return view('pasien.dashboard', compact(
         'pasiens',
         'pasien_aktif',
         'tanggal_dipilih',
