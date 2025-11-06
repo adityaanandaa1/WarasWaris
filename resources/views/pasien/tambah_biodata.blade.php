@@ -218,7 +218,7 @@
                             rows="4"
                             placeholder="Catatan tambahan (opsional)"
                             class="w-full px-4 py-3 bg-gray-50 border-0 rounded-xl focus:ring-2 focus:ring-blue-500 focus:bg-white transition resize-none"
-                        >{{ old('catatan') }}</textarea>
+                        >{{ old('catatan_pasien') }}</textarea>
                     </div>
 
                 </div>

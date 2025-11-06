@@ -45,7 +45,7 @@ class akun_user extends Authenticatable
 
     public function pasiens()
     {
-        return $this->hasMany(\App\Models\data_pasien::class, 'id_akun');
+        return $this->hasMany(\App\Models\data_pasien::class, 'id_akun', 'id');
     }
 
     /**

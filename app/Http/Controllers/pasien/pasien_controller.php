@@ -16,13 +16,11 @@ class pasien_controller extends Controller
     public function dashboard()
 {
     $user = Auth::user();
-    $pasiens = $user->data_pasiens; // Sesuaikan dengan nama relasi Anda
-    
-    $pasiens = $user->pasiens ?? collect();
-    if ($pasiens->isEmpty()) {
+     if (!$user->pasiens()->exists()) {
         return redirect()->route('pasien.tambah_biodata');
     }
-    
+
+    $pasiens = $user->pasiens()->get();
     $pasien_aktif = $this->get_pasien_aktif();
     
     // Ambil data untuk tab reservasi

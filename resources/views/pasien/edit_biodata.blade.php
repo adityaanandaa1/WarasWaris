@@ -273,7 +273,7 @@
             <div class="mt-8 flex justify-between items-center">
                 <!-- Delete Button (only for non-primary profiles) -->
                 @if(!$pasien->is_primary)
-                <form action="{{ route('pasien.hapus_b iodata', $pasien->id) }}" method="POST" class="inline">
+                <form action="{{ route('pasien.hapus_biodata', $pasien->id) }}" method="POST" class="inline">
                     @csrf
                     @method('DELETE')
                     <button 
