@@ -1,116 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>WarasWaris</title>
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-    <style>
-        body {
-            padding-top: 40px;
-            padding-right: 80px;
-            padding-left: 80px;
-        }
-
-        .hero-section {
-            position: relative;
-            background-color: #5A81FA;
-            width: 100%; 
-            height: 480px;
-            border-radius: 10px;
-        }
-
-        .emotmask {
-            position: absolute;
-            top: 10%;
-            left: 95%;
-            transform: translate(-50%, -50%);
-        }
-
-        .emotdoc {
-            position: absolute;
-            top: 70%;
-            left: 10%;
-            transform: translate(-50%, -50%);
-        }
-
-        .hero-content {
-            padding-top: 85px;
-        }
-
-        .hero-title {
-            font-family: 'Poppins', sans-serif;
-            font-size: 35px;
-            color: #ffffff;
-            text-align: center;
-            padding-left: 30px;
-            padding-right: 10px;
-        }
-
-        .hero-subtitle {
-            font-family: 'Poppins', sans-serif;
-            font-size: 17px;
-            height: 2px;
-            color: #ffffff;
-            text-align: center;
-            padding-left: 250px;
-            padding-right: 250px;
-            height: auto;
-        }
-
-        .hero-button {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 50px;
-        }
-
-        .btn {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: #ffffff;
-            transition: background-color 1s ease;
-            transition: color 1s ease;
-            font-family: 'Poppins', sans-serif;
-            font-size: 21px;
-            font-weight: 700;
-            text-decoration: none;
-            color: #5A81FA;
-            border: none;
-            border-radius: 200px;
-            padding: 20px 40px;
-            box-shadow: 0 5px 10px rgba(90, 129, 250, 0.3);
-            cursor: pointer;
-        }
-
-        .btn i {
-            background: #5A81FA;
-            color: white;
-            border-radius: 50%;
-            padding: 10px;
-            font-size: 16px;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            margin-left: 15px;
-            margin-right: -10px;
-        }
-
-        .btn:hover {
-            background-color: #5A81FA;
-            color: #ffffff;
-            transition: background-color 0.5s ease;
-        }
-    </style>
-</head>
-<body>
-    <section class="hero-section">
+<section id="ajakan">
+    <div class="hero-section">
         <div class="emotmask">
             <svg width="181" height="161" viewBox="0 0 191 172" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M77.4012 57.5325H65.7006C61.6031 57.5325 57.6735 58.9861 54.7762 61.5734M113.601 57.5325H125.302C129.399 57.5325 133.329 58.9861 136.226 61.5734" stroke="white" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
@@ -130,7 +19,7 @@
             </div>
 
             <div class="hero-button">
-                <a href="#" class="btn btn-primary">
+                <a href="#" class="btn-ajakan">
                     Gabung Klinik WarasWaris
                     <i class="ri-arrow-right-double-line"></i>
                 </a>
@@ -146,6 +35,5 @@
                 <path d="M214.578 258.216C214.578 264.296 209.058 269.225 202.25 269.225C195.442 269.225 189.922 264.296 189.922 258.216C189.922 252.135 195.442 247.206 202.25 247.206C209.058 247.206 214.578 252.135 214.578 258.216Z" stroke="white" stroke-width="10"/>
             </svg>
         </div>
-    </section>
-</body>
-</html>
+    </div>
+</section>

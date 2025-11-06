@@ -9,7 +9,7 @@ Route::get('/', function () {
 });
 
 Route::get('/home', function () {
-    return view('homepage.home');
+    return view('homepage');
 });
 
 Route::get('/layanan', function () {

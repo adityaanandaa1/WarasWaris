@@ -1,0 +1,180 @@
+/* Homepage Layanan */
+#service {
+    background-image: linear-gradient(to bottom, #CEDEFF 0%, #FFFFFF 20%);
+}
+    
+.service-header {
+    height: 185px;
+    padding-left: 100px;
+}
+
+.service-subtitle {
+    width: 55%;
+}
+
+.service-heading {
+    font-family: 'Poppins', sans-serif;
+    font-size: 28px;
+    color: #5A81FA;
+}
+
+.service-description {
+    width: 80%;
+    font-family: 'Poppins', sans-serif;
+    font-size: 17px;
+    color: #464646;
+}
+    
+.service-list {
+    width: 90%;
+    height: 330px;
+    padding-left: 100px;
+}
+    
+.service-item {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    width: 70%;
+}
+
+.service-button {
+    background-color: #ffffff;
+    padding: 15px 15px;
+    border-radius: 100%;
+    border: none;
+    box-shadow:0 8px 16px 0 rgba(0,0,0,0.6)
+}
+
+.service-button i {
+    color: #5A81FA; 
+    font-size: 30px;
+}
+
+.service-text {
+    font-family: 'Poppins', sans-serif;
+    font-size: 17px;
+    color: #464646;
+}
+    
+.service-footer {
+    padding-left: 100px;
+    height: 80px;
+}
+
+.btn-service {
+    background-color: #87A3FB;
+    transition: background-color 0.5s ease;
+    font-family: 'Poppins', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    text-decoration: none;
+    color: #ffffff;
+    padding: 30px 50px;
+    border-radius: 30px;
+    border: none;
+    box-shadow:0 8px 16px 0 rgba(0,0,0,0.6)
+}
+
+.btn-service:hover {
+    background-color: #5A81FA;
+}
+
+/* Homepage Ajakan */
+#ajakan {
+    padding-top: 40px;
+    padding-right: 80px;
+    padding-left: 80px;
+}
+
+.hero-section {
+    position: relative;
+    background-color: #5A81FA;
+    width: 100%; 
+    height: 480px;
+    border-radius: 10px;
+}
+
+.emotmask {
+    position: absolute;
+    top: 10%;
+    left: 95%;
+    transform: translate(-50%, -50%);
+}
+
+.emotdoc {
+    position: absolute;
+    top: 70%;
+    left: 10%;
+    transform: translate(-50%, -50%);
+}
+
+.hero-content {
+    padding-top: 85px;
+}
+
+.hero-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 35px;
+    color: #ffffff;
+    text-align: center;
+    padding-left: 30px;
+    padding-right: 10px;
+}
+
+.hero-subtitle {
+    font-family: 'Poppins', sans-serif;
+    font-size: 17px;
+    height: 2px;
+    color: #ffffff;
+    text-align: center;
+    padding-left: 250px;
+    padding-right: 250px;
+    height: auto;
+}
+
+.hero-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 50px;
+}
+
+.btn-ajakan {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #ffffff;
+    transition: background-color 1s ease;
+    transition: color 1s ease;
+    font-family: 'Poppins', sans-serif;
+    font-size: 21px;
+    font-weight: 700;
+    text-decoration: none;
+    color: #5A81FA;
+    border: none;
+    border-radius: 200px;
+    padding: 20px 40px;
+    box-shadow: 0 5px 10px rgba(90, 129, 250, 0.3);
+    cursor: pointer;
+}
+
+.btn-ajakan i {
+    background: #5A81FA;
+    color: white;
+    border-radius: 50%;
+    padding: 10px;
+    font-size: 16px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 15px;
+    margin-right: -10px;
+}
+
+.btn-ajakan:hover {
+    background-color: #5A81FA;
+    color: #ffffff;
+    transition: background-color 0.5s ease;
+}
