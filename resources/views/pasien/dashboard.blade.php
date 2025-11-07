@@ -62,28 +62,31 @@
         z-index: 100;
     }
 
-    .nav-btn:.active {  
+    .nav-btn.active {  
         box-shadow: 10px 0 20px rgba(0, 0, 0, 0.3);
         z-index: 100;
     }
 
-    /* Tab Dashboard - Putih saat aktif, biru muda saat tidak aktif */
     .nav-btn.dashboard {
         background: #FFFFFF;
         color: #464646;
     }
 
-  
-    /* Tab Riwayat - Background #587EF4 saat aktif */
     .nav-btn.riwayat {
         background:#587EF4;
         color: #FFFFFF;
     }
 
-    /* Tab Reservasi - Background #3B41AE saat aktif */
     .nav-btn.reservasi {   
         background: #3B41AE;
         color: #FFFFFF;
+    }
+    .nav-btn:hover{
+        box-shadow:none;
+    }
+    .nav-btn span:hover{
+        font-size: 13px;
+        transition: 0.1s ease-in-out;
     }
 
 
@@ -98,7 +101,21 @@
         max-width: calc(100vw - 600px);
         overflow: hidden;
         transition: background 0.3s ease;
+        height: 100vh;
+        overflow-y: auto; 
+        overflow-x: hidden; 
+        scrollbar-width: none;
+        scrollbar-color: none;
     }
+
+.content-section {
+    display: none;
+}
+
+.content-section.active {
+    display: block;
+    animation: fadeIn 0.3s ease-in;
+}
 
     /* Background untuk tab Dashboard */
     .main-content.bg-dashboard {
@@ -124,6 +141,7 @@
         animation: fadeIn 0.3s ease-in;
     }
 
+
     @keyframes fadeIn {
         from {
             opacity: 0;
@@ -142,9 +160,6 @@
         align-items: flex-start;
         margin-bottom: 15px;
     }
-    .content-header .headerputih{
-        color:white;
-    }
 
     .content-header h1 {
         font-size: 18px;
@@ -153,9 +168,20 @@
         margin-bottom: 2px;
     }
 
+    .content-header2 h1 {
+        font-size: 18px;
+        font-weight: 700;
+        color: white;
+        margin-bottom: 2px;
+    }
+
     .content-header .date {
         font-size: 11px;
         color: #464646;
+    }
+    .content-header2 .date {
+        font-size: 11px;
+        color: white;
     }
 
     /* Welcome Banner */
@@ -276,22 +302,26 @@
 
     /* Riwayat Reservasi */
     .riwayat-header {
-        background: linear-gradient(135deg, #5A81FA 0%, #587EF4 100%);
+        background: #5A81FA;
         color: white;
         padding: 25px;
         border-radius: 15px;
         margin-bottom: 20px;
+        margin-top: 20px;
         box-shadow: 0px 0px 20px 5px rgba(0, 0, 0, 0.15);
     }
 
     .riwayat-header h3 {
-        font-size: 20px;
+        font-size: 18px;
+        font-weight: 700;
         margin-bottom: 5px;
     }
 
     .riwayat-header p {
         opacity: 0.9;
         font-size: 14px;
+        font-weight: 300;
+        line-height: 20px;
     }
 
     .riwayat-item {
@@ -342,20 +372,47 @@
     /* Reservasi */
     .reservasi-banner {
         background: linear-gradient(135deg, #5A81FA 0%, #587EF4 100%);
-        color: white;
-        padding: 20px;
         border-radius: 15px;
-        margin-bottom: 20px;
+        padding: 15px 20px;
+        margin-top: 30px;
+        margin-bottom: 15px;
         display: flex;
         align-items: center;
-        gap: 15px;
         box-shadow: 0px 0px 20px 5px rgba(0, 0, 0, 0.15);
+        height: 100px;
+        position: relative;
+        overflow: visible;
     }
 
-    .reservasi-banner svg {
-        width: 50px;
-        height: 50px;
+    .reservasi-banner img {
+        width: 200px;
+        height: auto;
+        position: absolute;
+        left: -15px;
+        margin-bottom: 13px;
+        z-index: 1;
+        object-fit: contain;
     }
+
+    .reservasi-text {
+        flex: 1;
+        color: #FFFFFF;
+        text-align: left;
+        padding-left: 200px;
+    }
+
+    .reservasi-text h2 {
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 5px;
+    }
+
+    .reservasi-text p {
+        font-size: 14px;
+        font-weight: 300;
+        line-height: 20px;
+    }
+    
 
     .reservasi-cards {
         display: grid;
@@ -364,38 +421,81 @@
         margin-bottom: 20px;
     }
 
-    .info-card {
-        background: white;
+    .info-card-time{
+        background: #5A81FA;
         border-radius: 15px;
-        padding: 20px;
+        padding: 10px;
         text-align: center;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        width: 250px;
+        height: 150px;
     }
 
-    .info-card label {
-        display: block;
+    .info-card-time .title {
         font-size: 12px;
-        color: #718096;
-        margin-bottom: 10px;
+        font-weight: 600;
+        color: #ffffff;
+        margin-bottom:0px;
+        margin-top:2px;
+    }
+
+    .info-card-time .time-row {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        gap: 8px;
+        margin-top:10px;
+    }
+
+    .info-card-time .time-group {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .info-card-time .time-group label {
+        font-size: 12px;
+        color: #cbd5e0;
+        margin-bottom: 5px;
+    }
+
+    .info-card-time .time {
+        font-size: 24px;
+        font-weight: 700;
+        color: #ffffff;
+    }
+
+    .info-card-time .separator {
+        font-size: 48px;
+        color: #cbd5e0;
+        font-weight: 300;
+        margin-top:20px;
+    }
+ .info-card {
+        background: white;
+        border-radius: 15px;
+        padding: 8px;
+        text-align: center;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        height: 150px;
+    }
+    .info-card label {
+        font-size: 12px;
+        font-weight: 600;
+        color: #464646;
+        margin-bottom:0px;
     }
 
     .info-card .value {
-        font-size: 36px;
+        margin-top:8px;
+        font-size: 56px;
         font-weight: 700;
         color: #5A81FA;
+        align-content: center;
     }
 
-    .info-card .time {
-        font-size: 28px;
-        font-weight: 700;
-        color: #5A81FA;
-    }
 
-    .info-card .separator {
-        font-size: 20px;
-        color: #cbd5e0;
-        margin: 5px 0;
-    }
+   
 
     /* Keluhan Box */
     .keluhan-box {
@@ -435,26 +535,32 @@
         color: #718096;
         margin-top: 8px;
         font-style: italic;
+        overflow-y: auto;
     }
 
     /* Buttons */
+
     .btn-primary {
-        background: white;
-        color: #5A81FA;
+        background: #5A81FA;
+        color: white;
         border: none;
         padding: 15px 30px;
-        border-radius: 12px;
+        border-radius: 35px;
         font-size: 16px;
         font-weight: 700;
         cursor: pointer;
         width: 100%;
         transition: all 0.3s;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+        box-shadow: inset 0px 4px 15px rgba(0, 0, 0, 0.25);
+        margin-top:10px;
     }
 
     .btn-primary:hover {
-        transform: translateY(-2px);
         box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        background: #1444d3;
+        color:white;
+        box-shadow: inset 0px 4px 15px rgba(0, 0, 0, 0.25);
     }
 
     .btn-cancel {
@@ -762,25 +868,18 @@
     /* Empty State */
     .empty-state {
         text-align: center;
-        padding: 60px 20px;
-    }
-
-    .empty-state svg {
-        width: 100px;
-        height: 100px;
-        color: #cbd5e0;
-        margin-bottom: 20px;
+        padding:80px 15px;
     }
 
     .empty-state h3 {
-        font-size: 24px;
-        color: #1a202c;
-        margin-bottom: 10px;
+        font-size: 18px;
+        color: #ffffff;
     }
 
     .empty-state p {
-        color: #718096;
+        color: #ffffff;
         margin-bottom: 20px;
+        opacity: 50%;
     }
 
     /* Scrollbar styling */
@@ -893,11 +992,9 @@
 
         <!-- TAB 2: RIWAYAT -->
         <div class="content-section" id="tab-riwayat">
-            <div class="content-header">
-                <div class="headerputih">
+            <div class="content-header2">
                     <h1>Riwayat Reservasi</h1>
                     <div class="date" id="currentDate2"></div>
-                </div>
             </div>
 
             <div class="riwayat-header">
@@ -936,11 +1033,9 @@
 
         <!-- TAB 3: RESERVASI -->
         <div class="content-section" id="tab-reservasi">
-            <div class="content-header">
-                <div class="headerputih">
+            <div class="content-header2">
                     <h1>Reservasi Pemeriksaan</h1>
                     <div class="date" id="currentDate3"></div>
-                </div>
             </div>
 
             @if($klinik_tutup)
@@ -953,22 +1048,29 @@
                 </div>
             @else
                 <div class="reservasi-banner">
-                    <svg fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z"/>
-                    </svg>
-                    <div>
-                        <h3 style="font-size: 18px; margin-bottom: 5px;">Kesehatan Anda, satu klik lebih dekat!</h3>
-                        <p style="opacity: 0.9; font-size: 14px;">Isi nomor antrian dan datangi klinik sekarang!</p>
+                    <img src="{{ asset('images/reservasi.png') }}" alt="Animasi Dokter" width="330">
+                    <div class="reservasi-text">
+                        <h2>Kesehatan Anda, satu klik lebih dekat!</h2>
+                        <p >Isi keluhan, reservasi dan datangi klinik sekarang!</p>
                     </div>
                 </div>
 
                 <div class="reservasi-cards">
-                    <div class="info-card">
-                        <label>Jam Praktik</label>
-                        <div class="time">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H.i') }}</div>
+                    <div class="info-card-time">
+                    <div class="title">Jam Praktik</div>
+                    <div class="time-row">
+                        <div class="time-group">
+                            <label>Buka</label>
+                            <div class="time">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H.i') }}</div>
+                        </div>
                         <div class="separator">-</div>
-                        <div class="time">{{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H.i') }}</div>
+                        <div class="time-group">
+                            <label>Tutup</label>
+                            <div class="time">{{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H.i') }}</div>
+                        </div>
                     </div>
+                </div>
+                    
                     <div class="info-card">
                         <label>Nomor Antrian Sekarang</label>
                         <div class="value">{{ $antrian->nomor_sekarang }}</div>
@@ -992,7 +1094,7 @@
                             {{ $reservasi_aktif->keluhan ?? 'Tidak ada keluhan spesifik' }}
                         </div>
                         <p class="note">* Keluhan tidak dapat diubah setelah reservasi dikonfirmasi</p>
-                    </div>
+                    
 
                     <form action="{{ route('pasien.batalkan_reservasi', $reservasi_aktif->id) }}" method="POST" onsubmit="return confirm('Yakin ingin membatalkan?')">
                         @csrf
@@ -1000,6 +1102,8 @@
                             Batalkan Reservasi
                         </button>
                     </form>
+
+                    </div>
                 @else
                     <!-- Form Reservasi -->
                     <form action="{{ route('pasien.buat_reservasi') }}" method="POST">
@@ -1013,13 +1117,15 @@
                                 </svg>
                                 Keluhan
                             </h4>
-                            <textarea name="keluhan" rows="4" maxlength="500" placeholder="(Opsional) Contoh: Demam 3 hari, batuk, pilek...">{{ old('keluhan') }}</textarea>
-                            <p class="note">* Keluhan bersifat opsional, tetapi sangat membantu dokter</p>
+                            <textarea name="keluhan" rows="4" maxlength="500" placeholder="Contoh: Demam 3 hari, batuk, pilek...">{{ old('keluhan') }}</textarea>
+                            <p class="note">* Isi keluhan anda sebelum melakukan reservasi</p>
+
+                             <button type="submit" class="btn-primary">
+                                Reservasi
+                            </button>
                         </div>
 
-                        <button type="submit" class="btn-primary">
-                            Reservasi
-                        </button>
+                       
                     </form>
                 @endif
             @endif
