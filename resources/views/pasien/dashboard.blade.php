@@ -56,57 +56,36 @@
         font-weight: 700;
         font-size: 12px;
     }
+    
+    .nav-btn:not(.active) {
+        box-shadow: inset 10px 0 20px rgba(0, 0, 0, 0.3);
+        z-index: 100;
+    }
+
+    .nav-btn:.active {  
+        box-shadow: 10px 0 20px rgba(0, 0, 0, 0.3);
+        z-index: 100;
+    }
 
     /* Tab Dashboard - Putih saat aktif, biru muda saat tidak aktif */
     .nav-btn.dashboard {
         background: #FFFFFF;
         color: #464646;
-        box-shadow: 10px 0px 7px rgba(0, 0, 0, 0.1);
-        z-index: 200;
     }
 
-    .nav-btn.dashboard:not(.active) {
-        box-shadow: inset 10px 0 20px rgba(0, 0, 0, 0.3);
-        z-index: 100;
-    }
-
-    .nav-btn.riwayat:not(.active) {
-        box-shadow: inset 10px 0 20px rgba(0, 0, 0, 0.3);
-        z-index: 100;
-    }
+  
     /* Tab Riwayat - Background #587EF4 saat aktif */
     .nav-btn.riwayat {
         background:#587EF4;
         color: #FFFFFF;
-        box-shadow: 10px 0 20px rgba(0, 0, 0, 0.3);
-        z-index: 50;
-    }
-
-    .nav-btn.riwayat.active {
-        background: #587EF4;
-        color: #FFFFFF;
-        box-shadow: 10px 0px 7px rgba(0, 0, 0, 0.1);
-        z-index: 200;
     }
 
     /* Tab Reservasi - Background #3B41AE saat aktif */
     .nav-btn.reservasi {   
         background: #3B41AE;
         color: #FFFFFF;
-        box-shadow:10px 0 20px rgba(0, 0, 0, 0.3);
-        z-index: 30;
     }
 
-    .nav-btn.reservasi:not(.active) {
-        box-shadow: inset 10px 0 20px rgba(0, 0, 0, 0.3);
-        z-index: 100;
-    }
-    .nav-btn.reservasi.active {
-        background: #3B41AE;
-        color: #FFFFFF;
-        box-shadow: 10px 0px 7px rgba(0, 0, 0, 0.1);
-        z-index: 200;
-    }
 
     /* MAIN CONTENT TENGAH */
     .main-content {
@@ -229,8 +208,7 @@
         border-radius: 20px;
         padding: 20px 40px;
         box-shadow: 0px 4px 15px 5px rgba(0, 0, 0, 0.25);
-        height: calc(100vh - 278px);
-        overflow: hidden;
+        height: 350px;
         margin-top: 20px;
     }
 
@@ -245,7 +223,7 @@
     .calendar-days {
         display: grid;
         grid-template-columns: repeat(7, 1fr);
-        gap: 8px;
+        gap: -10px;
         text-align: center;
         margin-bottom: 10px;
     }
@@ -270,10 +248,14 @@
 
     .date-cell {
         font-size: 16px;
-        padding: 10px;
+        padding: 8px;
         cursor: pointer;
         transition: all 0.3s;
         border-radius: 30px;
+    }
+
+    .date-cell:nth-child(n+36) {
+    display: none;
     }
 
     .date-cell:hover:not(.prev-month):not(.next-month):not(.current) {
