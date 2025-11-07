@@ -48,23 +48,22 @@
         text-decoration: none;
         border: none;
         font-family: 'Poppins', sans-serif;
-    }
-
-    .nav-btn span {
+        box-shadow: 10px 0 20px rgba(0, 0, 0, 0.3);
         writing-mode: vertical-rl;
-        transform: rotate(180deg);
+        transform: rotate(0deg);
         font-weight: 700;
         font-size: 12px;
     }
-    
+
     .nav-btn:not(.active) {
-        box-shadow: inset 10px 0 20px rgba(0, 0, 0, 0.3);
-        z-index: 100;
+        z-index: 200;
+        box-shadow: inset 10px 0 20px rgba(0, 0, 0, 0.3)!important;
     }
 
+
     .nav-btn.active {  
-        box-shadow: 10px 0 20px rgba(0, 0, 0, 0.3);
-        z-index: 100;
+        box-shadow: 10px 0 10px rgba(0, 0, 0, 0.3)!important;
+        z-index: 200;
     }
 
     .nav-btn.dashboard {
@@ -82,9 +81,7 @@
         color: #FFFFFF;
     }
     .nav-btn:hover{
-        box-shadow:none;
-    }
-    .nav-btn span:hover{
+        box-shadow:none !important;
         font-size: 13px;
         transition: 0.1s ease-in-out;
     }
@@ -945,13 +942,13 @@
     <!-- SIDEBAR KIRI - NAVIGASI -->
     <div class="sidebar-nav">
         <button class="nav-btn dashboard active" onclick="switchTab('dashboard')">
-            <span>Dashboard</span>
+           Dashboard
         </button>
         <button class="nav-btn riwayat" onclick="switchTab('riwayat')">
-            <span>Riwayat</span>
+            Riwayat
         </button>
         <button class="nav-btn reservasi" onclick="switchTab('reservasi')">
-            <span>Reservasi</span>
+            Reservasi
         </button>
     </div>
 
