@@ -55,7 +55,6 @@
         transform: rotateY(180deg);
     }
 
-    /* Form Sections */
     .login-form-section{
         width: 100%;
         padding: 2rem;
@@ -103,7 +102,6 @@
         z-index: 2;
     }
 
-    /* Form Wrapper */
     .form-wrapper {
         width: 100%;
         max-width: 24rem;
@@ -141,7 +139,6 @@
         color: #464646;
     }
 
-    /* Alert Messages */
     .alert {
         padding: 0.75rem 1rem;
         border-radius: 0.5rem;
@@ -369,7 +366,6 @@
         margin-bottom: 2rem;
     }
 
-    /* Toggle Buttons */
     .btn-toggle {
         display: inline-block;
         background-color: white;
@@ -483,7 +479,7 @@
             </div>
         </div>
 
-          <!-- Welcome Section for Register (Left side) -->
+          <!-- Welcome Section for Register -->
         <div class="welcome-register-section">
             <div class="welcome-content">
                 <h1 class="welcome-title">Selamat Datang</h1>
