@@ -42,7 +42,7 @@
         @endif
 
         <!-- Form -->
-        <form action="{{ route('pasien.tambah_biodata') }}" method="POST" enctype="multipart/form-data" class="px-20 pb-8">
+        <form action="{{ route('pasien.simpan_biodata') }}" method="POST" enctype="multipart/form-data" class="px-20 pb-8">
             @csrf
             
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -73,7 +73,7 @@
                         </label>
                         <input 
                             type="text" 
-                            value="{{ Auth::user()->pasiens->where('is_primary', true)->first()->nama_lpasien ?? 'Pemilik Akun' }}"
+                            value="{{ Auth::user()->pasiens->where('is_primary', true)->first()->nama_pasien ?? 'Pemilik Akun' }}"
                             disabled
                             class="w-full px-4 py-3 bg-gray-100 border-0 rounded-xl text-[#5A81FA]"
                         >
@@ -95,8 +95,8 @@
                                     class="w-full px-4 py-3 bg-gray-50 border-0 rounded-xl appearance-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition"
                                 >
                                     <option value="">Pilih Jenis Kelamin</option>
-                                    <option value="L" {{ old('jenis_kelamin') == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
-                                    <option value="P" {{ old('jenis_kelamin') == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
+                                    <option value="Laki-laki" {{ old('jenis_kelamin') == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
+                                    <option value="Perempuan" {{ old('jenis_kelamin') == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
                                 </select>
                                 <div class="absolute inset-y-0 right-3 flex items-center pointer-events-none">
                                     <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -214,7 +214,7 @@
                             Catatan
                         </label>
                         <textarea 
-                            name="catatan" 
+                            name="catatan_pasien" 
                             rows="4"
                             placeholder="Catatan tambahan (opsional)"
                             class="w-full px-4 py-3 bg-gray-50 border-0 rounded-xl focus:ring-2 focus:ring-blue-500 focus:bg-white transition resize-none"
@@ -265,14 +265,13 @@
             </div>
 
             <!-- Submit Button -->
-            <div class="mt-8 flex justify-end">
                 <button 
                     type="submit"
-                    class="px-12 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition duration-200 text-lg"
+                    class="ml-auto px-12 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition duration-200 text-lg"
                 >
                     Simpan
                 </button>
-            </div>
+
 
         </form>
 

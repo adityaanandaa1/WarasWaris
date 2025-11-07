@@ -48,6 +48,11 @@ class akun_user extends Authenticatable
         return $this->hasMany(\App\Models\data_pasien::class, 'id_akun', 'id');
     }
 
+     public function data_pasiens()
+    {
+        return $this->pasiens();
+    }
+
     /**
      * Relasi: User punya 1 Dokter (hasOne)
      * 

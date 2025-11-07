@@ -25,7 +25,7 @@ return new class extends Migration
             $table->text('alamat');
             $table->string('no_telepon', 15); // Nomor telepon (max 15 digit)
             $table->string('pekerjaan')->nullable(); // boleh kosong
-            $table->text('catatan')->nullable(); // boleh kosong
+            $table->text('catatan_pasien')->nullable(); // boleh kosong
 
             // Penanda apakah ini pemilik akun utama (1 = ya, 0 = anggota keluarga)
             $table->boolean('is_primary')->default(0);

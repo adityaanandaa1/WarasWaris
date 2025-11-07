@@ -48,7 +48,7 @@ class pasien_controller extends Controller
         ->first();
     
     // Ambil riwayat reservasi
-    $reservasis = Reservasi::where('id_pasien', $pasien_aktif->id)
+    $reservasis = reservasi::where('id_pasien', $pasien_aktif->id)
         ->orderBy('tanggal_reservasi', 'desc')
         ->limit(10)
         ->get();
@@ -138,7 +138,7 @@ private function get_nama_hari($tanggal)
             'alamat' => $validated['alamat'],
             'no_telepon' => $validated['no_telepon'],
             'pekerjaan' => $validated['pekerjaan'],
-            'catatan_pasien' => $validated['catatan_pasein'],
+            'catatan_pasien' => $validated['catatan_pasien'],
             'is_primary' => $isPrimary, // True jika pasien pertama
         ]);
 

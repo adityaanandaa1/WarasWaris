@@ -23,7 +23,7 @@ class pasien_seeder extends Seeder
             'alamat' => 'Jl. Merdeka No. 123, Malang',
             'no_telepon' => '081234567890',
             'pekerjaan' => 'Guru',
-            'catatan' => 'Alergi udang dan kacang',
+            'catatan_pasien' => 'Alergi udang dan kacang',
             'is_primary' => '1', // Pemilik akun utama
         ]);
 
@@ -37,7 +37,7 @@ class pasien_seeder extends Seeder
             'alamat' => 'Jl. Merdeka No. 123, Malang',
             'no_telepon' => '081234567890',
             'pekerjaan' => 'Ibu Rumah Tangga',
-            'catatan' => null,
+            'catatan_pasien' => null,
             'is_primary' => '0', // Anggota keluarga
         ]);
     }

@@ -1070,11 +1070,15 @@
                     
                     <div class="info-card">
                         <label>Nomor Antrian Sekarang</label>
-                        <div class="value">{{ $antrian->nomor_sekarang }}</div>
+                        <div class="value" style="color: {{ $antrian->nomor_sekarang > 0 ? '#667eea' : '#cbd5e0' }}">
+                            {{ $antrian->nomor_sekarang > 0 ? $antrian->nomor_sekarang : '-' }}
+                         </div>
                     </div>
                     <div class="info-card">
                         <label>Nomor Antrian Anda</label>
-                        <div class="value">{{ $reservasi_aktif ? $reservasi_aktif->nomor_antrian : '-' }}</div>
+                        <div class="value" style="color: {{ $reservasi_aktif ? '#48bb78' : '#cbd5e0' }}">
+                            {{ $reservasi_aktif ? $reservasi_aktif->nomor_antrian : '-' }}
+                        </div>
                     </div>
                 </div>
 
@@ -1087,10 +1091,25 @@
                             </svg>
                             Keluhan
                         </h4>
-                        <div style="background: #f7fafc; padding: 15px; border-radius: 12px; color: #4a5568;">
+                        <div style="background: #f7fafc; padding: 15px; border-radius: 12px; color: #4a5568; min-height: 100px; border: 2px solid #e2e8f0;">
                             {{ $reservasi_aktif->keluhan ?? 'Tidak ada keluhan spesifik' }}
                         </div>
-                        <p class="note">* Keluhan tidak dapat diubah setelah reservasi dikonfirmasi</p>
+                        
+                        <p class="note" style="color: #e53e3e; font-weight: 600;">
+                            * Keluhan tidak dapat diubah setelah reservasi dikonfirmasi
+                        </p>
+
+                     <!-- Info Nomor Antrian -->
+                    <div style="background: #e6fffa; border: 2px solid #48bb78; border-radius: 12px; padding: 15px; margin: 20px 0; text-align: center;">
+                        <p style="color: #2f855a; font-size: 14px; margin-bottom: 5px;">Reservasi Berhasil</p>
+                        <p style="color: #2f855a; font-size: 18px; font-weight: 700;">
+                            Nomor Antrian Anda: <span style="font-size: 32px;">{{ $reservasi_aktif->nomor_antrian }}</span>
+                        </p>
+                        <p style="color: #2f855a; font-size: 12px; margin-top: 5px;">
+                            Status: <strong>{{ ucfirst($reservasi_aktif->status) }}</strong>
+                        </p>
+                    </div>
+
                     
 
                     <form action="{{ route('pasien.batalkan_reservasi', $reservasi_aktif->id) }}" method="POST" onsubmit="return confirm('Yakin ingin membatalkan?')">
@@ -1226,7 +1245,7 @@
         document.getElementById('patientPhone').textContent = pasienAktif.no_telepon || '-';
         
         // Jenis Kelamin
-        const gender = pasienAktif.jenis_kelamin === 'L' ? 'L' : (pasienAktif.jenis_kelamin === 'P' ? 'P' : '-');
+        const gender = pasienAktif.jenis_kelamin === 'Laki-laki' ? 'Laki-laki' : (pasienAktif.jenis_kelamin === 'Perempuan' ? 'Perempuan' : '-');
         document.getElementById('gender').textContent = gender;
         
         // Hitung umur
