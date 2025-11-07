@@ -2,109 +2,231 @@
 
 @section('title', 'Daftar - WarasWaris')
 
+@push('styles')
+<style>
+    * {
+        font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+        background: linear-gradient(to right, #FFFFFF 50%, #5A81FA 50%);
+    }
+
+    .form {
+        display: flex;
+        justify-content: center;
+        border-radius: 30px;
+        padding: 17px 100px;
+    }
+
+   .form-login {
+        background: #5A81FA;
+        width: 50%;
+        border-top-left-radius: 30px;
+        border-bottom-left-radius: 30px;
+        padding: 25px;
+        padding-top: 75px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        box-shadow: -4px 0px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .form-register {
+        background: #ffffff;
+        width: 50%;
+        border-top-right-radius: 30px;
+        border-bottom-right-radius: 30px;
+        padding: 25px;
+        padding-top: 75px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        box-shadow: 4px 0px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .login-title {
+        color: #ffffff;
+        font-size: 40px;
+        text-align: center;
+        font-weight: bold;
+        padding-bottom: 30px;
+    }
+
+    .login-description {
+        color: #ffffff;
+        font-size: 19px;
+        text-align: center;
+        font-weight: normal;
+    }
+
+    .button-login {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 50px;
+    }
+
+    .btn-login {
+        background-color: white;
+        color: #464646;
+        font-size: 15px;
+        text-align: center;
+        font-weight: bold;
+        padding: 10px 50px;
+        border-radius: 50px;
+        text-decoration: none;
+        transition: all 0.2s;
+        box-shadow: inset 0 4px 10px rgba(0,0,0,0.3);
+    }
+
+    .btn-login:hover {
+        background-color: #5A81FA;
+        color: #ffffff;
+        transition: all 0.2s;
+        box-shadow: inset 0 4px 10px rgba(0,0,0,0.3);
+    }
+
+    .register-title {
+        color: #464646;
+        font-size: 37px;
+        text-align: center;
+        font-weight: bold;
+    }
+
+    .register-input {
+        border: 1px solid #d1d5db;
+        border-radius: 20px;
+        padding: 20px 0px;
+        padding-left: 60px;
+        padding right: 30px;
+        font-size: 15px;
+        width: 300px;
+    }
+
+    .register {
+        margin-top: 20px;
+        position: relative;
+    }
+
+    .register i {
+        position: absolute;
+        left: 12px; 
+        top: 50%;
+        transform: translateY(-50%);
+        color: #888;
+        font-size: 25px;
+    }
+
+    .divider {
+        position: absolute;
+        left: 50px;
+        width: 1px;
+        top: 2px;
+        height: 60px;
+        background-color: #ccc;
+    }
+
+    .button-register {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 50px;
+    }
+
+    .btn-register {
+        background-color: #5A81FA;
+        color: #ffffff;
+        font-size: 15px;
+        text-align: center;
+        font-weight: bold;
+        padding: 10px 50px;
+        border-radius: 50px;
+        text-decoration: none;
+        transition: all 0.2s;
+        border: none;
+        box-shadow: inset 0 4px 10px rgba(108, 108, 108, 0.3);
+    }
+
+    .btn-register:hover {
+        background-color: #ffffff;
+        color: #464646;
+        transition: all 0.2s;
+        box-shadow: inset 0 4px 10px rgba(0,0,0,0.3);
+    }
+</style>
+@endpush
+
 @section('content')
-<div class="min-h-screen flex">
-    
-    <!-- LEFT SIDE -->
-    <div class="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-blue-600 to-blue-800 p-12 items-center justify-center">
-        <div class="text-white max-w-md">
-            <h1 class="text-4xl font-bold mb-4">Bergabunglah</h1>
-            <h2 class="text-3xl font-semibold mb-6">dengan WarasWaris</h2>
-            <p class="text-blue-100 text-lg leading-relaxed">
-                Daftar sekarang dan kelola kesehatan keluarga Anda dengan mudah
-            </p>
-        </div>
-    </div>
-
-    <!-- RIGHT SIDE - Register Form -->
-    <div class="w-full lg:w-1/2 flex items-center justify-center p-8">
-        <div class="w-full max-w-md">
-            
-            <div class="text-center mb-8">
-                <h2 class="text-3xl font-bold text-gray-900">Daftar</h2>
-                <p class="text-gray-600 mt-2">Buat akun baru untuk memulai</p>
+    <div class="form">
+        <div class="form-login">
+            <h1 class="login-title">Selamat Datang di WarasWaris</h1>
+            <p class="login-description">Sudah memiliki akun?</p>
+            <div class="button-login">
+                <a href="{{ route('login') }}" class="btn-login">
+                    MASUK
+                </a>
             </div>
+        </div>
 
-            @if($errors->any())
-                <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6">
-                    <ul class="list-disc list-inside">
-                        @foreach($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
+        <div class="form-register">
+            <h1 class="register-title">Buat Akun</h1>
 
-            <form action="{{ route('register.post') }}" method="POST" class="space-y-6">
+            <form action="{{ route('register.post') }}" method="POST" class="form-action-register">
                 @csrf
-                
+        
                 <!-- Email -->
-                <div>
-                    <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
-                        Email
-                    </label>
+                <div class="register">
+                    <i class="ri-mail-line"></i>
+                    <div class="divider"></div>
                     <input 
                         type="email" 
                         name="email" 
                         id="email" 
                         value="{{ old('email') }}"
                         required
-                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        placeholder="nama@email.com"
+                        class="register-input"
+                        placeholder="Email"
                     >
                 </div>
 
                 <!-- Password -->
-                <div>
-                    <label for="password" class="block text-sm font-medium text-gray-700 mb-2">
-                        Password
-                    </label>
+                <div class="register">
+                    <i class="ri-key-line"></i>
+                    <div class="divider"></div>
                     <input 
                         type="password" 
                         name="password" 
                         id="password" 
                         required
-                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        placeholder="Minimal 6 karakter"
+                        class="register-input"
+                        placeholder="Kata Sandi"
                     >
                 </div>
 
                 <!-- Confirm Password -->
-                <div>
-                    <label for="password_confirmation" class="block text-sm font-medium text-gray-700 mb-2">
-                        Konfirmasi Password
-                    </label>
+                <div class="register">
+                    <i class="ri-key-fill"></i>
+                    <div class="divider"></div>
                     <input 
                         type="password" 
                         name="password_confirmation" 
                         id="password_confirmation" 
                         required
-                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        placeholder="Ulangi password"
+                        class="register-input"
+                        placeholder="Konfirmasi Kata Sandi"
                     >
                 </div>
 
                 <!-- Submit Button -->
-                <button 
-                    type="submit"
-                    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition duration-200 shadow-lg hover:shadow-xl"
-                >
-                    DAFTAR
-                </button>
+                <div class="button-register">
+                    <button type="submit" class="btn-register">
+                        DAFTAR
+                    </button>
+                </div>
             </form>
-
-            <!-- Login Link -->
-            <div class="mt-6 text-center">
-                <p class="text-gray-600">
-                    Sudah punya akun?
-                    <a href="{{ route('login') }}" class="text-blue-600 hover:text-blue-700 font-semibold">
-                        MASUK
-                    </a>
-                </p>
-            </div>
-
         </div>
-    </div>
-
-</div>
+    </>
 @endsection
