@@ -2,7 +2,7 @@
 
 @section('title', 'Dashboard Pasien - WarasWaris')
 
-@section('content')
+@push('styles')
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
     * {
@@ -18,14 +18,14 @@
         height: 100vh;
     }
 
-    .container {
+    .dashboard-container {
         display: flex;
         height: 100vh;
         max-width: 100vw;
     }
 
-    /* Sidebar Navigation */
-    .sidebar {
+    /* SIDEBAR KIRI - NAVIGASI */
+    .sidebar-nav {
         position: fixed;
         right: 558.5px;
         top: 65%;
@@ -36,7 +36,7 @@
         z-index: 100;
     }
 
-    .nav-item {
+    .nav-btn {
         width: 42px;
         height: 100px;
         display: flex;
@@ -46,35 +46,69 @@
         cursor: pointer;
         transition: all 0.3s;
         text-decoration: none;
+        border: none;
+        font-family: 'Poppins', sans-serif;
     }
 
-    .nav-item.dashboard {
-        background: #FFFFFF;
-        color: #464646;
-        box-shadow: 10px 0px 7px rgba(0, 0, 0, 0.1);
-        z-index: 200;
-    }
-
-    .nav-item.riwayat {
-        background: #587EF4;
-        color: #FFFFFF;
-        box-shadow: inset 10px 0 20px rgba(0, 0, 0, 0.3);
-    }
-
-    .nav-item.reservasi {   
-        background: #3B41AE;
-        color: #FFFFFF;
-        box-shadow: inset 10px 0 20px rgba(0, 0, 0, 0.3);
-    }
-
-    .nav-item span {
+    .nav-btn span {
         writing-mode: vertical-rl;
         transform: rotate(180deg);
         font-weight: 700;
         font-size: 12px;
     }
 
-    /* Main Content */
+    /* Tab Dashboard - Putih saat aktif, biru muda saat tidak aktif */
+    .nav-btn.dashboard {
+        background: #FFFFFF;
+        color: #464646;
+        box-shadow: 10px 0px 7px rgba(0, 0, 0, 0.1);
+        z-index: 200;
+    }
+
+    .nav-btn.dashboard:not(.active) {
+        box-shadow: inset 10px 0 20px rgba(0, 0, 0, 0.3);
+        z-index: 100;
+    }
+
+    .nav-btn.riwayat:not(.active) {
+        box-shadow: inset 10px 0 20px rgba(0, 0, 0, 0.3);
+        z-index: 100;
+    }
+    /* Tab Riwayat - Background #587EF4 saat aktif */
+    .nav-btn.riwayat {
+        background:#587EF4;
+        color: #FFFFFF;
+        box-shadow: 10px 0 20px rgba(0, 0, 0, 0.3);
+        z-index: 50;
+    }
+
+    .nav-btn.riwayat.active {
+        background: #587EF4;
+        color: #FFFFFF;
+        box-shadow: 10px 0px 7px rgba(0, 0, 0, 0.1);
+        z-index: 200;
+    }
+
+    /* Tab Reservasi - Background #3B41AE saat aktif */
+    .nav-btn.reservasi {   
+        background: #3B41AE;
+        color: #FFFFFF;
+        box-shadow:10px 0 20px rgba(0, 0, 0, 0.3);
+        z-index: 30;
+    }
+
+    .nav-btn.reservasi:not(.active) {
+        box-shadow: inset 10px 0 20px rgba(0, 0, 0, 0.3);
+        z-index: 100;
+    }
+    .nav-btn.reservasi.active {
+        background: #3B41AE;
+        color: #FFFFFF;
+        box-shadow: 10px 0px 7px rgba(0, 0, 0, 0.1);
+        z-index: 200;
+    }
+
+    /* MAIN CONTENT TENGAH */
     .main-content {
         flex: 1;
         background: #FFFFFF;
@@ -84,24 +118,63 @@
         margin-right: 42px;
         max-width: calc(100vw - 600px);
         overflow: hidden;
+        transition: background 0.3s ease;
+    }
+
+    /* Background untuk tab Dashboard */
+    .main-content.bg-dashboard {
+        background: #FFFFFF;
+    }
+
+    /* Background untuk tab Riwayat */
+    .main-content.bg-riwayat {
+        background: #587EF4;
+    }
+
+    /* Background untuk tab Reservasi */
+    .main-content.bg-reservasi {
+        background: #3B41AE;
+    }
+
+    .content-section {
+        display: none;
+    }
+
+    .content-section.active {
+        display: block;
+        animation: fadeIn 0.3s ease-in;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 
     /* Header */
-    .header {
+    .content-header {
         display: flex;
         justify-content: space-between;
         align-items: flex-start;
         margin-bottom: 15px;
     }
+    .content-header .headerputih{
+        color:white;
+    }
 
-    .header-left h1 {
+    .content-header h1 {
         font-size: 18px;
         font-weight: 700;
         color: #464646;
         margin-bottom: 2px;
     }
 
-    .header-left .date {
+    .content-header .date {
         font-size: 11px;
         color: #464646;
     }
@@ -121,18 +194,13 @@
         overflow: visible;
     }
 
-    .welcome-image {
+    .welcome-banner img {
         width: 300px;
         height: auto;
         position: absolute;
         left: -20px;
         top: -75px;
         z-index: 1;
-    }
-
-    .welcome-image img {
-        width: 100%;
-        height: 100%;
         object-fit: contain;
     }
 
@@ -186,6 +254,7 @@
         font-size: 16px;
         color: #464646;
         font-weight: 550;
+        padding: 8px;
     }
 
     .day-name.current {
@@ -207,10 +276,8 @@
         border-radius: 30px;
     }
 
-    .date-cell.prev-month,
-    .date-cell.next-month {
-        color: rgba(0, 0, 0, 0.5);
-        font-weight: 100;
+    .date-cell:hover:not(.prev-month):not(.next-month):not(.current) {
+        background: rgba(90, 129, 250, 0.2);
     }
 
     .date-cell.current {
@@ -219,12 +286,202 @@
         font-weight: 600;
     }
 
-    .date-cell:hover:not(.prev-month):not(.next-month):not(.date-cell.current) {
-        background: rgba(90, 129, 250, 0.2);
+    .date-cell.prev-month,
+    .date-cell.next-month {
+        color: rgba(0, 0, 0, 0.5);
+        font-weight: 100;
     }
 
-    /* Right Panel */
-    .right-panel {
+    /* Riwayat Reservasi */
+    .riwayat-header {
+        background: linear-gradient(135deg, #5A81FA 0%, #587EF4 100%);
+        color: white;
+        padding: 25px;
+        border-radius: 15px;
+        margin-bottom: 20px;
+        box-shadow: 0px 0px 20px 5px rgba(0, 0, 0, 0.15);
+    }
+
+    .riwayat-header h3 {
+        font-size: 20px;
+        margin-bottom: 5px;
+    }
+
+    .riwayat-header p {
+        opacity: 0.9;
+        font-size: 14px;
+    }
+
+    .riwayat-item {
+        background: white;
+        border: 2px solid #e2e8f0;
+        border-radius: 15px;
+        padding: 20px;
+        margin-bottom: 15px;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    .riwayat-item:hover {
+        border-color: #5A81FA;
+        box-shadow: 0 5px 15px rgba(90, 129, 250, 0.2);
+        transform: translateY(-2px);
+    }
+
+    .riwayat-item-content {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .riwayat-icon {
+        width: 40px;
+        height: 40px;
+        background: #e6f2ff;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #5A81FA;
+    }
+
+    .riwayat-info h4 {
+        font-size: 14px;
+        color: #718096;
+        margin-bottom: 5px;
+    }
+
+    .riwayat-info p {
+        font-size: 16px;
+        font-weight: 600;
+        color: #1a202c;
+    }
+
+    /* Reservasi */
+    .reservasi-banner {
+        background: linear-gradient(135deg, #5A81FA 0%, #587EF4 100%);
+        color: white;
+        padding: 20px;
+        border-radius: 15px;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        box-shadow: 0px 0px 20px 5px rgba(0, 0, 0, 0.15);
+    }
+
+    .reservasi-banner svg {
+        width: 50px;
+        height: 50px;
+    }
+
+    .reservasi-cards {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .info-card {
+        background: white;
+        border-radius: 15px;
+        padding: 20px;
+        text-align: center;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .info-card label {
+        display: block;
+        font-size: 12px;
+        color: #718096;
+        margin-bottom: 10px;
+    }
+
+    .info-card .value {
+        font-size: 36px;
+        font-weight: 700;
+        color: #5A81FA;
+    }
+
+    .info-card .time {
+        font-size: 28px;
+        font-weight: 700;
+        color: #5A81FA;
+    }
+
+    .info-card .separator {
+        font-size: 20px;
+        color: #cbd5e0;
+        margin: 5px 0;
+    }
+
+    /* Keluhan Box */
+    .keluhan-box {
+        background: white;
+        border-radius: 15px;
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+
+    .keluhan-box h4 {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 15px;
+        color: #5A81FA;
+        font-size: 16px;
+    }
+
+    .keluhan-box textarea {
+        width: 100%;
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 15px;
+        font-family: inherit;
+        font-size: 14px;
+        resize: none;
+        transition: border-color 0.3s;
+    }
+
+    .keluhan-box textarea:focus {
+        outline: none;
+        border-color: #5A81FA;
+    }
+
+    .keluhan-box .note {
+        font-size: 12px;
+        color: #718096;
+        margin-top: 8px;
+        font-style: italic;
+    }
+
+    /* Buttons */
+    .btn-primary {
+        background: white;
+        color: #5A81FA;
+        border: none;
+        padding: 15px 30px;
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+        width: 100%;
+        transition: all 0.3s;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn-cancel {
+        background: #fc8181;
+        color: white;
+    }
+
+    /* SIDEBAR KANAN */
+    .sidebar-right {
         width: 450px;
         padding: 20px;
         display: flex;
@@ -234,7 +491,6 @@
         margin: 0px 0px 20px 50px;
     }
 
-    /* Profile Card */
     .profile-card {
         background: #FFFFFF;
         border-radius: 20px;
@@ -255,11 +511,91 @@
         width: 450px;
         height: 50px;
         cursor: pointer;
+        transition: all 0.3s;
     }
 
     .profile-header h3 {
         font-size: 16px;
         font-weight: 600;
+    }
+
+    .profile-dropdown {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+        margin-top: 0px;
+        margin-right: 0px;
+        background: #f7fafc;
+        border-radius: 10px;
+        padding: 0;
+    }
+
+    .profile-dropdown.active {
+        max-height: 500px;
+        padding: 10px;
+    }
+
+    .profile-list {
+        max-height: 200px;
+        overflow-y: auto;
+        margin-bottom: 10px;
+    }
+
+    .profile-item {
+        width: 100%;
+        background: white;
+        border: none;
+        padding: 12px 15px;
+        border-radius: 10px;
+        text-align: left;
+        cursor: pointer;
+        font-family: inherit;
+        font-size: 14px;
+        margin-bottom: 8px;
+        transition: all 0.2s;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .profile-item:hover {
+        background: #e6f2ff;
+    }
+
+    .profile-item.active {
+        background: #5A81FA;
+        color: white;
+        font-weight: 600;
+    }
+
+    .profile-item .badge {
+        background: #4CAF50;
+        color: white;
+        font-size: 10px;
+        padding: 3px 8px;
+        border-radius: 10px;
+        font-weight: 600;
+    }
+
+    .add-member-btn {
+        display: block;
+        width: 100%;
+        background: #48bb78;
+        color: white;
+        text-align: center;
+        padding: 12px;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 14px;
+        transition: all 0.3s;
+        border: none;
+        cursor: pointer;
+    }
+
+    .add-member-btn:hover {
+        background: #38a169;
+        transform: translateY(-2px);
     }
 
     .profile-content {
@@ -301,21 +637,21 @@
 
     .profile-details {
         display: flex;
-        align-items: center;       
-        justify-content: center;   
+        align-items: center;
+        justify-content: center;
         margin-top: 25px;
         margin-left: -50px;
-        gap: 40px; 
+        gap: 40px;
     }
 
     .detail-item {
         display: flex;
-        flex-direction: column;    
-        align-items: center;       
-        justify-content: center;   
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
         text-align: center;
-        flex: none;               
-        width: 100px;             
+        flex: none;
+        width: 100px;
     }
 
     .detail-item label {
@@ -335,77 +671,9 @@
         height: 25px;
         background: #464646;
         align-self: center;
-        margin: 0 20px;            
+        margin: 0 20px;
     }
 
-    /* Dropdown Menu */
-    .profile-dropdown {
-        display: none;
-        margin-top: 0px;
-        margin-right:0px; 
-        background: #000000;
-        border-radius: 10px;
-        padding: 10px;
-        z-index: 10000;
-    }
-
-    .profile-dropdown.active {
-        display: block;
-    }
-
-    .profile-list {
-        max-height: 200px;
-        overflow-y: auto;
-        margin-bottom: 10px;
-    }
-
-    .profile-item {
-        padding: 8px 12px;
-        margin-bottom: 5px;
-        background: white;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: all 0.3s;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .profile-item:hover {
-        background: #e3f2fd;
-    }
-
-    .profile-item.active {
-        background: #5A81FA;
-        color: white;
-    }
-
-    .profile-item .badge {
-        font-size: 8px;
-        padding: 2px 6px;
-        background: #4CAF50;
-        color: white;
-        border-radius: 4px;
-    }
-
-    .add-member-btn {
-        width: 100%;
-        padding: 10px;
-        background: #4CAF50;
-        color: white;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        font-size: 12px;
-        font-weight: 600;
-        transition: all 0.3s;
-    }
-
-    .add-member-btn:hover {
-        background: #45a049;
-    }
-
-    /* Reminders */
     .reminders-card {
         background: #FFFFFF;
         border-radius: 15px;
@@ -424,13 +692,13 @@
     }
 
     .reminder-item {
-        padding: 10px;
+        padding: 15px;
         background: rgba(90, 129, 250, 0.1);
-        border-radius: 8px;
-        margin-bottom: 8px;
+        border-radius: 12px;
+        border-left: 4px solid #fbbf24;
+        margin-bottom: 10px;
         cursor: pointer;
         transition: all 0.3s;
-        font-size: 11px;
     }
 
     .reminder-item:hover {
@@ -439,16 +707,24 @@
 
     .reminder-item strong {
         display: block;
-        margin-bottom: 3px;
+        color: #1a202c;
+        margin-bottom: 5px;
     }
 
     .reminder-item small {
-        font-size: 9px;
-        color: #666;
+        color: #718096;
+        font-size: 12px;
     }
 
-    /* Logout Button */
+    .loading {
+        text-align: center;
+        padding: 20px;
+        color: #5A81FA;
+        font-size: 11px;
+    }
+
     .logout-btn {
+        width: 100%;
         background: rgba(255, 0, 4, 0.5);
         border-radius: 35px;
         padding: 10px;
@@ -460,24 +736,69 @@
         box-shadow: inset 0px 4px 15px rgba(0, 0, 0, 0.25);
         transition: all 0.3s;
         border: none;
-        width: 100%;
+        font-size: 16px;
+        font-weight: 700;
+        color: #FFFFFF;
     }
 
     .logout-btn:hover {
         background: rgba(255, 0, 4, 0.7);
     }
 
-    .logout-btn .text {
-        font-size: 16px;
-        font-weight: 700;
-        color: #FFFFFF;
+    /* Alert Messages */
+    .alert {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 15px 20px;
+        border-radius: 10px;
+        color: white;
+        font-weight: 600;
+        z-index: 9999;
+        animation: slideIn 0.3s ease;
     }
 
-    .loading {
+    .alert-success {
+        background: #48bb78;
+    }
+
+    .alert-error {
+        background: #fc8181;
+    }
+
+    @keyframes slideIn {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+
+    /* Empty State */
+    .empty-state {
         text-align: center;
-        padding: 15px;
-        color: #5A81FA;
-        font-size: 11px;
+        padding: 60px 20px;
+    }
+
+    .empty-state svg {
+        width: 100px;
+        height: 100px;
+        color: #cbd5e0;
+        margin-bottom: 20px;
+    }
+
+    .empty-state h3 {
+        font-size: 24px;
+        color: #1a202c;
+        margin-bottom: 10px;
+    }
+
+    .empty-state p {
+        color: #718096;
+        margin-bottom: 20px;
     }
 
     /* Scrollbar styling */
@@ -498,110 +819,250 @@
         border-radius: 10px;
     }
 
-    /* Alert Messages */
-    .alert {
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        padding: 15px 20px;
-        border-radius: 10px;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        z-index: 9999;
-        animation: slideIn 0.3s ease-out;
-    }
-
-    .alert-success {
-        background: #4CAF50;
-        color: white;
-    }
-
-    .alert-error {
-        background: #f44336;
-        color: white;
-    }
-
-    @keyframes slideIn {
-        from {
-            transform: translateX(400px);
-            opacity: 0;
+    /* Responsive */
+    @media (max-width: 1200px) {
+        .dashboard-container {
+            flex-direction: column;
         }
-        to {
-            transform: translateX(0);
-            opacity: 1;
+
+        .sidebar-nav {
+            position: relative;
+            right: auto;
+            top: auto;
+            transform: none;
+            width: 100%;
+            flex-direction: row;
+        }
+
+        .nav-btn {
+            writing-mode: horizontal-tb;
+            height: auto;
+            flex: 1;
+            width: auto;
+        }
+
+        .nav-btn span {
+            writing-mode: horizontal-tb;
+            transform: none;
+        }
+
+        .main-content {
+            max-width: 100%;
+        }
+
+        .sidebar-right {
+            width: 100%;
+            margin: 0;
         }
     }
 </style>
+@endpush
 
-<div class="container">
-    <!-- Sidebar Navigation -->
-    <div class="sidebar">
-        <div class="nav-item dashboard">
+@section('content')
+<div class="dashboard-container">
+    
+    <!-- SIDEBAR KIRI - NAVIGASI -->
+    <div class="sidebar-nav">
+        <button class="nav-btn dashboard active" onclick="switchTab('dashboard')">
             <span>Dashboard</span>
-        </div>
-        <a href="{{ route('pasien.riwayat_reservasi') }}" class="nav-item riwayat">
+        </button>
+        <button class="nav-btn riwayat" onclick="switchTab('riwayat')">
             <span>Riwayat</span>
-        </a>
-        <a href="{{ route('pasien.index_reservasi') }}" class="nav-item reservasi">
+        </button>
+        <button class="nav-btn reservasi" onclick="switchTab('reservasi')">
             <span>Reservasi</span>
-        </a>
+        </button>
     </div>
 
-    <!-- Main Content -->
-    <div class="main-content">
-        <div class="header">
-            <div class="header-left">
-                <h1>Dashboard</h1>
-                <div class="date" id="currentDate"></div>
+    <!-- MAIN CONTENT TENGAH -->
+    <div class="main-content bg-dashboard" id="mainContent">
+        
+        <!-- TAB 1: DASHBOARD -->
+        <div class="content-section active" id="tab-dashboard">
+            <div class="content-header">
+                <div>
+                    <h1>Dashboard</h1>
+                    <div class="date" id="currentDate"></div>
+                </div>
+            </div>
+
+            <div class="welcome-banner">
+                <img src="{{ asset('images/dbpasien.png') }}" alt="Dokter" onerror="this.style.display='none'">
+                <div class="welcome-text">
+                    <h2>Selamat Datang!</h2>
+                    <p>Konsultasikan kesehatanmu sekarang juga!</p>
+                </div>
+            </div>
+
+            <div class="calendar-container">
+                <div class="calendar-header" id="calendarMonth"></div>
+                <div class="calendar-days">
+                    <div class="day-name">Senin</div>
+                    <div class="day-name">Selasa</div>
+                    <div class="day-name">Rabu</div>
+                    <div class="day-name">Kamis</div>
+                    <div class="day-name">Jumat</div>
+                    <div class="day-name">Sabtu</div>
+                    <div class="day-name">Minggu</div>
+                </div>
+                <div class="calendar-dates" id="calendarDates"></div>
             </div>
         </div>
 
-        <div class="welcome-banner">
-            <div class="welcome-image">
-                <img src="{{ asset('images/dbpasien.png') }}" alt="Animasi Dokter">
+        <!-- TAB 2: RIWAYAT -->
+        <div class="content-section" id="tab-riwayat">
+            <div class="content-header">
+                <div class="headerputih">
+                    <h1>Riwayat Reservasi</h1>
+                    <div class="date" id="currentDate2"></div>
+                </div>
             </div>
-            <div class="welcome-text">
-                <h2>Selamat Datang!</h2>
-                <p>Konsultasikan kesehatanmu sekarang juga!</p>
-            </div> 
+
+            <div class="riwayat-header">
+                <h3>Lihat kembali riwayat reservasi anda!</h3>
+                <p>Data ini akan muncul setiap kali Anda membuat reservasi</p>
+            </div>
+
+            @if($reservasis->isEmpty())
+                <div class="empty-state">
+                    <h3>Belum Ada Riwayat</h3>
+                    <p>Anda belum pernah melakukan reservasi</p>
+                </div>
+            @else
+                @foreach($reservasis as $reservasi)
+                    <div class="riwayat-item" onclick="window.location.href='#'">
+                        <div class="riwayat-item-content">
+                            <div style="display: flex; align-items: center; gap: 15px;">
+                                <div class="riwayat-icon">
+                                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                    </svg>
+                                </div>
+                                <div class="riwayat-info">
+                                    <h4>{{ \Carbon\Carbon::parse($reservasi->tanggal_reservasi)->locale('id')->isoFormat('D MMMM YYYY') }}</h4>
+                                    <p>Ketuk untuk melihat lebih detail tentang catatan riwayat pemeriksaan</p>
+                                </div>
+                            </div>
+                            <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                            </svg>
+                        </div>
+                    </div>
+                @endforeach
+            @endif
         </div>
 
-        <div class="calendar-container">
-            <div class="calendar-header" id="calendarMonth"></div>
-            <div class="calendar-days">
-                <div class="day-name">Senin</div>
-                <div class="day-name">Selasa</div>
-                <div class="day-name">Rabu</div>
-                <div class="day-name">Kamis</div>
-                <div class="day-name">Jumat</div>
-                <div class="day-name">Sabtu</div>
-                <div class="day-name">Minggu</div>
+        <!-- TAB 3: RESERVASI -->
+        <div class="content-section" id="tab-reservasi">
+            <div class="content-header">
+                <div class="headerputih">
+                    <h1>Reservasi Pemeriksaan</h1>
+                    <div class="date" id="currentDate3"></div>
+                </div>
             </div>
-            <div class="calendar-dates" id="calendarDates"></div>
+
+            @if($klinik_tutup)
+                <div class="empty-state">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                    <h3>Klinik Tutup</h3>
+                    <p>Klinik tidak beroperasi pada hari <strong>{{ $nama_hari }}</strong></p>
+                </div>
+            @else
+                <div class="reservasi-banner">
+                    <svg fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z"/>
+                    </svg>
+                    <div>
+                        <h3 style="font-size: 18px; margin-bottom: 5px;">Kesehatan Anda, satu klik lebih dekat!</h3>
+                        <p style="opacity: 0.9; font-size: 14px;">Isi nomor antrian dan datangi klinik sekarang!</p>
+                    </div>
+                </div>
+
+                <div class="reservasi-cards">
+                    <div class="info-card">
+                        <label>Jam Praktik</label>
+                        <div class="time">{{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H.i') }}</div>
+                        <div class="separator">-</div>
+                        <div class="time">{{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H.i') }}</div>
+                    </div>
+                    <div class="info-card">
+                        <label>Nomor Antrian Sekarang</label>
+                        <div class="value">{{ $antrian->nomor_sekarang }}</div>
+                    </div>
+                    <div class="info-card">
+                        <label>Nomor Antrian Anda</label>
+                        <div class="value">{{ $reservasi_aktif ? $reservasi_aktif->nomor_antrian : '-' }}</div>
+                    </div>
+                </div>
+
+                @if($reservasi_aktif)
+                    <!-- Sudah Reservasi -->
+                    <div class="keluhan-box">
+                        <h4>
+                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+                            </svg>
+                            Keluhan
+                        </h4>
+                        <div style="background: #f7fafc; padding: 15px; border-radius: 12px; color: #4a5568;">
+                            {{ $reservasi_aktif->keluhan ?? 'Tidak ada keluhan spesifik' }}
+                        </div>
+                        <p class="note">* Keluhan tidak dapat diubah setelah reservasi dikonfirmasi</p>
+                    </div>
+
+                    <form action="{{ route('pasien.batalkan_reservasi', $reservasi_aktif->id) }}" method="POST" onsubmit="return confirm('Yakin ingin membatalkan?')">
+                        @csrf
+                        <button type="submit" class="btn-primary btn-cancel">
+                            Batalkan Reservasi
+                        </button>
+                    </form>
+                @else
+                    <!-- Form Reservasi -->
+                    <form action="{{ route('pasien.buat_reservasi') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="tanggal_reservasi" value="{{ today()->format('Y-m-d') }}">
+
+                        <div class="keluhan-box">
+                            <h4>
+                                <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+                                </svg>
+                                Keluhan
+                            </h4>
+                            <textarea name="keluhan" rows="4" maxlength="500" placeholder="(Opsional) Contoh: Demam 3 hari, batuk, pilek...">{{ old('keluhan') }}</textarea>
+                            <p class="note">* Keluhan bersifat opsional, tetapi sangat membantu dokter</p>
+                        </div>
+
+                        <button type="submit" class="btn-primary">
+                            Reservasi
+                        </button>
+                    </form>
+                @endif
+            @endif
         </div>
+
     </div>
 
-    <!-- Right Panel -->
-    <div class="right-panel">
+    <!-- SIDEBAR KANAN -->
+    <div class="sidebar-right">
         <div class="profile-card">
             <div class="profile-header" onclick="toggleProfileDropdown()">
                 <h3>Profil Saya</h3>
                 <span>
-                    <svg width="23" height="12" viewBox="0 0 23 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M11.5 12L23 1.61539L21.0833 9.53674e-07L11.5 8.53846L1.91667 9.53674e-07L0 1.61539L11.5 12Z" fill="white"/>
+                    <svg width="23" height="12" viewBox="0 0 23 12" fill="none">
+                        <path d="M11.5 12L23 1.61539L21.0833 0L11.5 8.53846L1.91667 0L0 1.61539L11.5 12Z" fill="white"/>
                     </svg>
                 </span>
             </div>
-            
-              <!-- Dropdown untuk ganti profil dan tambah anggota -->
+
             <div class="profile-dropdown" id="profileDropdown">
-                <div class="profile-list" id="profileList">
-                    <!-- Akan diisi dengan AJAX -->
-                </div>
+                <div class="profile-list" id="profileList"></div>
                 <a href="{{ route('pasien.tambah_biodata') }}" class="add-member-btn">
                     + Tambah Anggota Keluarga
                 </a>
             </div>
-            
 
             <div class="profile-content">
                 <div class="profile-image" id="profileInitial"></div>
@@ -610,8 +1071,8 @@
                     <div class="phone" id="patientPhone">Loading...</div>
                     <div class="profile-details">
                         <div class="detail-item">
-                            <label>Golongan Darah</label>
-                            <value id="bloodType">-</value>
+                            <label>Jenis Kelamin</label>
+                            <value id="gender">-</value>
                         </div>
                         <div class="divider"></div>
                         <div class="detail-item">
@@ -621,8 +1082,6 @@
                     </div>
                 </div>
             </div>
-
-            
         </div>
 
         <div class="reminders-card">
@@ -632,19 +1091,35 @@
             </div>
         </div>
 
-        <form action="{{ route('logout') }}" method="POST" id="logoutForm">
+        <form action="{{ route('logout') }}" method="POST">
             @csrf
             <button type="submit" class="logout-btn">
-                <span class="text">Keluar Akun</span>
+                Keluar Akun
             </button>
         </form>
     </div>
+
 </div>
 
 <script>
     // Data dari Laravel
     const pasienAktif = @json($pasien_aktif);
     const allPasiens = @json($pasiens);
+
+    // Switch Tab Function
+    function switchTab(tabName) {
+        // Update navigation buttons
+        document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+
+        // Update content sections
+        document.querySelectorAll('.content-section').forEach(section => section.classList.remove('active'));
+        document.getElementById('tab-' + tabName).classList.add('active');
+
+        // Update main content background
+        const mainContent = document.getElementById('mainContent');
+        mainContent.className = 'main-content bg-' + tabName;
+    }
 
     // Format tanggal Indonesia
     function formatDate(date) {
@@ -653,7 +1128,10 @@
     }
 
     // Set tanggal saat ini
-    document.getElementById('currentDate').textContent = formatDate(new Date());
+    const currentDateStr = formatDate(new Date());
+    document.getElementById('currentDate').textContent = currentDateStr;
+    document.getElementById('currentDate2').textContent = currentDateStr;
+    document.getElementById('currentDate3').textContent = currentDateStr;
 
     // Load Patient Profile
     function loadPatientProfile() {
@@ -661,7 +1139,10 @@
         document.getElementById('profileInitial').textContent = initial;
         document.getElementById('patientName').textContent = pasienAktif.nama_pasien || '-';
         document.getElementById('patientPhone').textContent = pasienAktif.no_telepon || '-';
-        document.getElementById('bloodType').textContent = pasienAktif.golongan_darah || '-';
+        
+        // Jenis Kelamin
+        const gender = pasienAktif.jenis_kelamin === 'L' ? 'L' : (pasienAktif.jenis_kelamin === 'P' ? 'P' : '-');
+        document.getElementById('gender').textContent = gender;
         
         // Hitung umur
         if (pasienAktif.tanggal_lahir_pasien) {
@@ -695,7 +1176,7 @@
             html += `
                 <form action="{{ route('pasien.ganti_profil', '') }}/${pasien.id}" method="POST" style="margin: 0;">
                     @csrf
-                    <button type="submit" class="profile-item ${isActive}" style="border: none; width: 100%; text-align: left; font-family: inherit;">
+                    <button type="submit" class="profile-item ${isActive}">
                         <span>${pasien.nama_pasien}</span>
                         ${badge}
                     </button>
@@ -706,29 +1187,21 @@
         profileList.innerHTML = html;
     }
 
-    // Load Reminders dengan AJAX
+    // Load Reminders
     function loadReminders() {
-        fetch('{{ route("pasien.dashboard") }}?ajax=reminders')
-            .then(response => response.json())
-            .then(data => {
-                const remindersList = document.getElementById('remindersList');
-                
-                if (data.reminders && data.reminders.length > 0) {
-                    remindersList.innerHTML = data.reminders.map(r => `
-                        <div class="reminder-item">
-                            <strong>${r.title}</strong><br>
-                            <small>${r.date} - ${r.time}</small>
-                        </div>
-                    `).join('');
-                } else {
-                    remindersList.innerHTML = '<div class="loading">Tidak ada pengingat</div>';
-                }
-            })
-            .catch(error => {
-                console.error('Error loading reminders:', error);
-                document.getElementById('remindersList').innerHTML = 
-                    '<div class="loading">Gagal memuat pengingat</div>';
-            });
+        const remindersList = document.getElementById('remindersList');
+        
+        @if(isset($reminder_aktif))
+            remindersList.innerHTML = `
+                <div class="reminder-item">
+                    <strong>Antrian Hampir Tiba!</strong>
+                    <small>Nomor Anda: #{{ $reminder_aktif->nomor_antrian }}<br>
+                    Sisa {{ $reminder_aktif->selisih }} antrian lagi</small>
+                </div>
+            `;
+        @else
+            remindersList.innerHTML = '<div class="loading">Tidak ada pengingat</div>';
+        @endif
     }
 
     // Generate Calendar
