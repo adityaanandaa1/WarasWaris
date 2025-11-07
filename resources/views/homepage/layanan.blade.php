@@ -48,10 +48,4 @@
             </p>
         </div>
     </div>
-
-    <div class="service-footer">
-        <a href="#" class="btn-service">
-            Lihat Layanan Pasien Kami
-        </a>
-    </div>
 </section>
