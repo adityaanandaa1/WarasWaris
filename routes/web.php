@@ -16,6 +16,10 @@ Route::get('/dashboardtest', function (){
     return view('pasien.dashboardtest');
 });
 
+Route::get('/dashboarddok', function (){
+    return view('dokter.sidebar');
+});
+
 // Biodata
 Route::middleware(['auth', 'role:pasien'])
     ->prefix('pasien')->name('pasien.')
