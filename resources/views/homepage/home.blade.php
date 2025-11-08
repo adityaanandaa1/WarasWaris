@@ -15,7 +15,7 @@
                         Dapatkan pengalaman konsultasi yang mudah, cepat, dan terpercaya di Klinik WarasWaris.
                     </p>
                     <div class="home-button">
-                        <a href="{{ route('register') }}" class="btn-home">
+                        <a href="{{ route('login') }}?mode=register" class="btn-home">
                             Daftar Akun
                         </a>
                         <a href="#schedule" class="btn-home">

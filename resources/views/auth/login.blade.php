@@ -3,7 +3,6 @@
 @section('title', 'Login - WarasWaris')
 
 @push('styles')
-
 <style>
     * {
         font-family: 'Poppins', sans-serif;
@@ -55,7 +54,7 @@
         transform: rotateY(180deg);
     }
 
-    .login-form-section{
+    .login-form-section {
         width: 100%;
         padding: 2rem;
         display: flex;
@@ -63,6 +62,8 @@
         justify-content: center;
         position: absolute;
         height: 100%;
+        left: 0;
+        z-index: 2;
     }
 
     .register-form-section {
@@ -73,6 +74,9 @@
         justify-content: center;
         position: absolute;
         height: 100%;
+        left: 0;
+        transform: rotateY(180deg);
+        z-index: 0;
     }
 
     @media (min-width: 1024px) {
@@ -83,18 +87,7 @@
         }
     }
 
-    .login-form-section {
-        left: 0;
-        z-index: 2;
-    }
-
     .register-mode .login-form-section {
-        z-index: 0;
-    }
-
-    .register-form-section {
-        left: 0;
-        transform: rotateY(180deg);
         z-index: 0;
     }
 
@@ -107,7 +100,7 @@
         max-width: 24rem;
         transform: translateX(0);
         opacity: 1;
-        transition: all 0.5s ease-in-out;
+        transition: all 0.5s ease-in-out 0.6s;
     }
 
     .register-mode .login-form-section .form-wrapper {
@@ -119,6 +112,7 @@
     .register-form-section .form-wrapper {
         transform: translateX(-30px);
         opacity: 0;
+        transition-delay: 0s;
     }
 
     .register-mode .register-form-section .form-wrapper {
@@ -127,7 +121,6 @@
         transition-delay: 0.6s;
     }
 
-    /* Form Title */
     .form-title {
         text-align: center;
         margin-bottom: 2rem;
@@ -163,7 +156,6 @@
         color: #15803d;
     }
 
-    /* Forms */
     .login-form,
     .register-form {
         display: flex;
@@ -171,17 +163,14 @@
         gap: 1.25rem;
     }
 
-    /* Form Group */
     .form-group {
         width: 100%;
     }
 
-    /* Input Wrapper */
     .input-wrapper {
         position: relative;
     }
 
-    /* Input Icon */
     .input-icon {
         position: absolute;
         top: 0;
@@ -199,7 +188,6 @@
         color: #9ca3af;
     }
 
-    /* Form Input */
     .form-input {
         width: 100%;
         padding: 0.75rem 1rem 0.75rem 3rem;
@@ -215,7 +203,6 @@
         box-shadow: 0 0 0 2px #3b82f6;
     }
 
-    /* Remember Me */
     .remember-me {
         display: flex;
         align-items: center;
@@ -237,11 +224,9 @@
         cursor: pointer;
     }
 
-    /* Submit Button */
     .btn-submit {
-        display: block;           
-        margin: 0 auto;           
-        justify-content: center;
+        display: block;
+        margin: 0 auto;
         width: 50%;
         background-color: #5A81FA;
         color: white;
@@ -253,17 +238,17 @@
         transition: all 0.2s;
         text-transform: uppercase;
         letter-spacing: 0.05em;
-        box-shadow: inset 0 4px 20.3px rgba(0,0,0,0.3);
+        box-shadow: inset 0 4px 20.3px rgba(0, 0, 0, 0.3);
     }
 
     .btn-submit:hover {
         background-color: #ffffff;
-        box-shadow: inset 0 4px 20.3px rgba(0,0,0,0.3);
-        color:#464646;
+        box-shadow: inset 0 4px 20.3px rgba(0, 0, 0, 0.3);
+        color: #464646;
     }
 
-    /* Welcome Sections */
-    .welcome-section{
+    .welcome-section,
+    .welcome-register-section {
         display: none;
         position: absolute;
         background: #5A81FA;
@@ -272,20 +257,6 @@
         justify-content: center;
         overflow: hidden;
         height: 100%;
-       
-    }
-
-
-    .welcome-register-section {
-        display: none;
-        position: absolute;
-        background: #ffffff;
-        padding: 3rem;
-        align-items: center;
-        justify-content: center;
-        overflow: hidden;
-        height: 100%;
-       
     }
 
     @media (min-width: 1024px) {
@@ -309,42 +280,38 @@
         right: 0;
         transform: rotateY(180deg);
         z-index: 0;
-        background:#5A81FA;
     }
 
     .register-mode .welcome-register-section {
         z-index: 2;
     }
 
-    /* Welcome Content */
     .welcome-content {
         color: white;
-        text-align: center;
+        text-align: center !important;
         position: relative;
         z-index: 10;
         transform: translateX(0);
         opacity: 1;
+        transition: all 0.5s ease-in-out 0.6s;
     }
 
     .register-mode .welcome-section .welcome-content {
         transform: translateX(-30px);
         opacity: 0;
         transition-delay: 0s;
-        transition: all 0.1s ease-in;
-        transition: all 0.5s ease-out;
     }
 
     .welcome-register-section .welcome-content {
         transform: translateX(30px);
         opacity: 0;
+        transition-delay: 0s;
     }
 
     .register-mode .welcome-register-section .welcome-content {
         transform: translateX(0);
         opacity: 1;
         transition-delay: 0.6s;
-        transition: all 0.5s ease-out;
-        transition: all 2s ease-in;
     }
 
     .welcome-title {
@@ -358,13 +325,12 @@
         font-weight: 700;
         margin-bottom: 2rem;
     }
-
-    .welcome-text {
-        color: #dbeafe;
+    .welcome-subtitle2 {
         font-size: 1rem;
-        line-height: 1.75rem;
+        color: #dbeafe;
         margin-bottom: 2rem;
     }
+
 
     .btn-toggle {
         display: inline-block;
@@ -377,28 +343,25 @@
         transition: all 0.2s;
         text-transform: uppercase;
         letter-spacing: 0.05em;
-        box-shadow: inset 0 4px 10px rgba(0,0,0,0.3);
+        box-shadow: inset 0 4px 10px rgba(0, 0, 0, 0.3);
         cursor: pointer;
         border: none;
     }
 
     .btn-toggle:hover {
-        background-color:#5A81FA;
-        color:white;
-        border: none;
+        background-color: #5A81FA;
+        color: white;
     }
 </style>
 @endpush
 
 @section('content')
 <div class="login-container" id="container">
-    
     <div class="login-card">
         
         <!-- Login Form Section -->
         <div class="login-form-section">
             <div class="form-wrapper">
-                
                 <div class="form-title">
                     <h2>Masuk</h2>
                 </div>
@@ -466,37 +429,27 @@
                             id="remember"
                             class="checkbox"
                         >
-                        <label for="remember">
-                            Ingat saya
-                        </label>
+                        <label for="remember">Ingat saya</label>
                     </div>
 
-                    <button type="submit" class="btn-submit">
-                        MASUK
-                    </button>
+                    <button type="submit" class="btn-submit">MASUK</button>
                 </form>
-
             </div>
         </div>
 
-          <!-- Welcome Section for Register -->
+        <!-- Welcome Section for Register -->
         <div class="welcome-register-section">
             <div class="welcome-content">
                 <h1 class="welcome-title">Selamat Datang</h1>
                 <h1 class="welcome-subtitle">di Waras Waris</h1>
-                <p class="welcome-text">
-                    Sudah memiliki akun?
-                </p>
-                <button class="btn-toggle" id="loginBtn">
-                    MASUK
-                </button>
+                <p class="welcome-subtitle2">Sudah memiliki akun?</p>
+                <button class="btn-toggle" id="loginBtn">MASUK</button>
             </div>
         </div>
 
         <!-- Register Form Section -->
         <div class="register-form-section">
             <div class="form-wrapper">
-                
                 <div class="form-title">
                     <h2>Buat Akun</h2>
                 </div>
@@ -504,7 +457,6 @@
                 <form action="{{ route('register.post') }}" method="POST" class="register-form">
                     @csrf
             
-                    <!-- Email -->
                     <div class="form-group">
                         <div class="input-wrapper">
                             <div class="input-icon">
@@ -524,7 +476,6 @@
                         </div>
                     </div>
 
-                    <!-- Password -->
                     <div class="form-group">
                         <div class="input-wrapper">
                             <div class="input-icon">
@@ -543,7 +494,6 @@
                         </div>
                     </div>
 
-                    <!-- Confirm Password -->
                     <div class="form-group">
                         <div class="input-wrapper">
                             <div class="input-icon">
@@ -562,39 +512,34 @@
                         </div>
                     </div>
 
-                    <!-- Submit Button -->
-                    <button type="submit" class="btn-submit">
-                        DAFTAR
-                    </button>
+                    <button type="submit" class="btn-submit">DAFTAR</button>
                 </form>
-
             </div>
         </div>
 
-        <!-- Welcome Section for Login (Right side) -->
+        <!-- Welcome Section for Login -->
         <div class="welcome-section">
             <div class="welcome-content">
                 <h1 class="welcome-title">Selamat Datang Kembali</h1>
                 <h1 class="welcome-subtitle">di Waras Waris</h1>
-                <p class="welcome-text">
-                    Belum memiliki akun?
-                </p>
-                <button class="btn-toggle" id="registerBtn">
-                    DAFTAR
-                </button>
+                <p class="welcome-subtitle2">Belum memiliki akun?</p>
+                <button class="btn-toggle" id="registerBtn">DAFTAR</button>
             </div>
         </div>
-
-      
-
     </div>
-
 </div>
 
 <script>
     const container = document.getElementById('container');
     const registerBtn = document.getElementById('registerBtn');
     const loginBtn = document.getElementById('loginBtn');
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const mode = urlParams.get('mode');
+    
+    if (mode === 'register') {
+        container.classList.add('register-mode');
+    }
 
     registerBtn.addEventListener('click', () => {
         container.classList.add('register-mode');
