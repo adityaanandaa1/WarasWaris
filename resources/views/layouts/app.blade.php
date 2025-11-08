@@ -17,12 +17,8 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-        }
-    </style>
+    
+    <link rel="stylesheet" href="{{ asset('css/dashboardpasien.css') }}">
     
     @stack('styles')
 </head>
