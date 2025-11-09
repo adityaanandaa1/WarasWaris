@@ -38,6 +38,15 @@ Route::middleware(['auth', 'role:pasien'])
         Route::get('/reservasi/riwayat', [App\Http\Controllers\Pasien\reservasi_controller::class, 'riwayat_reservasi'])->name('riwayat_reservasi');
 });
 
+// Dashboard Dokter
+Route::middleware(['auth', 'role:dokter'])
+->prefix('dokter')->name('dokter.')
+->group(function () {
+    // Dashboard
+    Route::get('/dashboard', [App\Http\Controllers\Dokter\dokter_controller::class, 'dashboard'])
+        ->name('dashboard');
+});
+
 
 
 Route::get('/login', [auth_controller::class, 'tampilkan_login'])->name('login');
@@ -52,13 +61,6 @@ Route::post('/register', [auth_controller::class, 'register'])->name('register.p
 Route::post('/logout', [auth_controller::class, 'logout'])
     ->name('logout')
     ->middleware('auth');
-
-// Dashboard Dokter
-Route::middleware(['auth', 'role:dokter'])->prefix('dokter')->name('dokter.')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dokter.dashboard');
-    })->name('dashboard');
-});
 
 // Dashboard Resepsionis
 Route::middleware(['auth', 'role:resepsionis'])->prefix('resepsionis')->name('resepsionis.')->group(function () {
