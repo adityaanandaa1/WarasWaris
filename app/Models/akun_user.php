@@ -58,9 +58,9 @@ class akun_user extends Authenticatable
      * 
      * Contoh: $user->dokter (jika role = dokter)
      */
-    public function Data_dokter()
+    public function dokter()
     {
-        return $this->hasOne(data_dokter::class);
+        return $this->hasOne(data_dokter::class, 'id_akun', 'id');
     }
 
     /**

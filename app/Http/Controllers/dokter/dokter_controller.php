@@ -19,7 +19,7 @@ class dokter_controller extends Controller
     public function dashboard()
     {
         $user = Auth::user();
-        $dokter = $user->dokter;
+        $dokter = $user->data;
 
         //data hari ini
         $hari_ini = today();
@@ -37,6 +37,28 @@ class dokter_controller extends Controller
             ]);
         }
 
+        $hari_ini = Carbon::today();
+        $total_reservasi = reservasi::where('tanggal_reservasi', $hari_ini)
+            ->where('status', ['menunggu', 'sedang_dilayani'])
+            ->count();
+        $pasien_terlayani = reservasi::where('tanggal_reservasi', $hari_ini)
+            ->where('status', 'selesai')
+            ->count();
+        $pasien_batal = reservasi::where('tanggal_reservasi', $hari_ini)
+            ->where('status', 'batal')
+            ->count();
+
+        return view('dokter.dashboard', compact(
+            'dokter',
+            'jadwal',
+            'antrian',
+            'total_reservasi',
+            'pasien_terlayani',
+            'pasien_batal',
+            'hari_ini',
+            'nama_hari'
+        ));
+
         $reservasis = reservasi::where('tanggal_reservasi', $hari_ini)
             ->whereIn('status', ['menunggu', 'sedang_diperiksa'])
             ->with('pasiens')
@@ -51,6 +73,7 @@ class dokter_controller extends Controller
         ];
 
         return view('dokter.dashboard', compact(
+            'user',
             'dokter',
             'jadwal',
             'antrian',
@@ -59,6 +82,52 @@ class dokter_controller extends Controller
             'hari_ini',
             'nama_hari'
         ));
+    }
+
+    public function update_jadwal(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'tanggal' => 'required|date',
+            'status' => 'required|in:buka, libur',
+            'jam_mulai' => 'nullable|required_if:status,buka|date_format:H:i',
+            'jam_selesai' => 'nullable|required_if:status,buka|date_format:H:i',
+            'catatan' => 'nullable|required_if:status,libur|string',
+        ]);
+
+        DB::beginTransaction();
+
+        try {
+            $jadwal = jadwal_praktik::findOrFail($id);
+
+            if ($validated['status'] == 'libur') {
+                // Set libur
+                $jadwal->update([
+                'is_active' => false,
+                'jam_mulai' => null,
+                'jam_selesai' => null,
+            ]);
+
+            // Simpan catatan libur (bisa pakai tabel terpisah atau kolom tambahan)
+            // Untuk sekarang kita pakai session flash
+            $message = "Jadwal {$jadwal->hari} diset LIBUR. Catatan: " . ($validated['catatan'] ?? '-');
+            } else {
+                $jadwal->update([
+                    'is_active' => true,
+                    'jam_mulai' => $validated['jam_mulai'],
+                    'jam_selesai' => $validated['jam_selesai'],
+                ]);
+
+                $message = "Jadwal {$jadwal->hari} diperbarui: {$validated['jam_mulai']} - {$validated['jam_selesai']}";
+            }
+
+            DB::commit();
+
+            return back()->with('success', $message);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return back()->withErrors(['error' => 'Gagal memperbarui jadwal']);
+        }
     }
 
     public function panggil_antrian()

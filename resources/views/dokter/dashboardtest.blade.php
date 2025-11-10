@@ -1,489 +1,462 @@
 @extends('layouts.app')
 
-@section('title', 'Dashboard Dokter - WarasWaris')
+@section('title', 'Dashboard Dokter')
 
 @push('styles')
 <style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
+      html, body {
+      height: 100% !important;
+      overflow-y: auto !important;
+      overflow-x: hidden !important;
+  }
+  body { position: relative !important; }
+  #app { min-height: 100vh !important; overflow-y: auto !important; }
 
-    body {
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-        background: #f7fafc;
-    }
+  /* === Sidebar === */
+  .ww-sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;           /* top:0; bottom:0; left:0 */
+    width: 76px;                 /* ~w-20 */
+    background: linear-gradient(180deg,#4f46e5,#3b82f6);
+    display: flex; flex-direction: column; align-items: center;
+    padding-top: 28px;           /* spasi atas */
+    z-index: 40;                 /* di atas konten */
+  }
+  .sidebar-icon {
+    width: 48px; height: 48px; border-radius: 12px;
+    display: grid; place-items: center;
+    margin: 10px 0;
+    transition: transform .15s ease, background-color .15s ease, opacity .15s ease;
+    opacity: .85;
+  }
+  .sidebar-icon:hover { background: rgba(255,255,255,.15); transform: translateY(-1px); opacity: 1; }
 
-    .dokter-container {
-        display: grid;
-        grid-template-columns: 250px 1fr;
-        min-height: 100vh;
-    }
+  /* SVG mewarisi warna dari parent */
+  .sidebar-icon svg { fill: currentColor; }
+  .sidebar-icon,
+  .sidebar-icon svg { color: #ffffff; }
 
-    /* SIDEBAR */
-    .sidebar {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        padding: 30px 20px;
-    }
+  /* State aktif */
+  .sidebar-icon.active { background: rgba(255,255,255,.22); opacity: 1; }
 
-    .sidebar-header {
-        margin-bottom: 30px;
-        padding-bottom: 20px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-    }
+  /* Responsive: sembunyikan di layar kecil */
+  @media (max-width: 1024px) {
+    .ww-sidebar { display: none; }
+  }
 
-    .sidebar-header h2 {
-        font-size: 20px;
-        margin-bottom: 5px;
-    }
-
-    .sidebar-header p {
-        font-size: 12px;
-        opacity: 0.8;
-    }
-
-    .sidebar-menu {
-        list-style: none;
-    }
-
-    .sidebar-menu li {
-        margin-bottom: 10px;
-    }
-
-    .sidebar-menu a {
-        display: block;
-        padding: 12px 15px;
-        color: white;
-        text-decoration: none;
-        border-radius: 10px;
-        transition: all 0.3s;
-        font-size: 14px;
-    }
-
-    .sidebar-menu a:hover,
-    .sidebar-menu a.active {
-        background: rgba(255, 255, 255, 0.2);
-        transform: translateX(5px);
-    }
-
-    /* MAIN CONTENT */
-    .main-content {
-        padding: 30px;
-    }
-
-    .content-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 30px;
-    }
-
-    .content-header h1 {
-        font-size: 28px;
-        color: #1a202c;
-    }
-
-    .content-header .date {
-        color: #718096;
-        font-size: 14px;
-    }
-
-    .logout-btn {
-        background: #fc8181;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 8px;
-        cursor: pointer;
-        font-weight: 600;
-        transition: all 0.3s;
-    }
-
-    .logout-btn:hover {
-        background: #f56565;
-    }
-
-    /* STATS CARDS */
-    .stats-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 20px;
-        margin-bottom: 30px;
-    }
-
-    .stat-card {
-        background: white;
-        padding: 20px;
-        border-radius: 15px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    }
-
-    .stat-card label {
-        display: block;
-        font-size: 12px;
-        color: #718096;
-        margin-bottom: 10px;
-        font-weight: 600;
-        text-transform: uppercase;
-    }
-
-    .stat-card .value {
-        font-size: 32px;
-        font-weight: 700;
-        color: #667eea;
-    }
-
-    /* JADWAL INFO */
-    .jadwal-info {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        padding: 20px;
-        border-radius: 15px;
-        margin-bottom: 30px;
-    }
-
-    .jadwal-info h3 {
-        font-size: 18px;
-        margin-bottom: 10px;
-    }
-
-    .jadwal-info p {
-        opacity: 0.9;
-    }
-
-    /* ANTRIAN CONTROL */
-    .antrian-control {
-        background: white;
-        padding: 25px;
-        border-radius: 15px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-        margin-bottom: 30px;
-        text-align: center;
-    }
-
-    .antrian-control h3 {
-        font-size: 20px;
-        color: #1a202c;
-        margin-bottom: 15px;
-    }
-
-    .nomor-sekarang {
-        font-size: 72px;
-        font-weight: 700;
-        color: #667eea;
-        margin: 20px 0;
-    }
-
-    .btn-panggil {
-        background: #48bb78;
-        color: white;
-        border: none;
-        padding: 15px 40px;
-        border-radius: 12px;
-        font-size: 16px;
-        font-weight: 700;
-        cursor: pointer;
-        transition: all 0.3s;
-    }
-
-    .btn-panggil:hover {
-        background: #38a169;
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(72, 187, 120, 0.4);
-    }
-
-    /* LIST ANTRIAN */
-    .list-antrian {
-        background: white;
-        border-radius: 15px;
-        padding: 25px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    }
-
-    .list-antrian h3 {
-        font-size: 18px;
-        color: #1a202c;
-        margin-bottom: 20px;
-    }
-
-    .antrian-item {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 15px;
-        border: 2px solid #e2e8f0;
-        border-radius: 12px;
-        margin-bottom: 10px;
-        transition: all 0.3s;
-    }
-
-    .antrian-item:hover {
-        border-color: #667eea;
-        box-shadow: 0 2px 10px rgba(102, 126, 234, 0.2);
-    }
-
-    .antrian-item.active {
-        border-color: #48bb78;
-        background: #f0fff4;
-    }
-
-    .antrian-number {
-        width: 50px;
-        height: 50px;
-        background: #667eea;
-        color: white;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 20px;
-        font-weight: 700;
-    }
-
-    .antrian-info {
-        flex: 1;
-        margin-left: 15px;
-    }
-
-    .antrian-info h4 {
-        font-size: 16px;
-        color: #1a202c;
-        margin-bottom: 3px;
-    }
-
-    .antrian-info p {
-        font-size: 13px;
-        color: #718096;
-    }
-
-    .antrian-actions {
-        display: flex;
-        gap: 10px;
-    }
-
-    .btn-action {
-        padding: 8px 15px;
-        border: none;
-        border-radius: 8px;
-        font-size: 13px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s;
-    }
-
-    .btn-periksa {
-        background: #667eea;
-        color: white;
-    }
-
-    .btn-periksa:hover {
-        background: #5568d3;
-    }
-
-    .btn-lewati {
-        background: #fc8181;
-        color: white;
-    }
-
-    .btn-lewati:hover {
-        background: #f56565;
-    }
-
-    /* ALERTS */
-    .alert {
-        padding: 15px 20px;
-        border-radius: 10px;
-        margin-bottom: 20px;
-        font-weight: 600;
-    }
-
-    .alert-success {
-        background: #c6f6d5;
-        color: #22543d;
-    }
-
-    .alert-error {
-        background: #fed7d7;
-        color: #742a2a;
-    }
-
-    /* EMPTY STATE */
-    .empty-state {
-        text-align: center;
-        padding: 60px 20px;
-        color: #a0aec0;
-    }
-
-    .empty-state svg {
-        width: 80px;
-        height: 80px;
-        margin-bottom: 15px;
-    }
+  /* Padding kiri konten agar tidak ketutup sidebar */
+  .ww-with-sidebar { padding-left: 88px; } /* 76px + sedikit spasi */
+  @media (max-width: 1024px) {
+    .ww-with-sidebar { padding-left: 0; }
+  }
 </style>
 @endpush
 
 @section('content')
-<div class="dokter-container">
-    
-    <!-- SIDEBAR -->
-    <div class="sidebar">
-        <div class="sidebar-header">
-            <h2>WarasWaris</h2>
-            <p>Sistem Dokter</p>
-        </div>
 
-        <ul class="sidebar-menu">
-            <li>
-                    📊 Dashboard
-                
-            </li>
-            <li>
-                    👥 Daftar Pasien
-                
-            </li>
-            <li>
-                    📅 Jadwal Praktik
-                
-            </li>
-            <li>
-                    📈 Laporan Klinik
-                
-            </li>
-        </ul>
-    </div>
+<!-- Sidebar (fixed) -->
+<div class="ww-sidebar">
+    {{-- Home / Dashboard --}}
+    <a href="{{ route('dokter.dashboard') }}"
+       class="sidebar-icon {{ request()->routeIs('dokter.dashboard') ? 'active' : '' }}"
+       style="margin-top: 120px;">
+        <!-- Home Icon -->
+        <svg width="25" height="25" viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M10 20V14H14V20H19V12H22L12 3L2 12H5V20H10Z"/>
+        </svg>
+    </a>
 
-    <!-- MAIN CONTENT -->
-    <div class="main-content">
+    {{-- Antrian / Queue --}}
+    <a
+       class="sidebar-icon {{ request()->routeIs('dokter.antrian.*') ? 'active' : '' }}">
+        <!-- Queue Icon -->
+        <svg width="25" height="25" viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M4 6H20V8H4V6ZM4 11H20V13H4V11ZM4 16H20V18H4V16Z"/>
+        </svg>
+    </a>
+
+    {{-- Laporan / Document --}}
+    <a"
+       class="sidebar-icon {{ request()->routeIs('dokter.laporan.*') ? 'active' : '' }}">
+        <!-- Document Icon -->
+        <svg width="25" height="25" viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M14 2H6C4.9 2 4 2.9 4 4V20C4 21.1 4.9 22 6 22H18C19.1 22 20 21.1 20 20V8L14 2Z"/>
+        </svg>
+    </a>
+
+    {{-- Logout (di bawah) --}}
+    <div style="margin-top: 220px;"></div>
+    <form method="POST" action="{{ route('logout') }}">
+        @csrf
+        <button type="submit" class="sidebar-icon" title="Keluar">
+            <!-- Logout Icon -->
+            <svg width="25" height="25" viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M17 7L15.59 8.41L18.17 11H8V13H18.17L15.59 15.59L17 17L22 12L17 7ZM4 5H12V3H4C2.9 3 2 3.9 2 5V19C2 20.1 2.9 21 4 21H12V19H4V5Z"/>
+            </svg>
+        </button>
+    </form>
+</div>
+
+<div class="w-full bg-gradient-to-br from-blue-50 to-indigo-100 py-6 px-4 sm:px-6 lg:px-8 pb-12">
+    <div class="max-w-7xl mx-auto">
         
-        <!-- HEADER -->
-        <div class="content-header">
-            <div>
-                <h1>Dashboard Dokter</h1>
-                <div class="date">{{ $hari_ini->locale('id')->isoFormat('dddd, D MMMM YYYY') }}</div>
+        <!-- Header Welcome Banner -->
+        <div class="bg-gradient-to-r from-blue-500 to-indigo-600 rounded-3xl shadow-xl p-6 md:p-8 mb-6 relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-white opacity-10 rounded-full -mr-32 -mt-32"></div>
+            <div class="absolute bottom-0 left-0 w-48 h-48 bg-white opacity-10 rounded-full -ml-24 -mb-24"></div>
+            
+            <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center">
+                <div class="mb-4 md:mb-0">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="bg-white bg-opacity-20 backdrop-blur-sm rounded-xl px-4 py-2 flex items-center gap-2">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                            </svg>
+                            <span class="text-white text-sm font-medium">{{ $nama_hari }}, {{ $hari_ini->format('d F Y') }} </span>
+                        </div>
+                    </div>
+                    <h1 class="text-3xl md:text-4xl font-bold text-white mb-2">
+                        Selamat Datang, {{ Auth::user()->dokter->nama_dokter }}!
+                    </h1>
+                    <p class="text-blue-100 text-lg">Semoga harimu menyenangkan dan produktif! 🎉</p>
+                </div>
+                
+                <!-- Ilustrasi Dokter -->
+                <div class="hidden md:block">
+                    <div class="w-48 h-48 bg-white bg-opacity-20 backdrop-blur-sm rounded-full flex items-center justify-center">
+                        <svg class="w-32 h-32 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/>
+                        </svg>
+                    </div>
+                </div>
             </div>
-            <form action="{{ route('logout') }}" method="POST">
-                @csrf
-                <button type="submit" class="logout-btn">Keluar</button>
-            </form>
         </div>
 
-        <!-- ALERTS -->
+        <!-- Alert Messages -->
         @if(session('success'))
-            <div class="alert alert-success">
-                ✓ {{ session('success') }}
+        <div class="bg-green-50 border-l-4 border-green-500 p-4 mb-6 rounded-lg shadow-sm">
+            <div class="flex items-center">
+                <svg class="w-6 h-6 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <p class="text-green-700 font-medium">{{ session('success') }}</p>
             </div>
+        </div>
         @endif
 
         @if($errors->any())
-            <div class="alert alert-error">
-                ✗ {{ $errors->first() }}
-            </div>
-        @endif
-
-        <!-- STATS -->
-        <div class="stats-grid">
-            <div class="stat-card">
-                <label>Total Reservasi</label>
-                <div class="value">{{ $statistik['total_reservasi'] }}</div>
-            </div>
-            <div class="stat-card">
-                <label>Menunggu</label>
-                <div class="value" style="color: #f6ad55;">{{ $statistik['menunggu'] }}</div>
-            </div>
-            <div class="stat-card">
-                <label>Selesai</label>
-                <div class="value" style="color: #48bb78;">{{ $statistik['selesai'] }}</div>
-            </div>
-            <div class="stat-card">
-                <label>Tidak Hadir</label>
-                <div class="value" style="color: #fc8181;">{{ $statistik['batal'] }}</div>
+        <div class="bg-red-50 border-l-4 border-red-500 p-4 mb-6 rounded-lg shadow-sm">
+            <div class="flex items-center">
+                <svg class="w-6 h-6 text-red-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <p class="text-red-700 font-medium">{{ $errors->first() }}</p>
             </div>
         </div>
-
-        <!-- JADWAL INFO -->
-        @if($jadwal && $jadwal->is_active)
-            <div class="jadwal-info">
-                <h3>✓ Klinik Buka Hari Ini</h3>
-                <p>{{ $nama_hari }}, {{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }} WIB</p>
-            </div>
-        @else
-            <div class="jadwal-info" style="background: #fc8181;">
-                <h3>✗ Klinik Tutup</h3>
-                <p>{{ $nama_hari }} - Tidak ada jadwal praktik</p>
-            </div>
         @endif
 
-        <!-- ANTRIAN CONTROL -->
-        <div class="antrian-control">
-            <h3>Nomor Antrian Sekarang</h3>
-            <div class="nomor-sekarang">{{ $antrian->nomor_sekarang }}</div>
-            <p style="color: #718096; margin-bottom: 20px;">
-                Total Antrian: <strong>{{ $antrian->total_antrian }}</strong>
-            </p>
+        <!-- Main Grid Layout -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+            
+            <!-- Left Column - Jam Praktik & Nomor Antrian -->
+            <div class="space-y-6">
+                
+                <!-- Card Jam Praktik -->
+                <div class="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-semibold text-gray-800 flex items-center gap-2">
+                            <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            Jam Praktik
+                        </h3>
+                    </div>
 
-            @if($antrian->nomor_sekarang < $antrian->total_antrian)
-                <form action="{{ route('dokter.antrian.panggil') }}" method="POST">
-                    @csrf
-                    <button type="submit" class="btn-panggil">
-                        Panggil Antrian Berikutnya
-                    </button>
-                </form>
-            @else
-                <p style="color: #48bb78; font-weight: 600;">✓ Semua antrian sudah selesai</p>
-            @endif
-        </div>
-
-        <!-- LIST ANTRIAN -->
-        <div class="list-antrian">
-            <h3>Daftar Antrian Hari Ini</h3>
-
-            @if($reservasis->isEmpty())
-                <div class="empty-state">
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
-                    </svg>
-                    <p>Belum ada reservasi hari ini</p>
-                </div>
-            @else
-                @foreach($reservasis as $reservasi)
-                    <div class="antrian-item {{ $reservasi->nomor_antrian == $antrian->nomor_sekarang ? 'active' : '' }}">
-                        <div class="antrian-number">
-                            {{ $reservasi->nomor_antrian }}
-                        </div>
-                        <div class="antrian-info">
-                            <h4>{{ $reservasi->pasien->nama_pasien }}</h4>
-                            <p>
-                                {{ $reservasi->pasien->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan' }}, 
-                                {{ \Carbon\Carbon::parse($reservasi->pasien->tanggal_lahir_pasien)->age }} tahun
-                            </p>
-                            @if($reservasi->keluhan)
-                                <p style="color: #667eea; margin-top: 5px;">
-                                    <strong>Keluhan:</strong> {{ Str::limit($reservasi->keluhan, 50) }}
-                                </p>
-                            @endif
-                        </div>
-                        <div class="antrian-actions">
-                            @if($reservasi->status == 'sedang_diperiksa')
-                                <a href="{{ route('dokter.rekam-medis.form', $reservasi->id) }}" class="btn-action btn-periksa">
-                                    Isi Rekam Medis
-                                </a>
-                            @elseif($reservasi->status == 'menunggu')
-                                <form action="{{ route('dokter.antrian.lewati', $reservasi->id) }}" method="POST" onsubmit="return confirm('Lewati pasien ini?')">
-                                    @csrf
-                                    <button type="submit" class="btn-action btn-lewati">
-                                        Lewati
-                                    </button>
-                                </form>
-                            @endif
+                    @if($jadwal && $jadwal->is_active)
+                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 mb-4">
+                        <div class="flex justify-center items-center gap-4">
+                            <div class="text-center">
+                                <p class="text-xs text-gray-500 mb-1">Buka</p>
+                                <p class="text-3xl font-bold text-blue-600">{{ $jadwal->jam_mulai ?? '-' }}</p>
+                            </div>
+                            <div class="text-2xl font-bold text-blue-500">-</div>
+                            <div class="text-center">
+                                <p class="text-xs text-gray-500 mb-1">Tutup</p>
+                                <p class="text-3xl font-bold text-blue-600">{{ $jadwal->jam_selesai ?? '-' }}</p>
+                            </div>
                         </div>
                     </div>
-                @endforeach
-            @endif
+
+                    <button onclick="document.getElementById('modalJadwal').classList.remove('hidden')" 
+                            class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 rounded-xl transition-colors duration-200 flex items-center justify-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                        </svg>
+                        Atur Ulang Jadwal
+                    </button>
+                    @else
+                    <div class="bg-gray-100 rounded-xl p-6 mb-4 text-center">
+                        <svg class="w-16 h-16 text-gray-400 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                        <p class="text-gray-600 font-medium">Tidak Ada Jadwal Hari Ini</p>
+                        <p class="text-sm text-gray-500 mt-1">{{ $nama_hari }}</p>
+                    </div>
+                    @endif
+                </div>
+
+                <!-- Card Nomor Antrian -->
+                <div class="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                        <svg class="w-6 h-6 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                        </svg>
+                        Nomor Antrian Berjalan
+                    </h3>
+                    
+                    <div class="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-8 text-center mb-4">
+                        <p class="text-7xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                            {{ $antrian->nomor_sekarang }}
+                        </p>
+                        <p class="text-sm text-gray-600 mt-2">dari {{ $antrian->total_antrian }} total antrian</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Middle Column - Statistik Laporan -->
+            <div class="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-lg font-semibold text-gray-800 flex items-center gap-2">
+                        <svg class="w-6 h-6 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                        </svg>
+                        Statistik Laporan
+                    </h3>
+                    <span class="bg-indigo-100 text-indigo-700 text-xs font-semibold px-3 py-1 rounded-full">
+                        Hari Ini
+                    </span>
+                </div>
+
+                <div class="space-y-6">
+                    <!-- Total Reservasi -->
+                    <div class="bg-gradient-to-br from-pink-50 to-rose-50 rounded-xl p-6 border border-pink-100">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-gray-600 mb-1">Total Reservasi</p>
+                                <p class="text-5xl font-bold text-pink-600">{{ $total_reservasi }}</p>
+                            </div>
+                            <div class="w-16 h-16 bg-pink-200 rounded-full flex items-center justify-center">
+                                <svg class="w-8 h-8 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pasien Terlayani -->
+                    <div class="bg-gradient-to-br from-purple-50 to-indigo-50 rounded-xl p-6 border border-purple-100">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-gray-600 mb-1">Pasien Terlayani</p>
+                                <p class="text-5xl font-bold text-purple-600">{{ $pasien_terlayani }}</p>
+                            </div>
+                            <div class="w-16 h-16 bg-purple-200 rounded-full flex items-center justify-center">
+                                <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Pasien Tidak Hadir -->
+                    <div class="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl p-6 border border-blue-100">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-gray-600 mb-1">Pasien Tidak Hadir</p>
+                                <p class="text-5xl font-bold text-blue-600">{{ $pasien_batal }}</p>
+                            </div>
+                            <div class="w-16 h-16 bg-blue-200 rounded-full flex items-center justify-center">
+                                <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column - Profil & Kalender -->
+            <div class="space-y-6">
+                
+                <!-- Card Profil Dokter -->
+                <div class="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                        <svg class="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                        </svg>
+                        Profil Saya
+                    </h3>
+
+                    <div class="text-center mb-4">
+                        <div class="w-24 h-24 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-full mx-auto mb-3 flex items-center justify-center text-white text-3xl font-bold shadow-lg">
+                            {{ substr(Auth::user()->dokter->nama_dokter, 0, 2) }}
+                        </div>
+                        <h4 class="text-lg font-bold text-gray-800">{{ Auth::user()->dokter->nama_dokter }}</h4>
+                        <p class="text-sm text-gray-600 mt-1">Dokter Umum</p>
+                        <p class="text-sm text-gray-600 mt-1">Kalisat, Jember</p>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3 pt-4 border-t">
+                        <div class="text-center">
+                            <p class="text-xs text-gray-500">No. SIP</p>
+                            <p class="text-sm font-semibold text-gray-800 mt-1">{{ Auth::user()->dokter->nomor_sip ?? '-' }}</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-xs text-gray-500">Pengalaman</p>
+                            <p class="text-sm font-semibold text-gray-800 mt-1">12 Tahun</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card Kalender Mini -->
+                <div class="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl shadow-lg p-6 text-white">
+                    <h3 class="text-lg font-semibold mb-4 flex items-center gap-2">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
+                        Kalender
+                    </h3>
+
+                    <div class="bg-white bg-opacity-20 backdrop-blur-sm rounded-xl p-4">
+                        <div class="text-center mb-3">
+                            <h4 class="text-2xl font-bold">{{ $hari_ini->format('F Y') }}</h4>
+                        </div>
+                        
+                        <div class="grid grid-cols-7 gap-2 text-center text-xs mb-2">
+                            <div class="font-semibold">Sen</div>
+                            <div class="font-semibold">Sel</div>
+                            <div class="font-semibold">Rab</div>
+                            <div class="font-semibold">Kam</div>
+                            <div class="font-semibold">Jum</div>
+                            <div class="font-semibold">Sab</div>
+                            <div class="font-semibold">Min</div>
+                        </div>
+
+                        <div class="grid grid-cols-7 gap-2 text-center text-sm">
+                            @php
+                                $startOfMonth = $hari_ini->copy()->startOfMonth();
+                                $endOfMonth = $hari_ini->copy()->endOfMonth();
+                                $startDayOfWeek = $startOfMonth->dayOfWeek == 0 ? 7 : $startOfMonth->dayOfWeek;
+                                
+                                // Hari-hari dari bulan sebelumnya
+                                for($i = 1; $i < $startDayOfWeek; $i++) {
+                                    echo '<div class="text-white text-opacity-40 py-1"></div>';
+                                }
+                                
+                                // Hari-hari bulan ini
+                                for($day = 1; $day <= $endOfMonth->day; $day++) {
+                                    $isToday = $day == $hari_ini->day;
+                                    $class = $isToday 
+                                        ? 'bg-white text-blue-600 font-bold rounded-lg py-1' 
+                                        : 'text-white py-1 hover:bg-white hover:bg-opacity-20 rounded-lg cursor-pointer';
+                                    echo "<div class='$class'>$day</div>";
+                                }
+                            @endphp
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </div>
 
     </div>
-
 </div>
+
+<!-- Modal Atur Jadwal -->
+<div id="modalJadwal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 transform transition-all">
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-xl font-bold text-gray-800">Atur Jadwal Praktik</h3>
+            <button onclick="document.getElementById('modalJadwal').classList.add('hidden')" 
+                    class="text-gray-400 hover:text-gray-600">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+
+        <form action="{{ route('dokter.update.jadwal',  $jadwal->id ?? 0) }}"  method="POST" class="space-y-4">
+            @csrf
+            @method('PUT')
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Tanggal</label>
+                <input type="date" name="tanggal" value="{{ $hari_ini->format('Y-m-d') }}" required
+                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                <select name="status" id="statusSelect" required onchange="toggleJamInput()"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    <option value="buka">Buka</option>
+                    <option value="libur">Libur</option>
+                </select>
+            </div>
+
+            <div id="jamInputs">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Jam Mulai</label>
+                        <input type="time" name="jam_mulai"  value="{{ old('jam_mulai', $jadwal && $jadwal->jam_mulai ? \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') : '09:00') }}"
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Jam Selesai</label>
+                        <input type="time" name="jam_selesai"  value="{{ old('jam_selesai', $jadwal && $jadwal->jam_selesai ? \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') : '21:00') }}"
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+                </div>
+            </div>
+
+            <div id="catatanInput" class="hidden">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Catatan Libur</label>
+                <textarea name="catatan" rows="3" 
+                          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          placeholder="Alasan libur praktik..."></textarea>
+            </div>
+
+            <div class="flex gap-3 pt-4">
+                <button type="button" 
+                        onclick="document.getElementById('modalJadwal').classList.add('hidden')"
+                        class="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 font-semibold hover:bg-gray-50 transition-colors">
+                    Batal
+                </button>
+                <button type="submit" 
+                        class="flex-1 px-4 py-2 bg-blue-500 text-white rounded-lg font-semibold hover:bg-blue-600 transition-colors">
+                    Simpan
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+function toggleJamInput() {
+    const status = document.getElementById('statusSelect').value;
+    const jamInputs = document.getElementById('jamInputs');
+    const catatanInput = document.getElementById('catatanInput');
+    
+    if (status === 'libur') {
+        jamInputs.classList.add('hidden');
+        catatanInput.classList.remove('hidden');
+    } else {
+        jamInputs.classList.remove('hidden');
+        catatanInput.classList.add('hidden');
+    }
+}
+</script>
+
 @endsection

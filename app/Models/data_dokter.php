@@ -28,4 +28,9 @@ class data_dokter extends Model
     {
         return $this->belongsTo(akun_user::class);
     }
+
+    public function user()
+    {
+        return $this->belongsTo(\App\Models\akun_user::class, 'id_akun', 'id');
+    }
 }

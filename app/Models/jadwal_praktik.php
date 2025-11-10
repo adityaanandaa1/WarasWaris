@@ -23,10 +23,19 @@ class jadwal_praktik extends Model
      * Cast tipe data
      */
     protected $casts = [
-        'jam_mulai' => 'datetime:H:i', // Format jam saja (08:00)
-        'jam_selesai' => 'datetime:H:i',
         'is_active' => 'boolean',
     ];
+
+     public function getJamMulaiAttribute($value)
+    {
+        // DB TIME: "09:00:00" -> tampil "09:00"
+        return $value ? substr($value, 0, 5) : null;
+    }
+
+    public function getJamSelesaiAttribute($value)
+    {
+        return $value ? substr($value, 0, 5) : null;
+    }
 
     // Tidak ada relasi khusus karena jadwal adalah data standalone
 }

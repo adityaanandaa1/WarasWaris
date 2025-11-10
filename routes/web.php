@@ -39,12 +39,13 @@ Route::middleware(['auth', 'role:pasien'])
 });
 
 // Dashboard Dokter
-Route::middleware(['auth', 'role:dokter'])
-->prefix('dokter')->name('dokter.')
+Route::middleware(['auth', 'role:dokter'])->prefix('dokter')->name('dokter.')
 ->group(function () {
     // Dashboard
     Route::get('/dashboard', [App\Http\Controllers\Dokter\dokter_controller::class, 'dashboard'])
         ->name('dashboard');
+    Route::put('/jadwal/{id}', [App\Http\Controllers\Dokter\dokter_controller::class, 'update_jadwal'])
+        ->name('update.jadwal');
 });
 
 
