@@ -33,4 +33,9 @@ class data_dokter extends Model
     {
         return $this->belongsTo(\App\Models\akun_user::class, 'id_akun', 'id');
     }
+
+    public function jadwal_praktik()
+    {
+        return $this->hasMany(jadwal_praktik::class, 'id_dokter', 'id');
+    }
 }

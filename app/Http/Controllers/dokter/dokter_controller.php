@@ -48,20 +48,9 @@ class dokter_controller extends Controller
             ->where('status', 'batal')
             ->count();
 
-        return view('dokter.dashboard', compact(
-            'dokter',
-            'jadwal',
-            'antrian',
-            'total_reservasi',
-            'pasien_terlayani',
-            'pasien_batal',
-            'hari_ini',
-            'nama_hari'
-        ));
-
         $reservasis = reservasi::where('tanggal_reservasi', $hari_ini)
             ->whereIn('status', ['menunggu', 'sedang_diperiksa'])
-            ->with('pasiens')
+            ->with('data_pasien')
             ->orderBy('nomor_antrian')
             ->get();
 
@@ -78,11 +67,15 @@ class dokter_controller extends Controller
             'jadwal',
             'antrian',
             'reservasis',
+            'total_reservasi',
+            'pasien_terlayani',
+            'pasien_batal',
             'statistik',
             'hari_ini',
             'nama_hari'
         ));
     }
+    
 
     public function update_jadwal(Request $request, $id)
     {

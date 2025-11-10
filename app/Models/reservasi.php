@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\data_pasien;
 
 class reservasi extends Model
 {
@@ -28,9 +29,9 @@ class reservasi extends Model
     /**
      * Relasi: Reservasi milik 1 Pasien (belongsTo)
      */
-    public function Data_pasien()
+    public function data_pasien()
     {
-        return $this->belongsTo(data_pasien::class);
+        return $this->belongsTo(data_pasien::class, 'id_pasien', 'id');
     }
 
     /**
@@ -41,6 +42,12 @@ class reservasi extends Model
     public function Rekam_medis()
     {
         return $this->hasOne(rekam_medis::class);
+    }
+
+    public function getNamaPasienAttribute()
+    {
+        return optional($this->data_pasien)->nama_pasien
+            ?? optional($this->data_pasien)->nama_lengkap;
     }
 
     // ========== SCOPE (Query Helper) ==========

@@ -119,6 +119,18 @@ class reservasi_controller extends Controller
         }
     }
 
+    public function mark_periksa(Reservasi $reservasi)
+    {
+        // (Opsional) validasi kepemilikan reservasi oleh dokter yang login
+
+        // Update status
+        $reservasi->update(['status' => 'sedang_diperiksa']);
+
+        // Arahkan langsung ke form rekam medis
+        return redirect()->route('dokter.buat_rekam_medis', $reservasi->id)
+            ->with('success', 'Nomor antrian sedang dilayani. Silakan isi rekam medis.');
+    }
+
     public function batalkan_reservasi($id)
     {
         $user = Auth::user();

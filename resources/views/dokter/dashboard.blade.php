@@ -38,7 +38,7 @@
             </div>
             <div class="profile-biodata">
                 <div class="identity">
-                    <p class="name">Dr. Moh. Abd. Waris</p>
+                    {{ Auth::user()->dokter->nama_dokter }}
                     <p class="profession">Dokter Umum</p>
                     <div class="location">
                         <i class="ri-map-pin-2-fill"></i>
@@ -48,7 +48,7 @@
                 <div class="details">
                     <div class="birthdate">
                         <p>TTL</p>
-                        <p>12 - 12 - 2012</p>
+                        {{ Auth::user()->dokter->tanggal_lahir_dokter }}
                     </div>
                     <div class="experience">
                         <p>Pengalaman</p>

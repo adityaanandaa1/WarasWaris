@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class jadwal_praktik extends Model
 {
@@ -36,6 +37,16 @@ class jadwal_praktik extends Model
     {
         return $value ? substr($value, 0, 5) : null;
     }
+
+    // scope ambil jadwal per tanggal
+    public function scopeForDate($q, $date)
+    {
+        $date = $date instanceof Carbon ? $date->toDateString() : $date;
+        return $q->whereDate('tanggal', $date);
+    }
+
+    // cepat: jadwal hari ini
+    public function scopeToday($q) { return $q->forDate(today()); }
 
     // Tidak ada relasi khusus karena jadwal adalah data standalone
 }

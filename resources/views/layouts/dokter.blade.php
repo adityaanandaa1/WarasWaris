@@ -14,18 +14,23 @@
 
     <!-- CSS Custom -->
     <link rel="stylesheet" href="{{ asset('css/doctor.css') }}">
+
+    
     
 </head>
 <body>
+    
     <div class="container">
         <div class="sidebar">
-            @include('dokter.sidebar')
+         @include('partials.sidebar')
         </div>
 
-        <div class="content">
+        <div class="content ">
             @yield('content')
         </div>
     </div>
+
+    
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('js/todaydate.js') }}"></script>

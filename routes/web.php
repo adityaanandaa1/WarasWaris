@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\auth_controller;
 use App\Http\Controllers\pasien\pasien_controller;
+use App\Http\Controllers\dokter\dokter_controller;
+use App\Http\Controllers\dokter\rekam_medis_controller;
 
 Route::get('/', function () {
     return view('homepage');
@@ -32,6 +34,7 @@ Route::middleware(['auth', 'role:pasien'])
         Route::delete('/biodata/{id}', [pasien_controller::class, 'hapus_biodata'])->name('hapus_biodata');
         Route::post('/ganti-profil/{id}', [pasien_controller::class, 'ganti_profil'])->name('ganti_profil');
         
+        
         Route::get('/reservasi', [App\Http\Controllers\Pasien\reservasi_controller::class, 'index_reservasi'])->name('index_reservasi');
         Route::post('/reservasi', [App\Http\Controllers\Pasien\reservasi_controller::class, 'buat_reservasi'])->name('buat_reservasi');
         Route::post('/reservasi/{id}/cancel', [App\Http\Controllers\Pasien\reservasi_controller::class, 'batalkan_reservasi'])->name('batalkan_reservasi');
@@ -46,6 +49,18 @@ Route::middleware(['auth', 'role:dokter'])->prefix('dokter')->name('dokter.')
         ->name('dashboard');
     Route::put('/jadwal/{id}', [App\Http\Controllers\Dokter\dokter_controller::class, 'update_jadwal'])
         ->name('update.jadwal');
+    Route::get('/daftar-pasien', [App\Http\Controllers\Dokter\daftar_pasien_controller::class, 'index'])
+        ->name('daftar_pasien');
+
+    Route::get('/reservasi/{reservasi}/rekam-medis/buat', [rekam_medis_controller::class, 'buat_rekam_medis'])
+        ->name('buat_rekam_medis'); 
+    Route::post('/reservasi/{reservasi}/rekam-medis', [rekam_medis_controller::class, 'simpan_rekam_medis'])
+        ->name('simpan_rekam_medis');
+
+    Route::patch('/reservasi/{reservasi}/periksa', [App\Http\Controllers\Pasien\reservasi_controller::class, 'mark_periksa'])
+        ->name('reservasi.periksa');
+
+   
 });
 
 
@@ -63,12 +78,6 @@ Route::post('/logout', [auth_controller::class, 'logout'])
     ->name('logout')
     ->middleware('auth');
 
-// Dashboard Dokter
-Route::middleware(['auth', 'role:dokter'])->prefix('dokter')->name('dokter.')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dokter.dashboard');
-    })->name('dashboard');
-});
 
 // Dashboard Resepsionis
 Route::middleware(['auth', 'role:resepsionis'])->prefix('resepsionis')->name('resepsionis.')->group(function () {
