@@ -1,0 +1,96 @@
+* {
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Layout Dokter */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.content {
+    margin: 30px;
+    margin-left: 40px;
+}
+
+/* Sidebar Dokter */
+#sidebar-doctor {
+    margin: 30px; 
+}
+
+.sidebar-menu {
+    background: #5A81FA;
+    width: 60px;
+    padding-left: 0;
+    display: flex;
+    list-style: none;
+    flex-direction: column;
+    border-radius: 20px;
+}
+
+.menu-doctor {
+    margin: 63px 0px;
+}
+
+.sidebar-item {
+    margin: 40px 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sidebar-logout {
+    margin-top: 60px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sidebar-link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-logout {
+    background-color: #ffffff00;
+    border: none;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.btn-logout:hover {
+    background-color: #cedeff50;
+    border: none;
+}
+
+/* Dashboard Dokter */
+.welcome-section {
+    background-color: #5A81FA;
+    display: flex;
+    width: 665px;
+    height: 287px;
+    padding-left: 15px;
+    padding-top: 15px;
+    border-radius: 20px;
+}
+
+.date {
+    background-color: #CEDEFF;
+    position: absolute;
+    padding: 10px;
+    width: 200px;
+    height: 50px;
+    border-radius: 13px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.today {
+    padding-left: 15px;
+    color: #FFFFFF;
+    font-size: 16px;
+}

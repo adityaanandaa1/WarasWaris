@@ -17,7 +17,7 @@ Route::get('/dashboardtest', function (){
 });
 
 Route::get('/dashboarddok', function (){
-    return view('dokter.sidebar');
+    return view('dokter.dashboard');
 });
 
 // Biodata
@@ -62,6 +62,13 @@ Route::post('/register', [auth_controller::class, 'register'])->name('register.p
 Route::post('/logout', [auth_controller::class, 'logout'])
     ->name('logout')
     ->middleware('auth');
+
+// Dashboard Dokter
+Route::middleware(['auth', 'role:dokter'])->prefix('dokter')->name('dokter.')->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dokter.dashboard');
+    })->name('dashboard');
+});
 
 // Dashboard Resepsionis
 Route::middleware(['auth', 'role:resepsionis'])->prefix('resepsionis')->name('resepsionis.')->group(function () {
