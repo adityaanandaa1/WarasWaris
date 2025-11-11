@@ -34,7 +34,7 @@
     <div class="dashboard-profile">
         <div class="profile-header">
             <h1 class="profile-title">Profil Saya</h1>
-            <i class="ri-edit-box-line"></i>
+            <i class="ri-edit-box-line" style="color: #FFFFFF; font-size:18px"></i>
         </div>
 
         <div class="profile-body">
