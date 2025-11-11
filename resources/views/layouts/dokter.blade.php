@@ -18,8 +18,7 @@
     
     
 </head>
-<body>
-    
+<body style="background: #E4EDFF; width:100vh;">
     <div class="container">
         <div class="sidebar">
          @include('partials.sidebar')
