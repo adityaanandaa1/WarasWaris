@@ -24,7 +24,9 @@
 </head>
 <body>
     
+    <main class="min-h-screen h-screen overflow-y-auto">
     @yield('content')
+    </main>
     
     @stack('scripts')
 </body>

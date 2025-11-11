@@ -27,18 +27,25 @@ class daftar_pasien_controller extends Controller
         // Ambil daftar pasien yang reservasi hari ini
        $daftar_pasien = reservasi::query()
             ->whereDate('tanggal_reservasi', $hari_ini)
-            ->whereIn('status', ['menunggu', 'sedang_diperiksa', 'selesai'])
+            ->whereIn('status', ['menunggu', 'sedang_dilayani', 'selesai'])
             ->with(['data_pasien:id,nama_pasien'])
-            ->orderBy('nomor_antrian', 'asc')
+            ->orderByRaw('CAST(nomor_antrian AS UNSIGNED) ASC')
             ->get();
+
+        $nomor_terakhir = reservasi::whereDate('tanggal_reservasi', $hari_ini)
+            ->where('status', 'selesai')
+            ->max('nomor_antrian'); // yang terakhir selesai
+
+        $sedang_dilayani = reservasi::whereDate('tanggal_reservasi', $hari_ini)
+            ->where('status', 'sedang_dilayani')
+            ->orderByDesc('updated_at')
+            ->value('nomor_antrian');
                 
         // Ambil info antrian
         $antrian = (object)[
-            'nomor_sekarang' => reservasi::where('tanggal_reservasi', $hari_ini)
-                ->where('status', 'sedang_diperiksa')
-                ->value('nomor_antrian') ?? 0,
-            'total_antrian' => reservasi::where('tanggal_reservasi', $hari_ini)
-                ->whereIn('status', ['menunggu', 'sedang_diperiksa', 'selesai'])
+            'nomor_sekarang' => $sedang_dilayani ?? $nomor_terakhir ?? 0,
+            'total_antrian' => reservasi::whereDate('tanggal_reservasi', $hari_ini)
+                ->whereIn('status', ['menunggu', 'sedang_dilayani', 'selesai'])
                 ->count()
         ];
         
@@ -51,17 +58,6 @@ class daftar_pasien_controller extends Controller
         ));
     }
 
-    public function mark_periksa(Reservasi $reservasi)
-    {
-        if ($reservasi->status === 'selesai') {
-            return back()->withErrors('Reservasi sudah selesai.');
-        }
-
-        $reservasi->update(['status' => 'sedang_diperiksa']);
-
-        return redirect()->route('dokter.buat_rekam_medis', $reservasi->id);
-    }
-    
     // Method untuk detail reservasi (nanti diisi)
     //public function detailReservasi($id)
     //{

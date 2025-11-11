@@ -22,7 +22,7 @@ return new class extends Migration
             $table->integer('nomor_antrian'); // Nomor antrian (1, 2, 3...)
             $table->text('keluhan')->nullable();
 
-            $table->enum('status', ['menunggu', 'sedang_diperiksa', 'selesai',   
+            $table->enum('status', ['menunggu', 'sedang_dilayani', 'selesai',   
                 'batal'])->default('menunggu');
             $table->timestamps();
         });

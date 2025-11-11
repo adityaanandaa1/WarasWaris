@@ -49,7 +49,7 @@ class reservasi_controller extends Controller
         //cek apakah sudah punya reservasi aktif
         $reservasi_ditemukan = \App\Models\reservasi::where('id_pasien', $pasien_aktif->id)
             ->where('tanggal_reservasi', $tanggal->format('Y-m-d'))
-            ->whereIn('status', ['menunggu', 'sedang_diperiksa'])
+            ->whereIn('status', ['menunggu', 'sedang_dilayani'])
             ->exists();
         
         if($reservasi_ditemukan) {
@@ -83,7 +83,7 @@ class reservasi_controller extends Controller
 
             // Ambil nomor terbesar yang TERPAKAI (menunggu/sedang_diperiksa/selesai)
             $maxTerpakai = \App\Models\reservasi::whereDate('tanggal_reservasi', $tanggal->toDateString())
-                ->whereIn('status', ['menunggu','sedang_diperiksa','selesai'])
+                ->whereIn('status', ['menunggu','sedang_dilayani','selesai'])
                 ->max('nomor_antrian');
 
             // Nomor berikutnya = max + 1 (null -> 0)
@@ -100,7 +100,7 @@ class reservasi_controller extends Controller
 
             // Update total antrian AKTIF (bukan selesai)
             $total_aktif = \App\Models\reservasi::whereDate('tanggal_reservasi', $tanggal->toDateString())
-                ->whereIn('status', ['menunggu','sedang_diperiksa'])
+                ->whereIn('status', ['menunggu','sedang_dilayani'])
                 ->count();
 
             $antrian->update(['total_antrian' => $total_aktif]);
@@ -124,10 +124,11 @@ class reservasi_controller extends Controller
         // (Opsional) validasi kepemilikan reservasi oleh dokter yang login
 
         // Update status
-        $reservasi->update(['status' => 'sedang_diperiksa']);
+        $reservasi->update(['status' => 'sedang_dilayani']);
 
         // Arahkan langsung ke form rekam medis
-        return redirect()->route('dokter.buat_rekam_medis', $reservasi->id)
+        return redirect()
+            ->route('dokter.buat_rekam_medis', $reservasi->id)
             ->with('success', 'Nomor antrian sedang dilayani. Silakan isi rekam medis.');
     }
 
@@ -152,7 +153,7 @@ class reservasi_controller extends Controller
             if ($antrian) {
                 // Hitung ulang total antrian yang masih aktif
                 $total_aktif = reservasi::where('tanggal_reservasi', $reservasi->tanggal_reservasi)
-                    ->whereIn('status', ['menunggu', 'sedang_diperiksa'])
+                    ->whereIn('status', ['menunggu', 'sedang_dilayani'])
                     ->count();
                 
                 $antrian->update(['total_antrian' => $total_aktif]);

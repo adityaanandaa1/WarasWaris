@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Dokter;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use App\Models\Reservasi;
 use App\Models\rekam_medis;
 use Illuminate\Http\Request;
@@ -44,12 +45,34 @@ class rekam_medis_controller extends Controller
             : now();
 
         $data['tanggal_pemeriksaan'] = $tglObj->toDateString();
-        $data['nomor_rekam_medis']   = 'RM-' . $tglObj->format('Ymd') . '-00' . $pasienId;
-
         // ---- KUNCI RELASI KE RESERVASI & PASIEN (SESUAIKAN NAMA KOLOM DI TABELMU) ----
         $data['id_reservasi'] = $reservasi->id;  // ganti ke 'id_reservasi' bila kolommu itu
         $data['id_pasien']    = $pasienId;       // ganti ke 'id_pasien' bila kolommu itu
-        // -------------------------------------------------------------------------------
+
+        $rekam = rekam_medis::firstOrNew(['id_reservasi' => $reservasi->id]);
+
+        DB::transaction(function () use (&$rekam, $data, $tglObj, $pasienId, $reservasi) {
+        if (!$rekam->exists || empty($rekam->nomor_rekam_medis)) {
+
+            // KUNCI semua RM milik pasien ini supaya urutan aman saat concurrency
+            // (memang lebih berat dari COUNT(*), tapi aman; jumlah per pasien biasanya kecil)
+            $existingRows = rekam_medis::where('id_pasien', $pasienId)
+                ->lockForUpdate()
+                ->select('id')
+                ->get();
+
+            $seqKe = $existingRows->count() + 1;                 // urutan RM ke-berapa untuk pasien ini
+            $SS    = str_pad($seqKe, 2, '0', STR_PAD_LEFT);      // 2 digit
+            $PPPP  = str_pad($pasienId, 4, '0', STR_PAD_LEFT);   // 4 digit
+
+            $rekam->nomor_rekam_medis = "RM-{$tglObj}-{$SS}-{$PPPP}";
+        }
+
+        // isi & simpan
+        $rekam->fill($data);
+        $rekam->save();
+    });
+
 
         // Simpan (1 reservasi = 1 rekam medis)
         rekam_medis::updateOrCreate(

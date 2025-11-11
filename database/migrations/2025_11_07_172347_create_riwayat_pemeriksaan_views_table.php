@@ -13,7 +13,7 @@ return new class extends Migration
      public function up()
     {
         DB::statement(<<<SQL
-            CREATE VIEW riwayat_pemeriksaan_view AS
+            CREATE OR REPLACE VIEW riwayat_pemeriksaan_view AS
             SELECT
                 rm.id,
                 rm.nomor_rekam_medis,

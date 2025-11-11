@@ -4,10 +4,10 @@
 
 @section('content')
 
-<div class="min-h-screen bg-[#5A81FA]  flex items-center justify-center p-10">
+<div class="min-h-screen bg-[#5A81FA]  overflow-y-auto flex justify-center p-10">
     
     <!-- Modal Container -->
-    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-7xl relative">
+    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-7xl relative overflow-auto">
         
         <!-- Close Button (X) -->
         <a 

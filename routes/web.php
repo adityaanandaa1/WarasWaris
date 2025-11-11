@@ -5,6 +5,7 @@ use App\Http\Controllers\auth_controller;
 use App\Http\Controllers\pasien\pasien_controller;
 use App\Http\Controllers\dokter\dokter_controller;
 use App\Http\Controllers\dokter\rekam_medis_controller;
+use App\Http\Controllers\Dokter\Reservasi_Controller_dokter;
 
 Route::get('/', function () {
     return view('homepage');
@@ -39,7 +40,10 @@ Route::middleware(['auth', 'role:pasien'])
         Route::post('/reservasi', [App\Http\Controllers\Pasien\reservasi_controller::class, 'buat_reservasi'])->name('buat_reservasi');
         Route::post('/reservasi/{id}/cancel', [App\Http\Controllers\Pasien\reservasi_controller::class, 'batalkan_reservasi'])->name('batalkan_reservasi');
         Route::get('/reservasi/riwayat', [App\Http\Controllers\Pasien\reservasi_controller::class, 'riwayat_reservasi'])->name('riwayat_reservasi');
+
+        
 });
+
 
 // Dashboard Dokter
 Route::middleware(['auth', 'role:dokter'])->prefix('dokter')->name('dokter.')
@@ -52,13 +56,15 @@ Route::middleware(['auth', 'role:dokter'])->prefix('dokter')->name('dokter.')
     Route::get('/daftar-pasien', [App\Http\Controllers\Dokter\daftar_pasien_controller::class, 'index'])
         ->name('daftar_pasien');
 
+    Route::patch('/reservasi/{reservasi}/periksa', [App\Http\Controllers\dokter\reservasi_controller_dokter::class, 'mark_periksa'])
+        ->name('reservasi.periksa');
+
     Route::get('/reservasi/{reservasi}/rekam-medis/buat', [rekam_medis_controller::class, 'buat_rekam_medis'])
         ->name('buat_rekam_medis'); 
     Route::post('/reservasi/{reservasi}/rekam-medis', [rekam_medis_controller::class, 'simpan_rekam_medis'])
         ->name('simpan_rekam_medis');
 
-    Route::patch('/reservasi/{reservasi}/periksa', [App\Http\Controllers\Pasien\reservasi_controller::class, 'mark_periksa'])
-        ->name('reservasi.periksa');
+    
 
    
 });
