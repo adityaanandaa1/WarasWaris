@@ -9,7 +9,7 @@ class Reservasi_Controller_dokter extends Controller
 {
     public function mark_periksa(Reservasi $reservasi)
     {
-        // Pastikan ∈ enum: menunggu, sedang_dilayani, selesai, ...
+        // Pastikan ∈ enum: menunggu, sedang_dilayani, selesai
         if ($reservasi->status === 'selesai') {
             return back()->withErrors('Reservasi sudah selesai.');
         }

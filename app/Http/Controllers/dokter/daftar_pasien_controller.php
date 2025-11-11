@@ -13,7 +13,7 @@ use App\Models\reservasi;
 
 class daftar_pasien_controller extends Controller
 {
-    public function index()
+    public function daftar_pasien()
     {
         $user = Auth::user();
         $dokter = $user->dokter ?? data_dokter::where('id_akun', $user->id)->first();

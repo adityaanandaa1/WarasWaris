@@ -27,14 +27,20 @@ class reservasi_controller extends Controller
             'keluhan.max' => 'Keluhan maksimal 500 karakter',
         ]);
 
-        $user = Auth::user();
         $pasien_aktif = $this->get_pasien_aktif();
+        
 
         if (!$pasien_aktif) {
             // Fallback ke pasien utama
+            $user = Auth::user();
             $pasien = $user->pasiens()->where('is_primary', true)->first();
-            $pasien_aktif = $pasien->id;
-            session(['pasien_aktif' => $pasien_aktif]);
+            
+            if (!$pasien) {
+            return redirect()->route('pasien.tambah_biodata')
+                ->withErrors(['error' => 'Lengkapi biodata pasien terlebih dahulu.']);
+    }
+            $pasien_aktif = $pasien;
+            session(['pasien_aktif_id' => $pasien_aktif->id]);
         }
 
         $tanggal = Carbon::parse($validated['tanggal_reservasi']);
@@ -60,7 +66,7 @@ class reservasi_controller extends Controller
 
         //cek jadwal praktik
         $nama_hari = $this->get_nama_hari($tanggal);
-        $jadwal = \App\Models\jadwal_praktik::where('hari', $nama_hari)
+        $jadwal = jadwal_praktik::where('hari', $nama_hari)
             ->where('is_active', true)
             ->first();
         
@@ -74,15 +80,15 @@ class reservasi_controller extends Controller
         DB::beginTransaction();
         try {
             // Kunci baris antrian hari ini agar anti race-condition
-            $antrian = \App\Models\antrian::firstOrCreate(
+            $antrian = antrian::firstOrCreate(
                 ['tanggal_antrian' => $tanggal->format('Y-m-d')],
                 ['nomor_sekarang' => 0, 'total_antrian' => 0]
             );
             // lock row
-            $antrian = \App\Models\antrian::where('id', $antrian->id)->lockForUpdate()->first();
+            $antrian = antrian::where('id', $antrian->id)->lockForUpdate()->first();
 
             // Ambil nomor terbesar yang TERPAKAI (menunggu/sedang_diperiksa/selesai)
-            $maxTerpakai = \App\Models\reservasi::whereDate('tanggal_reservasi', $tanggal->toDateString())
+            $maxTerpakai = reservasi::whereDate('tanggal_reservasi', $tanggal->toDateString())
                 ->whereIn('status', ['menunggu','sedang_dilayani','selesai'])
                 ->max('nomor_antrian');
 
@@ -90,7 +96,7 @@ class reservasi_controller extends Controller
             $nomor_antrian = (int) ($maxTerpakai ?? 0) + 1;
 
             // Buat reservasi
-            $reservasi = \App\Models\reservasi::create([
+            $reservasi = reservasi::create([
                 'id_pasien'         => $pasien_aktif->id,
                 'tanggal_reservasi' => $tanggal->toDateString(),
                 'nomor_antrian'     => $nomor_antrian,
@@ -119,19 +125,7 @@ class reservasi_controller extends Controller
         }
     }
 
-    public function mark_periksa(Reservasi $reservasi)
-    {
-        // (Opsional) validasi kepemilikan reservasi oleh dokter yang login
-
-        // Update status
-        $reservasi->update(['status' => 'sedang_dilayani']);
-
-        // Arahkan langsung ke form rekam medis
-        return redirect()
-            ->route('dokter.buat_rekam_medis', $reservasi->id)
-            ->with('success', 'Nomor antrian sedang dilayani. Silakan isi rekam medis.');
-    }
-
+   
     public function batalkan_reservasi($id)
     {
         $user = Auth::user();
@@ -181,7 +175,10 @@ class reservasi_controller extends Controller
         $user = Auth::user();
         $pasien = $this->get_pasien_aktif();
 
-        if (!$pasien) return redirect()->route('pasien.tambah_biodata');
+        if (!$pasien) return redirect()
+            ->route('pasien.tambah_biodata')
+            ->withErrors(['error' => 'Lengkapi biodata pasien terlebih dahulu.']);
+
 
         $riwayat = \App\Models\riwayat_pemeriksaan_view::where('id_pasien', $pasien->id)
             ->orderByDesc('tanggal_pemeriksaan')

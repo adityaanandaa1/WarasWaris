@@ -53,7 +53,7 @@ Route::middleware(['auth', 'role:dokter'])->prefix('dokter')->name('dokter.')
         ->name('dashboard');
     Route::put('/jadwal/{id}', [App\Http\Controllers\Dokter\dokter_controller::class, 'update_jadwal'])
         ->name('update.jadwal');
-    Route::get('/daftar-pasien', [App\Http\Controllers\Dokter\daftar_pasien_controller::class, 'index'])
+    Route::get('/daftar-pasien', [App\Http\Controllers\Dokter\daftar_pasien_controller::class, 'daftar_pasien'])
         ->name('daftar_pasien');
 
     Route::patch('/reservasi/{reservasi}/periksa', [App\Http\Controllers\dokter\reservasi_controller_dokter::class, 'mark_periksa'])
