@@ -24,6 +24,6 @@ pickerContainer.addEventListener("click", (e) => {
         datePicker.close();
     } else {
         datePicker.open();
-        input.focus(); // biar si datepicker langsung aktif di input
+        input.focus();
     }
 });
