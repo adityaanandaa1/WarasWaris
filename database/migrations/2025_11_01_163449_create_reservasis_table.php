@@ -24,6 +24,8 @@ return new class extends Migration
 
             $table->enum('status', ['menunggu', 'sedang_dilayani', 'selesai',   
                 'batal'])->default('menunggu');
+            
+                
             $table->timestamps();
         });
     }

@@ -53,6 +53,12 @@ class akun_user extends Authenticatable
         return $this->pasiens();
     }
 
+    public function primary_pasien() // wali = pasien utama
+    {
+        return $this->hasOne(data_pasien::class, 'id_akun', 'id')
+                    ->where('is_primary', true);
+    }
+
     /**
      * Relasi: User punya 1 Dokter (hasOne)
      * 

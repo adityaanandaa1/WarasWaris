@@ -2,6 +2,27 @@
 
 @section('content')
 
+<style>
+    /* Sembunyikan elemen dengan atribut hidden */
+  [hidden] { display: none !important; }
+
+  /* Overlay layar penuh */
+  #reservasiOverlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,.5);
+    z-index: 9999;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  /* Kotak modal sederhana */
+  #reservasiBox {
+    background: #fff;
+    width: 90%; max-width: 600px;
+    padding: 16px;
+    border-radius: 8px;
+  }
+</style>
+
 <div class="parent">
         <div class="header-date"> 
             <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -34,26 +55,27 @@
         </h3>
 
         <div class="antrean-main" id="patientList">
-            @forelse($daftar_pasien as $pasien)
+            @forelse($daftar_pasien as $reservasi)
             <div class="antrean-daftar patient-item">
                 <div class="antrean-data">
                     <div class="data-nomor">
-                        <span>{{ $pasien->nomor_antrian }}</span>
+                        <span>{{ $reservasi->nomor_antrian }}</span>
                     </div>
 
                     <div class="data-nama">
-                        <h4 class="patient-name">{{ $pasien->nama_pasien }}</h4>
+                        <h4 class="patient-name">{{ $reservasi->nama_pasien }}</h4>
                     </div>
 
                     <div class="data-status">
-                        <a >
-                            Lihat Reservasi
-                        </a>
+                          <button onclick="openReservasiModal({{ $reservasi->getKey() }})" 
+                                       class="px-4 py-2  border-2 border-blue-500 text-blue-600 rounded-lg font-semibold hover:bg-blue-50 transition-colors duration-200 flex items-center gap-2">
+                                        Lihat Reservasi
+                            </button>
                         
-                        @if ($pasien->status === 'selesai')
+                        @if ($reservasi->status === 'selesai')
                             <span>Selesai</span>
                         @else
-                            <form action="{{ route('dokter.reservasi.periksa', $pasien->id) }}" method="POST">
+                            <form action="{{ route('dokter.reservasi.periksa', $reservasi->id) }}" method="POST">
                                 @csrf
                                 @method('PATCH')
                                 <button type="submit" class="periksa-btn">
@@ -113,6 +135,33 @@
             </div>
         </div>
 
+        <!-- Modal polos (disembunyikan default) -->
+        <div id="reservasiOverlay" hidden>
+            <div id="reservasiBox" role="dialog" aria-modal="true" aria-labelledby="reservasiTitle">
+                <div style="display:flex;justify-content:space-between;align-items:center; margin-bottom:8px;">
+                <h3 id="reservasiTitle" style="margin:0;">Detail Reservasi</h3>
+                <button type="button" onclick="closeReservasiModal()">Tutup</button>
+                </div>
+
+                <div id="reservasi-loading">Memuat data…</div>
+                <div id="reservasi-error" style="display:none;color:red;"></div>
+
+                <div id="reservasi-content" hidden>
+                <div>Nama Pasien: <span id="m-nama-pasien">-</span></div>
+                <div>Nama Wali: <span id="m-nama-wali">-</span></div>
+                <div>Jenis Kelamin: <span id="m-jenis-kelamin">-</span></div>
+                <div>Tanggal Lahir: <span id="m-tanggal-lahir">-</span></div>
+                <div>Umur: <span id="m-umur">-</span></div>
+                <div>Gol. Darah: <span id="m-golongan-darah">-</span></div>
+                <div>Pekerjaan: <span id="m-pekerjaan">-</span></div>
+                <div>Alamat: <span id="m-alamat">-</span></div>
+                <div>No. Telepon: <span id="m-no-telepon">-</span></div>
+                <div>Keluhan: <span id="m-keluhan">-</span></div>
+                <div>Catatan: <span id="m-catatan">-</span></div>
+                </div>
+            </div>
+        </div>
+
 </div>
 
 <script>
@@ -130,6 +179,97 @@ document.getElementById('searchInput').addEventListener('keyup', function() {
         }
     });
 });
+
+// Buka modal + fetch detail berdasarkan ID reservasi
+function openReservasiModal(reservasiId) {
+    const overlay = document.getElementById('reservasiOverlay');
+    const loadEl  = document.getElementById('reservasi-loading');
+    const errEl   = document.getElementById('reservasi-error');
+    const cntEl   = document.getElementById('reservasi-content');
+
+    // Reset display
+    errEl.textContent = '';
+    errEl.style.display = 'none';
+    loadEl.hidden = false;
+    cntEl.hidden  = true;
+
+    // Show overlay
+    overlay.hidden = false;
+    document.body.style.overflow = 'hidden';
+
+    // Build URL dengan route helper Laravel
+    const url = `{{ route('dokter.reservasi.detail', ':id') }}`.replace(':id', reservasiId);
+    
+    console.log('Fetching URL:', url); // Debug
+
+    fetch(url, { 
+        method: 'GET',
+        headers: { 
+            'Accept': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        },
+        credentials: 'same-origin'
+    })
+    .then(async (response) => {
+        console.log('Response status:', response.status); // Debug
+        
+        if (!response.ok) {
+            const text = await response.text();
+            console.error('Error response:', text);
+            throw new Error(`HTTP ${response.status}: ${text.substring(0, 100)}`);
+        }
+        return response.json();
+    })
+    .then((data) => {
+        console.log('Data received:', data); // Debug
+        
+        // Populate modal content
+        document.getElementById('m-nama-pasien').textContent = data.nama_pasien || '-';
+        document.getElementById('m-nama-wali').textContent = data.nama_wali || '-';
+        document.getElementById('m-jenis-kelamin').textContent = data.jenis_kelamin || '-';
+        document.getElementById('m-tanggal-lahir').textContent = data.tanggal_lahir || '-';
+        document.getElementById('m-umur').textContent = data.umur ? (data.umur + ' tahun') : '-';
+        document.getElementById('m-golongan-darah').textContent = data.golongan_darah || '-';
+        document.getElementById('m-pekerjaan').textContent = data.pekerjaan || '-';
+        document.getElementById('m-alamat').textContent = data.alamat || '-';
+        document.getElementById('m-no-telepon').textContent = data.no_telepon || '-';
+        document.getElementById('m-keluhan').textContent = data.keluhan || '-';
+        document.getElementById('m-catatan').textContent = data.catatan_pasien || 'Tidak ada catatan';
+
+        // Show content
+        loadEl.hidden = true;
+        cntEl.hidden = false;
+    })
+    .catch((error) => {
+        console.error('Fetch error:', error); // Debug
+        loadEl.hidden = true;
+        errEl.textContent = 'Gagal memuat detail reservasi: ' + error.message;
+        errEl.style.display = 'block';
+    });
+
+    // Close on overlay click
+    overlay.onclick = function (ev) {
+        if (ev.target === overlay) closeReservasiModal();
+    };
+
+    // Close with ESC key
+    document.addEventListener('keydown', escCloser);
+}
+
+function escCloser(ev) {
+    if (ev.key === 'Escape') {
+        closeReservasiModal();
+    }
+}
+
+function closeReservasiModal() {
+    const overlay = document.getElementById('reservasiOverlay');
+    overlay.hidden = true;
+    document.body.style.overflow = '';
+    document.removeEventListener('keydown', escCloser);
+}
+
 </script>
 
 @endsection

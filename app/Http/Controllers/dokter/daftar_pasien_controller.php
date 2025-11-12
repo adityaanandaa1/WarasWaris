@@ -5,10 +5,13 @@ namespace App\Http\Controllers\Dokter;
 use App\Http\Controllers\Controller;
 use App\Models\data_dokter;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use App\Models\jadwal_praktik;
 use App\Models\reservasi;
+use App\Models\data_pasien;
+use App\Models\akun_user;
 
 
 class daftar_pasien_controller extends Controller
@@ -25,7 +28,7 @@ class daftar_pasien_controller extends Controller
         $jadwal = jadwal_praktik::where('hari', $nama_hari)->first();
         
         // Ambil daftar pasien yang reservasi hari ini
-       $daftar_pasien = reservasi::query()
+        $daftar_pasien = reservasi::query()
             ->whereDate('tanggal_reservasi', $hari_ini)
             ->whereIn('status', ['menunggu', 'sedang_dilayani', 'selesai'])
             ->with(['data_pasien:id,nama_pasien'])
@@ -58,17 +61,104 @@ class daftar_pasien_controller extends Controller
         ));
     }
 
-    // Method untuk detail reservasi (nanti diisi)
-    //public function detailReservasi($id)
-    //{
-        // TODO: Implementasi detail reservasi
-        //return view('dokter.detail-reservasi', compact('id'));
-    //}
+    public function detail_reservasi($id)
+    {
+        try {
+            // Log untuk debugging
+            Log::info("Mengakses detail reservasi ID: {$id}");
+
+            // Eager load relasi yang dibutuhkan
+            $reservasi = reservasi::with([
+                'data_pasien:id,id_akun,nama_pasien,jenis_kelamin,tanggal_lahir_pasien,golongan_darah,pekerjaan,alamat,no_telepon,catatan_pasien'
+            ])->findOrFail($id);
+
+            // Validasi data pasien ada
+            if (!$reservasi->data_pasien) {
+                Log::error("Data pasien tidak ditemukan untuk reservasi ID: {$id}");
+                return response()->json([
+                    'error' => 'Data pasien tidak ditemukan'
+                ], 404);
+            }
+
+            // Hitung umur dari tanggal lahir
+            $tanggal_lahir_pasien = null;
+            $umur = null;
+            
+            if ($reservasi->data_pasien->tanggal_lahir_pasien) {
+                try {
+                    $tanggal_lahir_pasien = Carbon::parse($reservasi->data_pasien->tanggal_lahir_pasien);
+                    $umur = $tanggal_lahir_pasien->age;
+                } catch (\Exception $e) {
+                    Log::warning("Gagal parse tanggal lahir: " . $e->getMessage());
+                }
+            }
+
+            // Cari nama wali/pemilik akun
+            $nama_wali = '-';
+
+            $akun_wali = $reservasi->data_pasien ?? null; // jaga-jaga null
+            if ($akun_wali && $akun_wali->id_akun) {
+                // 1) Coba ambil pasien utama (is_primary = true)
+                $wali = data_pasien::where('id_akun', $akun_wali->id_akun)
+                        ->where('is_primary', true)
+                        ->first('nama_pasien');
+
+                // 2) Kalau belum ada yang ditandai primary, ambil satu yang ada
+                if (!$wali) {
+                    $wali = data_pasien::where('id_akun', $akun_wali->id_akun)
+                            ->orderBy('id', 'asc')
+                            ->first('nama_pasien');
+                }
+
+                // 3) Pilih kolom nama yang tersedia
+                if ($wali) {
+                    $nama_wali = $wali->nama_pasien ??  '-';
+                }
+            }
+
+            // Format jenis kelamin
+            $jenis_kelamin = $reservasi->data_pasien->jenis_kelamin;
+            if ($jenis_kelamin === 'L' || strtolower($jenis_kelamin) === 'laki-laki') {
+                $jenis_kelamin = 'Laki-laki';
+            } elseif ($jenis_kelamin === 'P' || strtolower($jenis_kelamin) === 'perempuan') {
+                $jenis_kelamin = 'Perempuan';
+            }
+
+            // Siapkan data response
+            $data = [
+                'keluhan' => $reservasi->keluhan ?? '-',
+                'nama_pasien' => $reservasi->data_pasien->nama_pasien ?? '-',
+                'nama_wali' => $nama_wali,
+                'jenis_kelamin' => $jenis_kelamin,
+                'tanggal_lahir' => $tanggal_lahir_pasien ? $tanggal_lahir_pasien->format('d F Y') : '-',
+                'golongan_darah' => $reservasi->data_pasien->golongan_darah ?? 'Tidak diketahui',
+                'umur' => $umur,
+                'pekerjaan' => $reservasi->data_pasien->pekerjaan ?? 'Tidak bekerja',
+                'alamat' => $reservasi->data_pasien->alamat ?? '-',
+                'no_telepon' => $reservasi->data_pasien->no_telepon ?? '-',
+                'catatan_pasien' => $reservasi->data_pasien->catatan_pasien ?? 'Tidak ada catatan',
+            ];
+
+            Log::info("Data berhasil disiapkan untuk reservasi ID: {$id}");
+
+            return response()->json($data);
+
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            Log::error("Reservasi tidak ditemukan: {$id}");
+            return response()->json([
+                'error' => 'Reservasi tidak ditemukan'
+            ], 404);
+
+        } catch (\Exception $e) {
+            Log::error("Error pada detail_reservasi: " . $e->getMessage());
+            Log::error("Stack trace: " . $e->getTraceAsString());
+            
+            return response()->json([
+                'error' => 'Terjadi kesalahan saat memuat data: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
     
-    // Method untuk form rekam medis (nanti diisi)
-    //public function createRekamMedis($id)
-    //{
-    //    // TODO: Implementasi form rekam medis
-    //    return view('dokter.rekam-medis.create', compact('id'));
-    //}
+
 }

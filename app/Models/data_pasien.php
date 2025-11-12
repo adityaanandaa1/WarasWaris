@@ -39,14 +39,8 @@ class data_pasien extends Model
         'is_primary' => 'boolean', // Otomatis jadi true/false
     ];
 
-    // ========== RELASI ==========
 
-    /**
-     * Relasi: Pasien milik 1 User (belongsTo)
-     * 
-     * Kebalikan dari hasMany di User
-     * Contoh: $pasien->user (ambil data akun pemilik)
-     */
+
     public function user()
     {
         return $this->belongsTo(\App\Models\akun_user::class, 'id_akun');
@@ -60,6 +54,19 @@ class data_pasien extends Model
     public function Reservasis()
     {
         return $this->hasMany(reservasi::class);
+    }
+
+    public function reservasi_terbaru()
+    {
+        return $this->hasOne(\App\Models\reservasi::class, 'id_pasien', 'id')
+            ->latestOfMany('tanggal_reservasi'); 
+    }
+
+    public function reservasi_aktif()
+    {
+        return $this->hasOne(\App\Models\reservasi::class, 'id_pasien', 'id')
+            ->whereIn('status', ['menunggu','sedang_diperiksa'])
+            ->latestOfMany('tanggal_reservasi');
     }
 
     /**

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\data_pasien;
+use App\Models\akun_user;
 
 class reservasi extends Model
 {
@@ -34,6 +35,11 @@ class reservasi extends Model
         return $this->belongsTo(data_pasien::class, 'id_pasien', 'id');
     }
 
+    public function user()    
+    {
+        return $this->belongsTo(akun_user::class, 'id_user', 'id');
+    }
+
     /**
      * Relasi: Reservasi punya 1 Rekam Medis (hasOne)
      * 
@@ -52,21 +58,11 @@ class reservasi extends Model
 
     // ========== SCOPE (Query Helper) ==========
 
-    /**
-     * Scope untuk filter reservasi hari ini
-     * 
-     * Penggunaan: Reservasi::hariIni()->get()
-     */
     public function scopeHariIni($query)
     {
         return $query->whereDate('tanggal_reservasi', today());
     }
 
-    /**
-     * Scope untuk filter berdasarkan status
-     * 
-     * Penggunaan: Reservasi::status('menunggu')->get()
-     */
     public function scopeStatus($query, $status)
     {
         return $query->where('status', $status);
