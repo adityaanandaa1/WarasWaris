@@ -15,7 +15,7 @@
                 </a>
             </li>
             <li class="sidebar-item">
-                <a href="{{ route('dokter.daftar_pasien') }}" class="sidebar-link">
+                <a href="{{ route('dokter.daftar_antrian') }}" class="sidebar-link">
                     <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M2.08333 4.16667H0V18.75C0 19.8958 0.9375 20.8333 2.08333 20.8333H16.6667V18.75H2.08333V4.16667ZM18.75 0H6.25C5.10417 0 4.16667 0.9375 4.16667 2.08333V14.5833C4.16667 15.7292 5.10417 16.6667 6.25 16.6667H18.75C19.8958 16.6667 20.8333 15.7292 20.8333 14.5833V2.08333C20.8333 0.9375 19.8958 0 18.75 0ZM17.7083 9.375H13.5417V13.5417H11.4583V9.375H7.29167V7.29167H11.4583V3.125H13.5417V7.29167H17.7083V9.375Z" fill="white"/>
                     </svg>    

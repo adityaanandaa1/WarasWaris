@@ -85,7 +85,7 @@ class rekam_medis_controller extends Controller
 
         // Kembali ke daftar pasien
         return redirect()
-            ->route('dokter.daftar_pasien')
+            ->route('dokter.daftar_antrian')
             ->with('success', 'Rekam medis tersimpan dan pasien ditandai selesai.');
     }
 }

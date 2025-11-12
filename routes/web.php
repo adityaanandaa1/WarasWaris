@@ -6,7 +6,7 @@ use App\Http\Controllers\pasien\pasien_controller;
 use App\Http\Controllers\dokter\dokter_controller;
 use App\Http\Controllers\dokter\rekam_medis_controller;
 use App\Http\Controllers\dokter\reservasi_Controller_dokter;
-use App\Http\Controllers\dokter\daftar_pasien_controller;
+use App\Http\Controllers\dokter\daftar_antrian_controller;
 
 Route::get('/', function () {
     return view('homepage');
@@ -54,9 +54,9 @@ Route::middleware(['auth', 'role:dokter'])->prefix('dokter')->name('dokter.')
         ->name('dashboard');
     Route::put('/jadwal/{id}', [dokter_controller::class, 'update_jadwal'])
         ->name('update.jadwal');
-    Route::get('/daftar-pasien', [daftar_pasien_controller::class, 'daftar_pasien'])
-        ->name('daftar_pasien');
-    Route::get('/reservasi/{id}/detail', [daftar_pasien_controller::class, 'detail_reservasi'])
+    Route::get('/daftar-antrian', [daftar_antrian_controller::class, 'daftar_antrian'])
+        ->name('daftar_antrian');
+    Route::get('/reservasi/{id}/detail', [daftar_antrian_controller::class, 'detail_reservasi'])
         ->name('reservasi.detail');
 
     Route::patch('/reservasi/{reservasi}/periksa', [reservasi_controller_dokter::class, 'mark_periksa'])

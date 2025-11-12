@@ -50,12 +50,12 @@
         <h3 class="antrean-header">
             Daftar Pasien Hari Ini
             <span class="antrean-jumlah">
-                {{ $daftar_pasien->count() }} Pasien
+                {{ $daftar_antrian->count() }} Pasien
             </span>
         </h3>
 
         <div class="antrean-main" id="patientList">
-            @forelse($daftar_pasien as $reservasi)
+            @forelse($daftar_antrian as $reservasi)
             <div class="antrean-daftar patient-item">
                 <div class="antrean-data">
                     <div class="data-nomor">

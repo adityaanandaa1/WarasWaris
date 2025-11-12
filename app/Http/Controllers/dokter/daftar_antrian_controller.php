@@ -14,9 +14,9 @@ use App\Models\data_pasien;
 use App\Models\akun_user;
 
 
-class daftar_pasien_controller extends Controller
+class daftar_antrian_controller extends Controller
 {
-    public function daftar_pasien()
+    public function daftar_antrian()
     {
         $user = Auth::user();
         $dokter = $user->dokter ?? data_dokter::where('id_akun', $user->id)->first();
@@ -28,7 +28,7 @@ class daftar_pasien_controller extends Controller
         $jadwal = jadwal_praktik::where('hari', $nama_hari)->first();
         
         // Ambil daftar pasien yang reservasi hari ini
-        $daftar_pasien = reservasi::query()
+        $daftar_antrian = reservasi::query()
             ->whereDate('tanggal_reservasi', $hari_ini)
             ->whereIn('status', ['menunggu', 'sedang_dilayani', 'selesai'])
             ->with(['data_pasien:id,nama_pasien'])
@@ -52,11 +52,11 @@ class daftar_pasien_controller extends Controller
                 ->count()
         ];
         
-        return view('dokter.daftar_pasien', compact(
+        return view('dokter.daftar_antrian', compact(
             'hari_ini',
             'nama_hari',
             'jadwal',
-            'daftar_pasien',
+            'daftar_antrian',
             'antrian'
         ));
     }
