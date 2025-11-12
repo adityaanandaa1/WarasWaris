@@ -1,6 +1,10 @@
 @extends('layouts.dokter')
 
 @section('content')
+
+@php($hari_ini = $hari_ini ?? \Carbon\Carbon::today())
+@php($nama_hari = $nama_hari ?? $hari_ini->locale('id')->translatedFormat('l'))
+
 <div class="dashboard-doctor">
     <div class="welcome-section">
         <div class="welcome-date">
@@ -14,7 +18,10 @@
 
         <div class="welcome-greeting">
             <div class="greeting-text">
-                <h1 class="greeting-title">Selamat Datang, Dr. Waris!</h1>
+                <div class="greeting-title">
+                    <h1 class="greeting-title-subtitle">Selamat Datang,</h1>
+                    <h1 class="greeting-title-subtitle">{{ Auth::user()->dokter->nama_dokter }}</h1>
+                </div>
                 <p class="greeting-subtitle">Semoga harimu indah!</p>
             </div>
             <div class="greeting-illustration">
@@ -77,8 +84,8 @@
 
     <div class="dashboard-schedule">
         <h2 class="schedule-title">Jam Praktik</h2>
-        <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <div class="dropdown-schedule">
+            <button class="btn dropdown-toggle dropdown-schedule" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                 11 November 2025
             </button>
             <ul class="dropdown-menu">
@@ -100,34 +107,50 @@
             </div>
         </div>
 
-        <button type="button" class="btn btn-primary btn-sm">Atur Ulang</button>
+        <button type="button" class="btn btn-primary btn-sm btn-schedule">Atur Ulang</button>
     </div>
 
     <div class="dashboard-queue">
         <h1 class="queue-title">Nomor Antrean Berjalan</h1>
-        <h1 class="queue-number">24</h1>
+        <h1 class="queue-number">{{ $antrian->nomor_sekarang ?? 0 }}</h1>
     </div>
 
     <div class="dashboard-report">
         <h1 class="report-title">Statistik Laporan</h1>
         <div class="report-item">
-            <h1 class="report-number">24</h1>
+            <h1 class="report-number-1">{{ $total_reservasi }}</h1>
             <h2 class="report-label">Total Reservasi</h2>
         </div> 
 
         <div class="report-item">
-            <h1 class="report-number">23</h1>
+            <h1 class="report-number-2">{{ $pasien_terlayani }}</h1>
             <h2 class="report-label">Pasien Terlayani</h2>
         </div>
 
         <div class="report-item">
-            <h1 class="report-number">1</h1>
+            <h1 class="report-number-3">{{ $pasien_batal }}</h1>
             <h2 class="report-label">Pasien Tidak Hadir</h2>
         </div>
     </div>
 
     <div class="dashboard-calendar">
-        Kalender
+        <div class="calendar-header">
+            <h1 class="calendar-title">Kalender Saya</h1>
+            <div class="dropdown-calendar">
+            <button class="btn dropdown-toggle dropdown-calendar" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                November
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Action</a></li>
+                <li><a class="dropdown-item" href="#">Another action</a></li>
+                <li><a class="dropdown-item" href="#">Something else here</a></li>
+            </ul>
+        </div>
+        </div>
+
+        <div class="calendar-body">
+            KALENDER
+        </div>
     </div>
 </div>
 @endsection
