@@ -1,186 +1,121 @@
-@extends('layouts.dokter')
+@extends('layouts.antrean')
 
 @section('content')
 
-@php($hari_ini = $hari_ini ?? \Carbon\Carbon::today())
-@php($nama_hari = $nama_hari ?? $hari_ini->locale('id')->translatedFormat('l'))
-
-<div class="w-full bg-gradient-to-br from-blue-50 to-indigo-100 h-screen overflow-y-auto py-6 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-7xl mx-auto">
-        
-        <!-- Header with Date -->
-        <div class="bg-white rounded-2xl shadow-lg p-6 mb-6">
-            <div class="flex items-center justify-between">
-                <div>
-                    <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-2">Daftar Pasien Antrian</h1>
-                    <div class="flex items-center gap-2 text-gray-600">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                        </svg>
-                        <span class="font-medium">{{ $nama_hari }}, {{ $hari_ini->format('d F Y') }}</span>
-                    </div>
-                </div>
-                
-                <!-- Search Box -->
-                <div class="relative w-full max-w-md">
-                    <input type="text" 
-                           id="searchInput"
-                           placeholder="Cari pasien berdasarkan nama..."
-                           class="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none transition-colors">
-                    <svg class="w-5 h-5 text-gray-400 absolute left-4 top-1/2 transform -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <!-- Main Grid Layout -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<div class="parent">
+        <div class="header-date"> 
+            <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g clip-path="url(#clip0_291_1315)">
+                    <path d="M24.9478 4.64169H21.8535V6.96243C21.8535 7.18592 21.8095 7.40722 21.724 7.61371C21.6384 7.82019 21.5131 8.0078 21.355 8.16583C21.197 8.32387 21.0094 8.44922 20.8029 8.53475C20.5964 8.62028 20.3751 8.6643 20.1516 8.6643C19.9281 8.6643 19.7068 8.62028 19.5004 8.53475C19.2939 8.44922 19.1063 8.32387 18.9482 8.16583C18.7902 8.0078 18.6648 7.82019 18.5793 7.61371C18.4938 7.40722 18.4498 7.18592 18.4498 6.96243V4.64169H9.43757V6.96243C9.43757 7.41379 9.25827 7.84667 8.93911 8.16583C8.61994 8.485 8.18707 8.6643 7.7357 8.6643C7.28434 8.6643 6.85146 8.485 6.5323 8.16583C6.21313 7.84667 6.03383 7.41379 6.03383 6.96243V4.64169H2.93952C2.75542 4.6396 2.57278 4.67444 2.40238 4.74416C2.23199 4.81388 2.07731 4.91707 1.94749 5.04761C1.81767 5.17815 1.71534 5.3334 1.64657 5.50418C1.57779 5.67495 1.54396 5.85779 1.54707 6.04187V23.3546C1.544 23.5354 1.57658 23.7151 1.64296 23.8833C1.70933 24.0515 1.8082 24.2051 1.93391 24.3351C2.05962 24.4651 2.20972 24.5691 2.37563 24.6411C2.54154 24.7131 2.72 24.7517 2.90084 24.7547H24.9478C25.1287 24.7517 25.3071 24.7131 25.473 24.6411C25.6389 24.5691 25.789 24.4651 25.9148 24.3351C26.0405 24.2051 26.1393 24.0515 26.2057 23.8833C26.2721 23.7151 26.3047 23.5354 26.3016 23.3546V6.04187C26.3047 5.86103 26.2721 5.68137 26.2057 5.51313C26.1393 5.34489 26.0405 5.19137 25.9148 5.06135C25.789 4.93133 25.6389 4.82734 25.473 4.75534C25.3071 4.68333 25.1287 4.64471 24.9478 4.64169ZM7.7357 20.1133H6.18854V18.5661H7.7357V20.1133ZM7.7357 16.2454H6.18854V14.6982H7.7357V16.2454ZM7.7357 12.3775H6.18854V10.8303H7.7357V12.3775ZM12.3772 20.1133H10.83V18.5661H12.3772V20.1133ZM12.3772 16.2454H10.83V14.6982H12.3772V16.2454ZM12.3772 12.3775H10.83V10.8303H12.3772V12.3775ZM17.0186 20.1133H15.4715V18.5661H17.0186V20.1133ZM17.0186 16.2454H15.4715V14.6982H17.0186V16.2454ZM17.0186 12.3775H15.4715V10.8303H17.0186V12.3775ZM21.6601 20.1133H20.113V18.5661H21.6601V20.1133ZM21.6601 16.2454H20.113V14.6982H21.6601V16.2454ZM21.6601 12.3775H20.113V10.8303H21.6601V12.3775Z" fill="white"/>
+                    <path d="M7.73549 7.73599C7.94066 7.73599 8.13742 7.65449 8.2825 7.50942C8.42757 7.36434 8.50907 7.16758 8.50907 6.96241V2.32094C8.50907 2.11578 8.42757 1.91901 8.2825 1.77394C8.13742 1.62887 7.94066 1.54736 7.73549 1.54736C7.53033 1.54736 7.33356 1.62887 7.18849 1.77394C7.04342 1.91901 6.96191 2.11578 6.96191 2.32094V6.96241C6.96191 7.16758 7.04342 7.36434 7.18849 7.50942C7.33356 7.65449 7.53033 7.73599 7.73549 7.73599Z" fill="white"/>
+                    <path d="M20.1134 7.73599C20.3186 7.73599 20.5154 7.65449 20.6604 7.50942C20.8055 7.36434 20.887 7.16758 20.887 6.96241V2.32094C20.887 2.11578 20.8055 1.91901 20.6604 1.77394C20.5154 1.62887 20.3186 1.54736 20.1134 1.54736C19.9083 1.54736 19.7115 1.62887 19.5664 1.77394C19.4213 1.91901 19.3398 2.11578 19.3398 2.32094V6.96241C19.3398 7.16758 19.4213 7.36434 19.5664 7.50942C19.7115 7.65449 19.9083 7.73599 20.1134 7.73599Z" fill="white"/>
+                </g>
+                <defs>
+                    <clipPath id="clip0_291_1315">
+                        <rect width="27.8488" height="27.8488" fill="white"/>
+                    </clipPath>
+                </defs>
+            </svg>
+            <span>{{ $hari_ini->format('d F Y') }}</span>
+        </div>         
             
-            <!-- Left Column - Daftar Pasien (2/3 width) -->
-            <div class="lg:col-span-2">
-                <div class="bg-white rounded-2xl shadow-lg p-6">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                        <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
-                        </svg>
-                        Daftar Pasien Hari Ini
-                        <span class="ml-auto bg-blue-100 text-blue-700 text-sm font-semibold px-3 py-1 rounded-full">
-                            {{ $daftar_pasien->count() }} Pasien
-                        </span>
-                    </h3>
+        <div class="search">
+            <input type="text" 
+                    id="searchInput"
+                    placeholder="Cari">
+        </div>
+            
+    <div class="antrean">
+        <h3 class="antrean-header">
+            Daftar Pasien Hari Ini
+            <span class="antrean-jumlah">
+                {{ $daftar_pasien->count() }} Pasien
+            </span>
+        </h3>
 
-                    <!-- List Pasien -->
-                    <div class="space-y-3" id="patientList">
-                        @forelse($daftar_pasien as $pasien)
-                        <div class="patient-item bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 hover:shadow-md transition-shadow duration-200 border border-blue-100">
-                            <div class="flex items-center gap-4">
-                                <!-- Nomor Antrian -->
-                                <div class="flex-shrink-0 w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg">
-                                    <span class="text-3xl font-bold text-white">{{ $pasien->nomor_antrian }}</span>
-                                </div>
+        <div class="antrean-main" id="patientList">
+            @forelse($daftar_pasien as $pasien)
+            <div class="antrean-daftar patient-item">
+                <div class="antrean-data">
+                    <div class="data-nomor">
+                        <span>{{ $pasien->nomor_antrian }}</span>
+                    </div>
 
-                                <!-- Info Pasien -->
-                                <div class="flex-grow">
-                                    <h4 class="text-lg font-bold text-gray-800 patient-name">{{ $pasien->nama_pasien }}</h4>
-                                </div>
+                    <div class="data-nama">
+                        <h4 class="patient-name">{{ $pasien->nama_pasien }}</h4>
+                    </div>
 
-                                <!-- Action Buttons -->
-                                <div class="flex-shrink-0 flex gap-2">
-                                    <a 
-                                       class="px-4 py-2 bg-white border-2 border-blue-500 text-blue-600 rounded-lg font-semibold hover:bg-blue-50 transition-colors duration-200 flex items-center gap-2">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                                        </svg>
-                                        Lihat Reservasi
-                                    </a>
-                                    @if ($pasien->status === 'selesai')
-                                    <span class="px-3 py-2 bg-green-100 text-green-700 rounded-lg font-semibold">Selesai</span>
-
-                                    @else
-                                        <form action="{{ route('dokter.reservasi.periksa', $pasien->id) }}" method="POST" style="display:inline">
-                                        @csrf
-                                        @method('PATCH')
-                                        <button type="submit"
-                                                class="px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700">
-                                            Periksa
-                                        </button>
-                                        </form>
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
-                        @empty
-                        <div class="text-center py-12">
-                            <svg class="w-24 h-24 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/>
-                            </svg>
-                            <p class="text-gray-500 text-lg font-medium">Belum ada pasien antrian hari ini</p>
-                        </div>
-                        @endforelse
+                    <div class="data-status">
+                        <a >
+                            Lihat Reservasi
+                        </a>
+                        
+                        @if ($pasien->status === 'selesai')
+                            <span>Selesai</span>
+                        @else
+                            <form action="{{ route('dokter.reservasi.periksa', $pasien->id) }}" method="POST">
+                                @csrf
+                                @method('PATCH')
+                                <button type="submit" class="periksa-btn">
+                                    Periksa
+                                </button>
+                            </form>
+                        @endif
                     </div>
                 </div>
             </div>
+            @empty
+            <div class="data-kosong">
+                <p>Belum ada pasien antrian hari ini</p>
+            </div>
+            @endforelse
+        </div>
+    </div>
 
-            <!-- Right Column - Info Cards -->
-            <div class="space-y-6">
-                
-                <!-- Card Jam Praktik -->
-                <div class="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-lg font-semibold text-gray-800 flex items-center gap-2">
-                            <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                            </svg>
-                            Jam Praktik
-                        </h3>
+        <div class="jam">
+            @if($jadwal && $jadwal->is_active)
+            <h3>Jam Praktik</h3>
+            <div class="jam-value">
+                <div class="value-wrap">
+                    <div class="value-mulai">
+                        <p class="value-text">Buka</p>
+                        <p class="value-jam">{{ $jadwal->jam_mulai ?? '-' }}</p>
                     </div>
-
-                    @if($jadwal && $jadwal->is_active)
-                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6">
-                        <div class="flex justify-center items-center gap-4">
-                            <div class="text-center">
-                                <p class="text-xs text-gray-500 mb-1">Buka</p>
-                                <p class="text-3xl font-bold text-blue-600">{{ $jadwal->jam_mulai ?? '-' }}</p>
-                            </div>
-                            <div class="text-2xl font-bold text-blue-500">-</div>
-                            <div class="text-center">
-                                <p class="text-xs text-gray-500 mb-1">Tutup</p>
-                                <p class="text-3xl font-bold text-blue-600">{{ $jadwal->jam_selesai ?? '-' }}</p>
-                            </div>
-                        </div>
-                    </div>
-                    @else
-                    <div class="bg-gray-100 rounded-xl p-6 text-center">
-                        <svg class="w-16 h-16 text-gray-400 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                        </svg>
-                        <p class="text-gray-600 font-medium">Tidak Ada Jadwal</p>
-                    </div>
-                    @endif
-                </div>
-
-                <!-- Card Nomor Antrian Berjalan -->
-                <div class="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                        <svg class="w-6 h-6 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
-                        </svg>
-                        Nomor Antrian Berjalan
-                    </h3>
-                    
-                    <div class="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-8 text-center">
-                        <p class="text-7xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-                            {{ $antrian->nomor_sekarang ?? 0 }}
-                        </p>
-                        <p class="text-sm text-gray-600 mt-2">Sedang Dilayani</p>
+                    <div class="value-strip">-</div>
+                    <div class="value-tutup">
+                        <p class="value-text">Tutup</p>
+                        <p class="value-jam">{{ $jadwal->jam_selesai ?? '-' }}</p>
                     </div>
                 </div>
+            </div>
+            @else
+            <div class="jam-kosong">                      
+                <p>Tidak Ada Jadwal</p>
+            </div>
+            @endif
+        </div>
 
-                <!-- Card Total Antrian -->
-                <div class="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl shadow-lg p-6 text-white">
-                    <h3 class="text-lg font-semibold mb-4 flex items-center gap-2">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
-                        </svg>
-                        Jumlah Antrian
-                    </h3>
-                    
-                    <div class="bg-white bg-opacity-20 backdrop-blur-sm rounded-xl p-8 text-center">
-                        <p class="text-6xl font-bold">{{ $antrian->total_antrian ?? 0 }}</p>
-                        <p class="text-sm mt-2 text-blue-100">Total Pasien Hari Ini</p>
-                    </div>
-                </div>
-
+        <div class="nomor-antrean">
+            <h3>Nomor Antrean Berjalan</h3>
+            
+            <div class="nomor-wrap">
+                <p class="nomor-value">{{ $antrian->nomor_sekarang ?? 0 }}</p>
+                <p class="nomor-text">Sedang Dilayani</p>
             </div>
         </div>
 
-    </div>
+        <div class="jumlah-antrean">
+            <h3>Jumlah Antrean</h3>
+            
+            <div class="jumlah-wrap">
+                <p class="jumlah-angka">{{ $antrian->total_antrian ?? 0 }}</p>
+                <p class="jumlah-text">Pasien Hari Ini</p>
+            </div>
+        </div>
+
 </div>
 
 <script>
-// Real-time Search Functionality
 document.getElementById('searchInput').addEventListener('keyup', function() {
     const searchValue = this.value.toLowerCase();
     const patientItems = document.querySelectorAll('.patient-item');
