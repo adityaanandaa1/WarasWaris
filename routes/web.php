@@ -7,6 +7,7 @@ use App\Http\Controllers\dokter\dokter_controller;
 use App\Http\Controllers\dokter\rekam_medis_controller;
 use App\Http\Controllers\dokter\reservasi_Controller_dokter;
 use App\Http\Controllers\dokter\daftar_antrian_controller;
+use App\Http\Controllers\dokter\daftar_pasien_controller;
 
 Route::get('/', function () {
     return view('homepage');
@@ -67,7 +68,12 @@ Route::middleware(['auth', 'role:dokter'])->prefix('dokter')->name('dokter.')
         ->name('buat_rekam_medis'); 
     Route::post('/reservasi/{reservasi}/rekam-medis', [rekam_medis_controller::class, 'simpan_rekam_medis'])
         ->name('simpan_rekam_medis');
-
+    
+    
+    Route::get('/daftar-pasien', [daftar_pasien_controller::class, 'daftar_pasien'])
+        ->name('daftar_pasien');
+    Route::get('/pasien/{id}/detail', [daftar_pasien_controller::class, 'detail_pasien'])
+        ->name('pasien.detail');
 
     Route::get('/laporan', [App\Http\Controllers\Dokter\laporan_controller::class, 'laporan'])
         ->name('laporan');

@@ -39,7 +39,7 @@ class dokter_controller extends Controller
 
         $hari_ini = Carbon::today();
         $total_reservasi = reservasi::where('tanggal_reservasi', $hari_ini)
-            ->where('status', ['menunggu', 'sedang_dilayani'])
+            ->where('status', ['menunggu', 'sedang_dilayani', 'selesai'])
             ->count();
         $pasien_terlayani = reservasi::where('tanggal_reservasi', $hari_ini)
             ->where('status', 'selesai')
@@ -268,7 +268,10 @@ class dokter_controller extends Controller
         }
             
         // Jika tidak ada, ambil pasien utama
-        $pasien_utama = $user->pasiens()->where('is_primary', true)->first();
+        $user = Auth::user()->user; // relasi user() ada di data_dokter
+        $pasien_utama = $user
+            ? $user->pasiens()->where('is_primary', true)->first()
+            : null;
             
         // Simpan ke session untuk selanjutnya
         if ($pasien_utama) {

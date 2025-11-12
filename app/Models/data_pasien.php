@@ -46,6 +46,13 @@ class data_pasien extends Model
         return $this->belongsTo(\App\Models\akun_user::class, 'id_akun');
     }
 
+    public function primary_pasien() // wali = pasien utama
+    {
+        return $this->hasOne(data_pasien::class, 'id_akun', 'id')
+                    ->where('is_primary', true);
+    }
+
+
     /**
      * Relasi: Pasien punya banyak Reservasi (hasMany)
      * 
@@ -59,6 +66,7 @@ class data_pasien extends Model
     public function reservasi_terbaru()
     {
         return $this->hasOne(\App\Models\reservasi::class, 'id_pasien', 'id')
+            ->where('status', 'selesai')
             ->latestOfMany('tanggal_reservasi'); 
     }
 

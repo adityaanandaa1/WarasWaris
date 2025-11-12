@@ -7,31 +7,27 @@
     </div>
 
 <div class="parent">
+    
+        <form id="filterForm" method="GET" action="{{ route('dokter.laporan') }}">
     <div class="tanggal">
-        <form method="GET" action="{{ route('dokter.laporan') }}">
         <label>Tanggal</label>
-        <input type="date" 
+        <input id="tanggalInput" type="date" 
                 name="tanggal" 
                 value="{{ $tanggal_dipilih->format('Y-m-d') }}">
     </div>
 
     <div class="search">
         <label>Cari Pasien</label>
-        <input type="text" 
+        <input id="searchInput" type="text" 
                 name="search" 
                 value="{{ $search ?? '' }}"
                 placeholder="Nama atau No. Telepon">
     </div>
 
             <button type="submit">
-                <i class="fas fa-search"></i>filter
+                <i class="fas fa-search"></i>Cari
             </button>
 
-            @if($search)
-            <a href="{{ route('dokter.laporan', ['tanggal' => $tanggal_dipilih->format('Y-m-d')]) }}">
-                Reset
-            </a>
-            @endif
         </form>
     
 
@@ -212,7 +208,6 @@
 </div>
 </div>
 
-@push('scripts')
 <script>
 function lihatRekamMedis(id) {
     const modal = document.getElementById('modalRekamMedis');
@@ -291,6 +286,41 @@ function lihatRekamMedis(id) {
         });
 }
 
+    (function(){
+        const form    = document.getElementById('filterForm');
+        const input   = document.getElementById('searchInput');
+        const tanggal = document.getElementById('tanggalInput');
+        const baseURL = "{{ route('dokter.laporan') }}";
+
+        // Enter otomatis submit (default behavior form), kita hanya urus reset.
+        input.addEventListener('input', () => {
+        if (input.value.trim() === '') {
+            const params = new URLSearchParams();
+
+            // pertahankan tanggal (ambil dari input/form)
+            if (tanggal && tanggal.value) {
+            params.set('tanggal', tanggal.value);
+            }
+
+            const url = params.toString() ? `${baseURL}?${params.toString()}` : baseURL;
+
+            // pakai replace agar tidak menumpuk di riwayat back/forward
+            window.location.replace(url);
+        }
+        });
+
+        input.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            e.preventDefault();
+            input.value = '';
+            const params = new URLSearchParams();
+            if (tanggal && tanggal.value) params.set('tanggal', tanggal.value);
+            const url = params.toString() ? `${baseURL}?${params.toString()}` : baseURL;
+            window.location.replace(url);
+        }
+        });
+    })();
+
 function tutupModal() {
     document.getElementById('modalRekamMedis').style.display = 'none';
 }
@@ -312,5 +342,4 @@ setInterval(() => {
 }, 30000);
 @endif
 </script>
-@endpush
 @endsection
