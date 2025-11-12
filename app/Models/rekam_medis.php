@@ -42,7 +42,7 @@ class rekam_medis extends Model
      */
     public function Data_pasien()
     {
-        return $this->belongsTo(data_pasien::class);
+        return $this->belongsTo(data_pasien::class, 'id_pasien', 'id');
     }
 
     /**
@@ -50,7 +50,7 @@ class rekam_medis extends Model
      */
     public function Reservasi()
     {
-        return $this->belongsTo(reservasi::class);
+       return $this->belongsTo(reservasi::class, 'id_reservasi', 'id');
     }
 
     // ========== ACCESSOR (Data yang Pasien Boleh Lihat) ==========

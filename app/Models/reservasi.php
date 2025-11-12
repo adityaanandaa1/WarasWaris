@@ -41,7 +41,7 @@ class reservasi extends Model
      */
     public function Rekam_medis()
     {
-        return $this->hasOne(rekam_medis::class);
+        return $this->hasOne(rekam_medis::class, 'id_reservasi', 'id');
     }
 
     public function getNamaPasienAttribute()

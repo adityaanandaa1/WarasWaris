@@ -64,9 +64,12 @@ Route::middleware(['auth', 'role:dokter'])->prefix('dokter')->name('dokter.')
     Route::post('/reservasi/{reservasi}/rekam-medis', [rekam_medis_controller::class, 'simpan_rekam_medis'])
         ->name('simpan_rekam_medis');
 
-    
 
-   
+    Route::get('/laporan', [App\Http\Controllers\Dokter\laporan_controller::class, 'laporan'])
+        ->name('laporan');
+
+    Route::get('/rekam-medis/{id}/detail', [App\Http\Controllers\Dokter\laporan_controller::class, 'detail_rekam_medis'])
+        ->name('rekam_medis.detail');   
 });
 
 
