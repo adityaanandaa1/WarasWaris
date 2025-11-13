@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\auth_controller;
 use App\Http\Controllers\pasien\pasien_controller;
+use App\Http\Controllers\pasien\riwayat_pemeriksaan_controller;
 use App\Http\Controllers\dokter\dokter_controller;
 use App\Http\Controllers\dokter\rekam_medis_controller;
 use App\Http\Controllers\dokter\reservasi_Controller_dokter;
@@ -37,6 +38,9 @@ Route::middleware(['auth', 'role:pasien'])
         Route::delete('/biodata/{id}', [pasien_controller::class, 'hapus_biodata'])->name('hapus_biodata');
         Route::post('/ganti-profil/{id}', [pasien_controller::class, 'ganti_profil'])->name('ganti_profil');
         
+        Route::get('/riwayat', [riwayat_pemeriksaan_controller::class, 'riwayat_pemeriksaan'])->name('riwayat');
+        Route::get('/riwayat/{reservasiId}/detail', [riwayat_pemeriksaan_controller::class, 'detail'])->name('riwayat.detail');
+        Route::get('/riwayat-pemeriksaan', [riwayat_pemeriksaan_controller::class, 'riwayat_pemeriksaan'])->name('riwayat');
         
         Route::get('/reservasi', [App\Http\Controllers\Pasien\reservasi_controller::class, 'index_reservasi'])->name('index_reservasi');
         Route::post('/reservasi', [App\Http\Controllers\Pasien\reservasi_controller::class, 'buat_reservasi'])->name('buat_reservasi');
@@ -53,7 +57,7 @@ Route::middleware(['auth', 'role:dokter'])->prefix('dokter')->name('dokter.')
     // Dashboard
     Route::get('/dashboard', [dokter_controller::class, 'dashboard'])
         ->name('dashboard');
-    Route::put('/jadwal/{id}', [dokter_controller::class, 'update_jadwal'])
+    Route::put('/jadwal', [dokter_controller::class, 'update_jadwal'])
         ->name('update.jadwal');
     Route::get('/daftar-antrian', [daftar_antrian_controller::class, 'daftar_antrian'])
         ->name('daftar_antrian');
@@ -74,6 +78,7 @@ Route::middleware(['auth', 'role:dokter'])->prefix('dokter')->name('dokter.')
         ->name('daftar_pasien');
     Route::get('/pasien/{id}/detail', [daftar_pasien_controller::class, 'detail_pasien'])
         ->name('pasien.detail');
+        
 
     Route::get('/laporan', [App\Http\Controllers\Dokter\laporan_controller::class, 'laporan'])
         ->name('laporan');
@@ -104,4 +109,3 @@ Route::middleware(['auth', 'role:resepsionis'])->prefix('resepsionis')->name('re
         return view('resepsionis.dashboard');
     })->name('dashboard');
 });
-

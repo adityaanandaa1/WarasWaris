@@ -77,14 +77,22 @@
     <div class="dashboard-schedule">
         <h2 class="schedule-title">Jam Praktik</h2>
         <div class="dropdown-schedule">
-            <button class="btn dropdown-toggle dropdown-schedule" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                11 November 2025
-            </button>
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Action</a></li>
-                <li><a class="dropdown-item" href="#">Another action</a></li>
-                <li><a class="dropdown-item" href="#">Something else here</a></li>
-            </ul>
+            <form action="{{ route('dokter.dashboard') }}" method="GET" class="dropdown-schedule-form">
+                <div class="schedule-date-wrapper" style="position:relative; display:inline-block;">
+                    <input
+                        type="date"
+                        name="tanggal"
+                        id="dashboardDateInput"
+                        value="{{ $hari_ini->format('Y-m-d') }}"
+                        onchange="this.form.submit()"
+                        aria-label="Pilih tanggal dashboard"
+                        style="position:absolute; inset:0; width:100%; height:100%; opacity:0; cursor:pointer; z-index:2;"
+                    >
+                    <div class="btn dropdown-toggle dropdown-schedule" aria-hidden="true">
+                        {{ $hari_ini->translatedFormat('d F Y') }}
+                    </div>
+                </div>
+            </form>
         </div>
 
         @if($jadwal && $jadwal->is_active)
@@ -177,7 +185,7 @@
             </button>
         </div>
 
-        <form action="{{ route('dokter.update.jadwal',  $jadwal->id ?? 0) }}"  method="POST" class="modal-form">
+        <form action="{{ route('dokter.update.jadwal') }}"  method="POST" class="modal-form">
             @csrf
             @method('PUT')
 

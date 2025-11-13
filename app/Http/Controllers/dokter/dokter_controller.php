@@ -16,49 +16,75 @@ use Carbon\Carbon;
 
 class dokter_controller extends Controller
 {
-    public function dashboard()
+    public function dashboard(Request $request)
     {
         $user = Auth::user();
         $dokter = $user->data;
 
-        //data hari ini
-        $hari_ini = today();
+        //tanggal dipilih (default hari ini)
+        $hari_ini = $request->filled('tanggal')
+            ? Carbon::parse($request->input('tanggal'), 'Asia/Jakarta')->startOfDay()
+            : Carbon::today('Asia/Jakarta');
+
+        $hari_ini->locale('id');
         $nama_hari = $this->get_nama_hari($hari_ini);
+        $hari_enum = strtolower($nama_hari);
 
         //jadwal hari ini
-        $jadwal = jadwal_praktik::where('hari', $nama_hari)->first();
+        $jadwal = jadwal_praktik::firstOrCreate(
+            [
+                'hari' => $hari_enum,
+                'tanggal_jadwal_praktik' => $hari_ini->toDateString(),
+            ],
+            [
+                'jam_mulai' => '09:00:00',
+                'jam_selesai' => '21:00:00',
+                'is_active' => true,
+            ]
+        );
 
-        $antrian = antrian::where('tanggal_antrian', $hari_ini)->first();
-        if (!$antrian) {
+        $antrian = antrian::whereDate('tanggal_antrian', $hari_ini)->first();
+        if (!$antrian && $hari_ini->isToday()) {
             $antrian = antrian::create([
-                'tanggal_antrian' => $hari_ini,
+                'tanggal_antrian' => $hari_ini->toDateString(),
                 'nomor_sekarang' => 0,
                 'total_antrian' => 0,
             ]);
         }
 
-        $hari_ini = Carbon::today();
-        $total_reservasi = reservasi::where('tanggal_reservasi', $hari_ini)
-            ->where('status', ['menunggu', 'sedang_dilayani', 'selesai'])
+        $nomor_sekarang = $this->get_nomor_antrian_sekarang($hari_ini);
+        if ($antrian) {
+            $antrian->nomor_sekarang = $nomor_sekarang;
+        } else {
+            $antrian = (object) [
+                'nomor_sekarang' => $nomor_sekarang,
+                'total_antrian' => reservasi::whereDate('tanggal_reservasi', $hari_ini)
+                    ->whereIn('status', ['menunggu', 'sedang_dilayani'])
+                    ->count(),
+            ];
+        }
+
+        $total_reservasi = reservasi::whereDate('tanggal_reservasi', $hari_ini)
+            ->whereIn('status', ['menunggu', 'sedang_dilayani', 'selesai'])
             ->count();
-        $pasien_terlayani = reservasi::where('tanggal_reservasi', $hari_ini)
+        $pasien_terlayani = reservasi::whereDate('tanggal_reservasi', $hari_ini)
             ->where('status', 'selesai')
             ->count();
-        $pasien_batal = reservasi::where('tanggal_reservasi', $hari_ini)
+        $pasien_batal = reservasi::whereDate('tanggal_reservasi', $hari_ini)
             ->where('status', 'batal')
             ->count();
 
-        $reservasis = reservasi::where('tanggal_reservasi', $hari_ini)
+        $reservasis = reservasi::whereDate('tanggal_reservasi', $hari_ini)
             ->whereIn('status', ['menunggu', 'sedang_diperiksa'])
             ->with('data_pasien')
             ->orderBy('nomor_antrian')
             ->get();
 
         $statistik = [
-            'total_reservasi' => reservasi::where('tanggal_reservasi', $hari_ini)->count(),
-            'menunggu' => reservasi::where('tanggal_reservasi', $hari_ini)->where('status', 'menunggu')->count(),
-            'selesai' => reservasi::where('tanggal_reservasi', $hari_ini)->where('status', 'selesai')->count(),
-            'batal' => reservasi::where('tanggal_reservasi', $hari_ini)->where('status', 'batal')->count(),
+            'total_reservasi' => reservasi::whereDate('tanggal_reservasi', $hari_ini)->count(),
+            'menunggu' => reservasi::whereDate('tanggal_reservasi', $hari_ini)->where('status', 'menunggu')->count(),
+            'selesai' => reservasi::whereDate('tanggal_reservasi', $hari_ini)->where('status', 'selesai')->count(),
+            'batal' => reservasi::whereDate('tanggal_reservasi', $hari_ini)->where('status', 'batal')->count(),
         ];
 
         return view('dokter.dashboard', compact(
@@ -77,7 +103,7 @@ class dokter_controller extends Controller
     }
     
 
-    public function update_jadwal(Request $request, $id)
+    public function update_jadwal(Request $request)
     {
         $validated = $request->validate([
             'tanggal' => 'required|date',
@@ -90,19 +116,33 @@ class dokter_controller extends Controller
         DB::beginTransaction();
 
         try {
-            $jadwal = jadwal_praktik::findOrFail($id);
+            $tanggal = Carbon::parse($validated['tanggal'], 'Asia/Jakarta')->startOfDay();
+            $nama_hari = $this->get_nama_hari($tanggal);
+            $hari_enum = strtolower($nama_hari);
+
+            $jadwal = jadwal_praktik::firstOrCreate(
+                [
+                    'hari' => $hari_enum,
+                    'tanggal_jadwal_praktik' => $tanggal->toDateString(),
+                ],
+                [
+                    'jam_mulai' => '09:00:00',
+                    'jam_selesai' => '21:00:00',
+                    'is_active' => true,
+                ]
+            );
 
             if ($validated['status'] == 'libur') {
                 // Set libur
                 $jadwal->update([
-                'is_active' => false,
-                'jam_mulai' => null,
-                'jam_selesai' => null,
-            ]);
+                    'is_active' => false,
+                    'jam_mulai' => null,
+                    'jam_selesai' => null,
+                ]);
 
-            // Simpan catatan libur (bisa pakai tabel terpisah atau kolom tambahan)
-            // Untuk sekarang kita pakai session flash
-            $message = "Jadwal {$jadwal->hari} diset LIBUR. Catatan: " . ($validated['catatan'] ?? '-');
+                // Simpan catatan libur (bisa pakai tabel terpisah atau kolom tambahan)
+                // Untuk sekarang kita pakai session flash
+                $message = "Jadwal {$nama_hari} diset LIBUR. Catatan: " . ($validated['catatan'] ?? '-');
             } else {
                 $jadwal->update([
                     'is_active' => true,
@@ -110,7 +150,7 @@ class dokter_controller extends Controller
                     'jam_selesai' => $validated['jam_selesai'],
                 ]);
 
-                $message = "Jadwal {$jadwal->hari} diperbarui: {$validated['jam_mulai']} - {$validated['jam_selesai']}";
+                $message = "Jadwal {$nama_hari} diperbarui: {$validated['jam_mulai']} - {$validated['jam_selesai']}";
             }
 
             DB::commit();
@@ -247,6 +287,24 @@ class dokter_controller extends Controller
             
             return back()->withErrors(['error' => 'Gagal menyimpan rekam medis'])->withInput();
         }
+    }
+
+        private function get_nomor_antrian_sekarang(Carbon $tanggal): int
+    {
+        $sedang_dilayani = reservasi::whereDate('tanggal_reservasi', $tanggal)
+            ->whereIn('status', ['sedang_dilayani', 'sedang_diperiksa'])
+            ->orderByDesc('updated_at')
+            ->value('nomor_antrian');
+
+        if ($sedang_dilayani) {
+            return (int) $sedang_dilayani;
+        }
+
+        $terakhir_selesai = reservasi::whereDate('tanggal_reservasi', $tanggal)
+            ->where('status', 'selesai')
+            ->max('nomor_antrian');
+
+        return (int) ($terakhir_selesai ?? 0);
     }
 
         private function get_pasien_aktif()

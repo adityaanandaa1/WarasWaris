@@ -18,8 +18,9 @@ class laporan_controller extends Controller
         $dokter = $user->dokter;
 
         // Ambil tanggal dari request atau default hari ini
-        $tanggal_dipilih = $request->input('tanggal') 
-            ? Carbon::parse($request->input('tanggal'))
+        $tanggal_input    = $request->input('tanggal');
+        $tanggal_dipilih = $tanggal_input
+            ? Carbon::parse($tanggal_input)
             : today();
 
         // Ambil keyword search jika ada
@@ -32,8 +33,10 @@ class laporan_controller extends Controller
         $jadwal = jadwal_praktik::where('hari', $nama_hari)->first();
 
         // Query dasar untuk reservasi pada tanggal yang dipilih
-        $query = reservasi::whereDate('tanggal_reservasi', $tanggal_dipilih)
-            ->with(['data_pasien', 'Rekam_medis']);
+        $baseQuery = reservasi::whereDate('tanggal_reservasi', $tanggal_dipilih->toDateString())
+            ->with(['data_pasien', 'rekam_medis']);
+        
+        $query = clone $baseQuery;
 
         if ($search) {
             $query->whereHas('data_pasien', function($q) use ($search) {
@@ -68,26 +71,15 @@ class laporan_controller extends Controller
         }
 
         // Statistik
-        $total_reservasi = reservasi::whereDate('tanggal_reservasi', $tanggal_dipilih)
-            ->count();
-
-        $pasien_terlayani = reservasi::whereDate('tanggal_reservasi', $tanggal_dipilih)
-            ->where('status', 'selesai')
-            ->count();
-
-        $pasien_tidak_datang = reservasi::whereDate('tanggal_reservasi', $tanggal_dipilih)
-            ->where('status', 'batal')
-            ->count();
+        $total_reservasi     = (clone $baseQuery)->count();
+        $pasien_terlayani    = (clone $baseQuery)->where('status', 'selesai')->count();
+        $pasien_tidak_datang = (clone $baseQuery)->where('status', 'batal')->count();
 
         $statistik_status = [
-            'menunggu' => reservasi::whereDate('tanggal_reservasi', $tanggal_dipilih)
-                ->where('status', 'menunggu')
-                ->count(),
-            'sedang_dilayani' => reservasi::whereDate('tanggal_reservasi', $tanggal_dipilih)
-                ->where('status', 'sedang_dilayani')
-                ->count(),
-            'selesai' => $pasien_terlayani,
-            'batal' => $pasien_tidak_datang,
+            'menunggu'         => (clone $baseQuery)->where('status', 'menunggu')->count(),
+            'sedang_dilayani'  => (clone $baseQuery)->where('status', 'sedang_dilayani')->count(),
+            'selesai'          => $pasien_terlayani,
+            'batal'            => $pasien_tidak_datang,
         ];
 
         return view('dokter.laporan', compact(

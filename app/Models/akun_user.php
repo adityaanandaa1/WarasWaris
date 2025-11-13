@@ -43,14 +43,14 @@ class akun_user extends Authenticatable
 
     protected $table = 'akun_users';
 
+    public function data_pasiens()
+    {
+        return $this->pasiens();
+    }
+
     public function pasiens()
     {
         return $this->hasMany(\App\Models\data_pasien::class, 'id_akun', 'id');
-    }
-
-     public function data_pasiens()
-    {
-        return $this->pasiens();
     }
 
     public function primary_pasien() // wali = pasien utama

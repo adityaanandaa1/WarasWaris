@@ -6,25 +6,33 @@
         <h3>Laporan</h3>
     </div>
 
-    <div class="header">
-        <div class="header-left">
-            <div class="date-selector">
-                <input id="tanggalInput" type="date" 
-                        name="tanggal" 
-                        value="{{ $tanggal_dipilih->format('Y-m-d') }}">
+    <form method="GET" action="{{ route('dokter.laporan') }}">
+        <div class="header">
+            <div class="header-left">
+                <div class="date-selector">
+                    <input id="tanggalInput" type="date" 
+                            name="tanggal" 
+                            value="{{ $tanggal_dipilih->format('Y-m-d') }}">
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="search">
+                    <input id="searchInput" 
+                        type="text" 
+                        name="search" 
+                        value="{{ $search ?? '' }}"
+                        placeholder="Cari"
+                        autocomplete="off">
+                </div>
+            </div>
+
+            <div class="button">
+                <button type="submit">
+                    <i class="fas fa-search"></i>filter
+                </button>
             </div>
         </div>
-        <div class="header-right">
-            <div class="search">
-                <input id="searchInput" 
-                       type="text" 
-                       name="search" 
-                       value="{{ $search ?? '' }}"
-                       placeholder="Cari"
-                       autocomplete="off">
-            </div>
-        </div>
-    </div>
+    </form>
 
     <div class="stats-container">
         <div class="stat-card jam-praktik">

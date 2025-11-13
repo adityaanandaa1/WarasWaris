@@ -295,7 +295,7 @@
             </button>
         </div>
 
-        <form action="{{ route('dokter.update.jadwal',  $jadwal->id ?? 0) }}"  method="POST" class="space-y-4">
+        <form action="{{ route('dokter.update.jadwal') }}"  method="POST" class="space-y-4">
             @csrf
             @method('PUT')
 

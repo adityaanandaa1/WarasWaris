@@ -58,7 +58,7 @@ class data_pasien extends Model
      * 
      * Contoh: $pasien->reservasis (semua reservasi pasien ini)
      */
-    public function Reservasis()
+    public function reservasis()
     {
         return $this->hasMany(reservasi::class);
     }
@@ -85,5 +85,14 @@ class data_pasien extends Model
     public function Rekam_medis()
     {
         return $this->hasMany(rekam_medis::class);
+    }
+
+    public function riwayat_pemeriksaan()
+    {
+        return $this->reservasis()
+            ->with('rekam_medis')
+            ->where('status', 'selesai')
+            ->whereHas('rekam_medis')
+            ->orderBy('tanggal_reservasi', 'desc');
     }
 }

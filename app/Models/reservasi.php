@@ -45,7 +45,7 @@ class reservasi extends Model
      * 
      * 1 reservasi = 1 kunjungan = 1 rekam medis
      */
-    public function Rekam_medis()
+    public function rekam_medis()
     {
         return $this->hasOne(rekam_medis::class, 'id_reservasi', 'id');
     }
@@ -54,6 +54,30 @@ class reservasi extends Model
     {
         return optional($this->data_pasien)->nama_pasien
             ?? optional($this->data_pasien)->nama_lengkap;
+    }
+
+    /**
+     * Scope: Hanya yang sudah selesai
+     */
+    public function scopeSelesai($query)
+    {
+        return $query->where('status', 'selesai');
+    }
+
+    /**
+     * Scope: Yang punya rekam medis
+     */
+    public function scopeDenganRekamMedis($query)
+    {
+        return $query->whereHas('rekam_medis');
+    }
+
+    /**
+     * Check apakah reservasi punya rekam medis
+     */
+    public function hasRekamMedis()
+    {
+        return $this->rekam_medis()->exists();
     }
 
     // ========== SCOPE (Query Helper) ==========

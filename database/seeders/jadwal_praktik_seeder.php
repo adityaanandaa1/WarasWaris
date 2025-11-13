@@ -14,40 +14,27 @@ class jadwal_praktik_seeder extends Seeder
      */
     public function run(): void
     {
-        // Daftar hari dalam seminggu
-        $hari_dalam_seminggu = [
-            'Senin',  
-            'Selasa',
-            'Rabu',
-            'Kamis',
-            'Jumat',
-            'Sabtu',
-            'Minggu',
+        $hariMap = [
+            'monday'    => 'senin',
+            'tuesday'   => 'selasa',
+            'wednesday' => 'rabu',
+            'thursday'  => 'kamis',
+            'friday'    => 'jumat',
+            'saturday'  => 'sabtu',
+            'sunday'    => 'minggu',
         ];
+        $awalHariIni = Carbon::now('Asia/Jakarta')->startOfDay();
+        $jumlahHari  = 28; // 4 minggu
 
-        $offset = [
-            'Senin'=>0,'Selasa'=>1,'Rabu'=>2,'Kamis'=>3,'Jumat'=>4,'Sabtu'=>5,'Minggu'=>6
-        ];
+        for ($i = 0; $i < $jumlahHari; $i++) {
+            $tanggal = $awalHariIni->copy()->addDays($i);
+            $hariInggris = strtolower($tanggal->format('l'));
+            $hari = $hariMap[$hariInggris];
 
-        $awalMinggu = Carbon::now('Asia/Jakarta')->startOfWeek(Carbon::MONDAY);
-
-        foreach ($hari_dalam_seminggu as $hari) {
-        $tanggal_jadwal_praktik = $awalMinggu->copy()->addDays($offset[$hari])->toDateString();  
-        //Hitung tanggal minggu ini mulai Senin lalu tambah offset harinya.
-
-        if ($hari === 'Minggu') {
-                // Libur
-                jadwal_praktik::updateOrCreate(
-                    ['hari' => $hari, 'tanggal_jadwal_praktik' => $tanggal_jadwal_praktik], //tanggal hari ini
-                    ['jam_mulai' => null, 'jam_selesai' => null, 'is_active' => false] // NILAI
-                );
-            } else {
-                // Buka 08:00 - 16:00
-                jadwal_praktik::updateOrCreate(
-                    ['hari' => $hari, 'tanggal_jadwal_praktik' => $tanggal_jadwal_praktik],  // KUNCI
-                    ['jam_mulai' => '08:00:00', 'jam_selesai' => '16:00:00', 'is_active' => true]
-                );
-            }
-         }
+            jadwal_praktik::updateOrCreate(
+                ['hari' => $hari, 'tanggal_jadwal_praktik' => $tanggal->toDateString()],
+                ['jam_mulai' => '09:00:00', 'jam_selesai' => '21:00:00', 'is_active' => true]
+            );
+        }
     }
 }

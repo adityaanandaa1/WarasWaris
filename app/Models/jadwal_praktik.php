@@ -42,7 +42,7 @@ class jadwal_praktik extends Model
     public function scopeForDate($q, $date)
     {
         $date = $date instanceof Carbon ? $date->toDateString() : $date;
-        return $q->whereDate('tanggal', $date);
+        return $q->whereDate('tanggal_jadwal_praktik', $date);
     }
 
     // cepat: jadwal hari ini

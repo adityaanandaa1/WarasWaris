@@ -69,7 +69,7 @@
 
             <div class="riwayat-header">
                 <h3>Lihat kembali riwayat reservasi anda!</h3>
-                <p>Data ini akan muncul setiap kali Anda membuat reservasi</p>
+                <p>Data ini akan muncul setelah dokter menyelesaikan rekam medis Anda</p>
             </div>
 
             @if($reservasis->isEmpty())
@@ -79,7 +79,7 @@
                 </div>
             @else
                 @foreach($reservasis as $reservasi)
-                    <div class="riwayat-item" onclick="window.location.href='#'">
+                    <div class="riwayat-item" onclick="window.location.href='{{ route('pasien.riwayat.detail', $reservasi->id) }}'">
                         <div class="riwayat-item-content">
                             <div style="display: flex; align-items: center; gap: 15px;">
                                 <div class="riwayat-icon">
@@ -88,7 +88,7 @@
                                     </svg>
                                 </div>
                                 <div class="riwayat-info">
-                                    <h4>{{ \Carbon\Carbon::parse($reservasi->tanggal_reservasi)->locale('id')->isoFormat('D MMMM YYYY') }}</h4>
+                                    <h4> {{ \Carbon\Carbon::parse($reservasi->tanggal_reservasi)->locale('id')->isoFormat('dddd, D MMMM YYYY') }}</h4>
                                     <p>Ketuk untuk melihat lebih detail tentang catatan riwayat pemeriksaan</p>
                                 </div>
                             </div>

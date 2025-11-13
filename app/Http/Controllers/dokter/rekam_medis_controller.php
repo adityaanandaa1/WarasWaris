@@ -65,7 +65,8 @@ class rekam_medis_controller extends Controller
             $SS    = str_pad($seqKe, 2, '0', STR_PAD_LEFT);      // 2 digit
             $PPPP  = str_pad($pasienId, 4, '0', STR_PAD_LEFT);   // 4 digit
 
-            $rekam->nomor_rekam_medis = "RM-{$tglObj}-{$SS}-{$PPPP}";
+            $tglCompact = $tglObj->format('Ymd'); // contoh: 20251113
+            $rekam->nomor_rekam_medis = "RM-{$tglCompact}-{$SS}-{$PPPP}";
         }
 
         // isi & simpan

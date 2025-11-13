@@ -48,7 +48,7 @@ class rekam_medis extends Model
     /**
      * Relasi: Rekam Medis milik 1 Reservasi
      */
-    public function Reservasi()
+    public function reservasi()
     {
        return $this->belongsTo(reservasi::class, 'id_reservasi', 'id');
     }
@@ -70,6 +70,25 @@ class rekam_medis extends Model
             'tekanan_darah' => $this->tekanan_darah,
             'suhu' => $this->suhu,
             'diagnosa' => $this->diagnosa,
+            'saran' => $this->saran,
+            'rencana_tindak_lanjut' => $this->rencana_tindak_lanjut,
+            'catatan_tambahan' => $this->catatan_tambahan,
+        ];
+    }
+
+     public function getDataLengkapAttribute()
+    {
+        return [
+            'nomor_rekam_medis' => $this->nomor_rekam_medis,
+            'tanggal_pemeriksaan' => $this->tanggal_pemeriksaan->format('d M Y'),
+            'tinggi_badan' => $this->tinggi_badan,
+            'berat_badan' => $this->berat_badan,
+            'tekanan_darah' => $this->tekanan_darah,
+            'suhu' => $this->suhu,
+            'alergi' => $this->alergi,
+            'riwayat_penyakit' => $this->riwayat_penyakit,
+            'diagnosa' => $this->diagnosa,
+            'resep_obat' => $this->resep_obat,
             'saran' => $this->saran,
             'rencana_tindak_lanjut' => $this->rencana_tindak_lanjut,
             'catatan_tambahan' => $this->catatan_tambahan,

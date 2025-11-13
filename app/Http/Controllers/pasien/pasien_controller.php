@@ -47,12 +47,6 @@ class pasien_controller extends Controller
         ->whereIn('status', ['menunggu', 'sedang_diperiksa'])
         ->first();
     
-    // Ambil riwayat reservasi
-    $reservasis = reservasi::where('id_pasien', $pasien_aktif->id)
-        ->orderBy('tanggal_reservasi', 'desc')
-        ->limit(10)
-        ->get();
-    
     // Cek reminder
     $reminder_aktif = null;
     if ($reservasi_aktif && $antrian) {
@@ -64,6 +58,14 @@ class pasien_controller extends Controller
             ];
         }
     }
+
+    $reservasis = reservasi::query()
+            ->with(['rekam_medis:id,id_reservasi,nomor_rekam_medis,tanggal_pemeriksaan,diagnosa'])
+            ->where('id_pasien', $pasien_aktif->id)
+            ->where('status', 'selesai')
+            ->whereHas('rekam_medis') // Hanya yang punya rekam medis
+            ->orderBy('tanggal_reservasi', 'desc')
+            ->paginate(10);
     
     return view('pasien.dashboard', compact(
         'pasiens',
@@ -74,8 +76,8 @@ class pasien_controller extends Controller
         'klinik_tutup',
         'antrian',
         'reservasi_aktif',
-        'reservasis',
-        'reminder_aktif'
+        'reminder_aktif',
+        'reservasis'
     ));
 }
 
