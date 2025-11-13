@@ -45,6 +45,28 @@ class laporan_controller extends Controller
         // Ambil semua reservasi (untuk daftar)
         $daftar_reservasi = $query->orderBy('nomor_antrian', 'asc')->get();
 
+        // Jika request AJAX, return JSON
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'count' => $daftar_reservasi->count(),
+                'data' => $daftar_reservasi->map(function($reservasi) {
+                    return [
+                        'id' => $reservasi->id,
+                        'nomor_antrian' => $reservasi->nomor_antrian,
+                        'nama_pasien' => $reservasi->data_pasien->nama_pasien,
+                        'no_telepon' => $reservasi->data_pasien->no_telepon,
+                        'jenis_kelamin' => $reservasi->data_pasien->jenis_kelamin,
+                        'umur' => $reservasi->data_pasien->tanggal_lahir_pasien->age,
+                        'status' => $reservasi->status,
+                        'waktu' => $reservasi->rekam_medis ? $reservasi->updated_at->format('H:i') : null,
+                        'rekam_medis_id' => $reservasi->rekam_medis ? $reservasi->rekam_medis->id : null,
+                        'inisial' => substr($reservasi->data_pasien->nama_pasien, 0, 1)
+                    ];
+                })
+            ]);
+        }
+
         // Statistik
         $total_reservasi = reservasi::whereDate('tanggal_reservasi', $tanggal_dipilih)
             ->count();
