@@ -1,11 +1,11 @@
 * {
-    font-family: 'Poppins', sans-serif;
+    font-family: "Poppins", sans-serif;
     box-sizing: border-box;
 }
 
 /* Layout Dokter */
 body {
-    background: #E4EDFF;
+    background: #e4edff;
     min-height: 100vh;
     margin: 0;
 }
@@ -34,7 +34,7 @@ body {
 }
 
 .sidebar-menu {
-    background: #5A81FA;
+    background: #5a81fa;
     width: 60px;
     height: calc(100vh - 60px);
     display: flex;
@@ -74,7 +74,7 @@ body {
 }
 
 .judul {
-    color:#5A81FA;
+    color: #5a81fa;
     font-size: 20px;
 }
 
@@ -86,13 +86,15 @@ body {
 }
 
 .date-selector {
-    background: 809FF5;
+    background: #809FF5;
+    color:white;
     padding: 12px 20px;
     border-radius: 12px;
     display: flex;
     align-items: center;
     gap: 10px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    border:none;
 }
 
 .date-selector i {
@@ -104,15 +106,21 @@ body {
     border: none;
     outline: none;
     font-size: 14px;
-    color: #2D3748;
+    color: #2d3748;
     font-weight: 500;
     cursor: pointer;
 }
+.header-right {
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
 
 .search input {
-    width: 300px!important;
-    border: none;        
-    outline: none;    
+    width: 300px !important;
+    border: none;
+    outline: none;
     padding: 10px 15px;
     border-radius: 15px;
     font-size: 14px;
@@ -122,9 +130,26 @@ body {
 
 .search input:focus {
     outline: none;
-    border: 2px solid #5A81FA;
+    border: 2px solid #5a81fa;
     box-shadow: 0 0 5px rgba(90, 129, 250, 0.4);
 }
+
+.btn-filter {
+    background-color: #5A81FA; 
+    color: white;        
+    border: none;             
+    outline: none;             
+    cursor: pointer;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: background 0.2s;
+}
+
+.btn-filter:hover {
+    background-color: #3c58ac ;
+}
+
 
 .stats-container {
     display: grid;
@@ -152,12 +177,12 @@ body {
 .stat-value {
     font-size: 40px;
     font-weight: 700;
-    color: #2D3748;
+    color: #2d3748;
 }
 
 .time-value {
     font-size: 28px;
-    color: #5A81FA;
+    color: #5a81fa;
     word-spacing: 15px;
 }
 
@@ -166,11 +191,11 @@ body {
 }
 
 .highlight-ungu {
-    color:#9C6CFE;
+    color: #9c6cfe;
 }
 
 .highlight-biru {
-    color: #5A81FA;
+    color: #5a81fa;
 }
 
 .patient-list-container {
@@ -186,29 +211,14 @@ body {
     padding: 15px 25px;
     border-radius: 20px;
     margin-bottom: 12px;
-    background: #CEDEFF;
+    background: #cedeff;
     transition: all 0.3s ease;
-}
-
-.patient-card:hover {
-    background: #5A81FA;
-}
-
-.patient-card:hover .patient-name{
-    color:white;
-}
-
-.patient-card:hover .patient-contact{
-    background-color:white;
-    border-radius: 50%;
-    height:50px;
-    width:50px;
 }
 
 .patient-number {
     width: 60px;
     height: 60px;
-    color: #5A81FA;
+    color: #5a81fa;
     background-color: white;
     border-radius: 15px;
     display: flex;
@@ -226,8 +236,8 @@ body {
 .patient-name {
     font-size: 20px;
     font-weight: 600;
-    color: #5A81FA;
-    margin-left:20px;
+    color: #5a81fa;
+    margin-left: 20px;
 }
 
 .patient-contact {
@@ -241,6 +251,7 @@ body {
     align-items: center;
     justify-content: center;
     transition: all 0.3s ease;
+    text-decoration: none;
 }
 
 .whatsapp-btn:hover {
@@ -249,7 +260,7 @@ body {
 
 .patient-status {
     margin-right: 30px;
-    width:100px;
+    width: 100px;
 }
 
 .status-badge {
@@ -261,25 +272,25 @@ body {
 }
 
 .status-waiting {
-    background: #FEF3C7;
-    color: #92400E;
+    background: #fef3c7;
+    color: #92400e;
 }
 
 .status-progress {
-    background: #DBEAFE;
-    color: #1E40AF;
-    margin-right:50px;
+    background: #dbeafe;
+    color: #1e40af;
+    margin-right: 50px;
 }
 
 .status-complete {
-    background: #D1FAE5;
-    color: #065F46;
-    padding:10px 30px;
+    background: #d1fae5;
+    color: #065f46;
+    padding: 10px 30px;
 }
 
 .status-cancel {
-    background: #FEE2E2;
-    color: #991B1B;
+    background: #fee2e2;
+    color: #991b1b;
 }
 
 .patient-action {
@@ -299,7 +310,6 @@ body {
     display: flex;
     align-items: center;
     gap: 6px;
-    text-decoration: underline;
 }
 
 .btn-detail2 {
@@ -316,7 +326,7 @@ body {
 
 .btn-cancel {
     padding: 10px 20px;
-    background: #EF4444;
+    background: #ef4444;
     color: white;
     border: none;
     border-radius: 8px;
@@ -329,7 +339,7 @@ body {
 .empty-state {
     text-align: center;
     padding: 60px 20px;
-    color: #A0AEC0;
+    color: #a0aec0;
 }
 
 .empty-state i {
@@ -337,57 +347,231 @@ body {
     margin-bottom: 16px;
 }
 
+/* Tambahkan CSS ini ke file laporan-pemeriksaan.css */
+
+/* Modal Biodata */
+
+/* Modal Biodata */
+.pasien-overlay {
+  position: fixed; 
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); 
+  z-index: 9999;
+  display: none; 
+  align-items: center; 
+  justify-content: center; 
+  padding: 16px;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.pasien-overlay:not([hidden]) {
+  display: flex;
+}
+
+.pasien-box {
+  background: #FFFFFF;
+  width: 60%;
+  border-radius: 20px;
+}
+
+.pasien-close-btn {
+  background-color: #CEDEFF;
+  border-radius: 100px;
+  padding: 5px 10px;
+  margin: 15px;
+  margin-left: auto;
+  margin-bottom: 0%;
+  display: block;
+  border: none;
+  cursor: pointer;
+}
+
+.pasien-close-btn:hover {
+  background-color: #B5C6FB;
+}
+
+.pasien-title {
+  color: #5A81FA;
+  font-size: 26px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 10px;
+  margin-top: 0px;
+}
+
+.pasien-biodata {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+}
+
+.avatar-biodata {
+  background: #5A81FA;
+  border-radius: 30px;
+  width: 215px;
+  height: 215px;
+}
+
+.col-data {
+  width: 55%;
+}
+
+.pasien-identitas {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+  background-color: #B5C6FB;
+  border-radius: 30px 30px 0px 0px;
+  padding: 10px 20px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.pasien-identitas-title {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #5A81FA;
+  font-size: 14px;
+  font-weight: lighter;
+  text-align: center;
+}
+
+.divider-identitas {
+  color: #FFFFFF;
+  font-size: 18px;
+  font-weight: normal;
+  text-align: center;
+}
+
+
+.pasien-identitas-nama {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #FFFFFF;
+  font-size: 18px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.pasien-detail {
+  border: 1px solid #dbeafe;
+  border-radius: 0px 0px 30px 40px;
+  padding: 20px;
+  background-color: #ffffff;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.pasien-detail-label {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 12px;
+}
+
+.pasien-detail-label strong {
+  flex: 1;
+  font-weight: 600;
+  color: #464646;
+  text-align: left;
+}
+
+.pasien-detail-label span {
+  flex: 2;
+  font-weight: normal;
+  color: #464646;
+  text-align: left;
+}
+
+.pasien-catatan {
+  background: #B5C6FB;
+  margin: 20px 50px 10px 20px;
+  padding: 5px 25px;
+  border-radius: 30px;
+}
+
+.pasien-catatan strong {
+  font-size: 14px;
+  font-weight: bold;
+  color: #1F4DD9;
+}
+
+.pasien-catatan span {
+  font-size: 12px;
+  font-weight: normal;
+  color: #464646;
+}
+
+.pasien-loading {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+  font-weight: bold;
+  color: #1F4DD9;
+  padding: 40px;
+}
+
+.pasien-error {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+  font-weight: bold;
+  color: #d91f1f;
+  padding: 40px;
+}
+
+.btn-rekam-medis {
+  background-color: #5A81FA;
+  font-size: 14px;
+  font-weight: bold;
+  color: #FFFFFF;
+  padding: 7px;
+  transition: background-color 0.5s ease;
+  border-radius: 15px;
+  width: 200px;
+  text-align: center;
+  margin-left: auto;
+  display: block;
+  margin-bottom: 15px;
+  text-decoration: none;
+}
+
+.btn-rekam-medis:hover {
+  background-color: #CEDEFF;
+  color: #5A81FA;
+}
+
+.pasien-button {
+  padding: 0px 50px;
+}
+
+/* Hapus CSS modal lama */
 .modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
+  display: none !important;
 }
 
 .modal-content {
-    background: white;
-    border-radius: 16px;
-    max-width: 600px;
-    width: 90%;
-    max-height: 80vh;
-    overflow-y: auto;
+  display: none !important;
 }
 
 .modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 24px;
-    border-bottom: 1px solid #E2E8F0;
-}
-
-.modal-header h3 {
-    margin: 0;
-    font-size: 18px;
-    color: #2D3748;
+  display: none !important;
 }
 
 .modal-close {
-    background: none;
-    border: none;
-    font-size: 20px;
-    color: #718096;
-    cursor: pointer;
-    padding: 4px;
-    transition: color 0.3s ease;
-}
-
-.modal-close:hover {
-    color: #2D3748;
+  display: none !important;
 }
 
 .modal-body {
-    padding: 24px;
+  display: none !important;
 }
-

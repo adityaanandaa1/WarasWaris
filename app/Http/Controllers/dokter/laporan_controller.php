@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Dokter;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use App\Models\data_pasien;
 use App\Models\jadwal_praktik;
 use App\Models\reservasi;
 use App\Models\rekam_medis;
@@ -95,15 +97,62 @@ class laporan_controller extends Controller
         ));
     }
 
-    public function detail_rekam_medis($id)
+public function detail_pasien($id)
     {
-        $rekam_medis = rekam_medis::with(['data_pasien', 'reservasi'])
-            ->findOrFail($id);
+        try {
+            Log::info("Mengakses detail pasien ID: {$id}");
 
-        return response()->json([
-            'success' => true,
-            'data' => $rekam_medis
-        ]);
+            $pasien = data_pasien::select(
+                    'id','id_akun','nama_pasien','jenis_kelamin','tanggal_lahir_pasien',
+                    'golongan_darah','pekerjaan','alamat','no_telepon','catatan_pasien','is_primary'
+                )->findOrFail($id);
+
+            // umur
+            $umur = null; $tanggal = null;
+            if ($pasien->tanggal_lahir_pasien) {
+                try {
+                    $tanggal  = Carbon::parse($pasien->tanggal_lahir_pasien);
+                    $umur = $tanggal->age;
+                } catch (\Exception $e) {
+                    Log::warning("Gagal parse TTL pasien {$id}: ".$e->getMessage());
+                }
+            }
+
+            // wali dari data_pasien (akun yang sama, is_primary = true; fallback pasien pertama)
+            $nama_wali = '-';
+            $nama_wali = $pasien->user?->primary_pasien?->nama_pasien ?? '-';
+
+            // normalisasi JK
+            $jenis_kelamin_pasien = strtolower((string)($pasien->jenis_kelamin ?? ''));
+            if ($jenis_kelamin_pasien === 'l' || $jenis_kelamin_pasien === 'laki-laki' || $jenis_kelamin_pasien === 'laki laki') {
+                $jenis_kelamin_pasien = 'Laki-laki';
+            } elseif ($jenis_kelamin_pasien === 'p' || $jenis_kelamin_pasien === 'perempuan') {
+                $jenis_kelamin_pasien = 'Perempuan';
+            } else {
+                $jenis_kelamin_pasien = '-';
+            }
+
+            // response
+            $data = [
+                'nama_pasien'    => $pasien->nama_pasien ?? '-',
+                'nama_wali'      => $nama_wali,
+                'jenis_kelamin'  => $jenis_kelamin_pasien,
+                'tanggal_lahir'  => $tanggal ? $tanggal->format('d F Y') : '-',
+                'golongan_darah' => $pasien->golongan_darah ?? 'Tidak diketahui',
+                'umur'           => $umur,
+                'pekerjaan'      => $pasien->pekerjaan ?? 'Tidak bekerja',
+                'alamat'         => $pasien->alamat ?? '-',
+                'no_telepon'     => $pasien->no_telepon ?? '-',
+                'catatan_pasien' => $pasien->catatan_pasien ?? '-',
+            ];
+
+            return response()->json($data);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json(['error' => 'Data pasien tidak ditemukan'], 404);
+        } catch (\Throwable $e) {
+            Log::error('detail_pasien error: '.$e->getMessage());
+            return response()->json(['error' => 'Terjadi kesalahan: '.$e->getMessage()], 500);
+        }
     }
 
     private function get_nama_hari($tanggal)
