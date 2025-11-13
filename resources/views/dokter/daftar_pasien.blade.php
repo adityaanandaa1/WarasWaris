@@ -198,7 +198,7 @@
     </div>
 
     <div class="pasien-button">
-        <a href="#" class="btn-rekam-medis">
+        <a href="{{ route('dokter.riwayat_rekam_medis') }}" id="btn-rekam-medis" class="btn-rekam-medis">
             Lihat Rekam Medis
         </a>
     </div>
@@ -208,6 +208,7 @@
 <script>
     const input = document.getElementById('searchInput');
     const baseURL = "{{ route('dokter.daftar_pasien') }}";
+    const riwayatRekamMedisBaseURL = "{{ route('dokter.riwayat_rekam_medis') }}";
 
     // Enter otomatis submit (default behavior form), kita hanya urus reset.
     input.addEventListener('input', () => {
@@ -280,6 +281,7 @@
       document.getElementById('p-alamat').textContent         = data.alamat ?? '-';
       document.getElementById('p-no-telepon').textContent     = data.no_telepon ?? '-';
       document.getElementById('p-catatan-pasien').textContent        = data.catatan_pasien ?? '-';
+      updateRekamMedisLink(data.id ?? null);
 
       loadEl.hidden = true;
       cntEl.hidden  = false;
@@ -311,6 +313,17 @@
     overlay.hidden = true;
     document.body.style.overflow = '';
     document.removeEventListener('keydown', escCloserPasien);
+  }
+
+  function updateRekamMedisLink(pasienId) {
+    const btn = document.getElementById('btn-rekam-medis');
+    if (!btn) return;
+    let target = riwayatRekamMedisBaseURL;
+    if (pasienId) {
+      const separator = target.includes('?') ? '&' : '?';
+      target = `${target}${separator}pasien_id=${encodeURIComponent(pasienId)}`;
+    }
+    btn.href = target;
   }
 
 document.getElementById('searchInput').addEventListener('keyup', function() {

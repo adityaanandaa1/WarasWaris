@@ -15,6 +15,7 @@ class data_dokter extends Model
         'id_akun',
         'nama_dokter',
         'tanggal_lahir_dokter',
+        'alamat',
         'nomor_str',
         'nomor_sip',
     ];

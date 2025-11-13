@@ -4,8 +4,11 @@ namespace App\Http\Controllers\Dokter;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
-use App\Models\Reservasi;
+use Illuminate\Support\Facades\Auth;
+use App\Models\reservasi;
 use App\Models\rekam_medis;
+use App\Models\data_pasien;
+use App\Models\data_dokter;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -88,5 +91,109 @@ class rekam_medis_controller extends Controller
         return redirect()
             ->route('dokter.daftar_antrian')
             ->with('success', 'Rekam medis tersimpan dan pasien ditandai selesai.');
+    }
+
+    public function riwayat_rekam_medis(Request $request)
+    {
+        $user = Auth::user();
+        $pasienAktif = null;
+
+        if ($request->filled('pasien_id')) {
+            $pasienAktif = data_pasien::find($request->input('pasien_id'));
+        }
+
+        if (!$pasienAktif) {
+            $pasienAktif = $this->getPasienAktif();
+        }
+
+        if (!$pasienAktif) {
+            return view('dokter.riwayat_rekam_medis', [
+                'riwayatRekamMedis' => collect(),
+                'rekamMedisAktif'   => null,
+                'pasienData'        => null,
+                'dokterData'        => null,
+                'pasienAktif'       => null,
+            ])->with('warning', 'Belum ada pasien aktif yang dapat ditampilkan.');
+        }
+
+        // Ambil semua rekam medis untuk pasien ini
+        $riwayatRekamMedis = rekam_medis::query()
+            ->select('rekam_medis.*')
+            ->join('reservasis', 'rekam_medis.id_reservasi', '=', 'reservasis.id')
+            ->where('reservasis.id_pasien', $pasienAktif->id)
+            ->where('reservasis.status', 'selesai')
+            ->orderBy('rekam_medis.tanggal_pemeriksaan', 'desc')
+            ->get();
+
+        // Jika ada parameter ID, ambil rekam medis spesifik
+        // Jika tidak, ambil yang pertama/terbaru
+        $selectedId = $request->get('id');
+        
+        if ($selectedId) {
+            $rekamMedisAktif = rekam_medis::with(['reservasi.data_pasien'])
+                ->whereHas('reservasi', function($q) use ($pasienAktif) {
+                    $q->where('id_pasien', $pasienAktif->id);
+                })
+                ->find($selectedId);
+        } else {
+            $rekamMedisAktif = $riwayatRekamMedis->first();
+        }
+
+        // Data pasien dan dokter
+        $pasienData = null;
+        $dokterData = null;
+
+        if ($rekamMedisAktif) {
+            $pasienData = $rekamMedisAktif->reservasi->data_pasien;
+            
+            // Ambil data dokter dari rekam medis atau dari user dokter yang sedang login
+            // Sesuaikan dengan struktur database Anda
+            $dokterData = data_dokter::first(); // Untuk sementara ambil dokter pertama
+            
+            // Atau jika ada relasi dokter di reservasi:
+            // $dokterData = $rekamMedisAktif->reservasi->dokter;
+        }
+
+        return view('dokter.riwayat_rekam_medis', compact(
+            'riwayatRekamMedis',
+            'rekamMedisAktif',
+            'pasienData',
+            'dokterData',
+            'pasienAktif'
+        ));
+    }
+
+    /**
+     * Helper: Ambil pasien aktif dari session
+     */
+    private function getPasienAktif(): ?data_pasien
+    {
+        $user = Auth::user();
+
+        // 1. Coba dari session
+        $pasienAktifId = session('pasien_aktif_id');
+        
+        if ($pasienAktifId) {
+            $pasien = data_pasien::where('id', $pasienAktifId)
+                ->where('id_akun', $user->id)
+                ->first();
+
+            if ($pasien) {
+                return $pasien;
+            }
+
+            session()->forget('pasien_aktif_id');
+        }
+
+        // 2. Fallback ke pasien utama
+        $pasienUtama = $user->pasiens()
+            ->where('is_primary', true)
+            ->first();
+
+        if ($pasienUtama) {
+            session(['pasien_aktif_id' => $pasienUtama->id]);
+        }
+
+        return $pasienUtama;
     }
 }

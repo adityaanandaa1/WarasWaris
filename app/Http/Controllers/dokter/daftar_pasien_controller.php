@@ -12,6 +12,12 @@ use Carbon\Carbon;
 
 class daftar_pasien_controller extends Controller
 {
+    public function __construct()
+    {
+        Carbon::setLocale('id');
+        setlocale(LC_TIME, 'id_ID.UTF-8', 'id_ID', 'id');
+    }
+
     public function daftar_pasien(Request $request)
     {
         $search = trim((string) $request->get('q', ''));
@@ -49,12 +55,14 @@ class daftar_pasien_controller extends Controller
                     'golongan_darah','pekerjaan','alamat','no_telepon','catatan_pasien','is_primary'
                 )->findOrFail($id);
 
-            // umur
-            $umur = null; $tanggal = null;
+            // umur dan tanggal lahir terformat
+            $umur = null;
+            $tanggalFormatted = '-';
             if ($pasien->tanggal_lahir_pasien) {
                 try {
-                    $tanggal  = Carbon::parse($pasien->tanggal_lahir_pasien)->locale('id');
-                    $umur = $tanggal->age;
+                    $tanggalCarbon  = Carbon::parse($pasien->tanggal_lahir_pasien)->locale('id');
+                    $umur = $tanggalCarbon->age;
+                    $tanggalFormatted = $tanggalCarbon->isoFormat('D MMMM YYYY');
                 } catch (\Exception $e) {
                     Log::warning("Gagal parse TTL pasien {$id}: ".$e->getMessage());
                 }
@@ -76,10 +84,11 @@ class daftar_pasien_controller extends Controller
 
             // response
             $data = [
+                'id'             => $pasien->id,
                 'nama_pasien'    => $pasien->nama_pasien ?? '-',
                 'nama_wali'      => $nama_wali,
                 'jenis_kelamin_pasien'  => $jenis_kelamin_pasien,
-                'tanggal_lahir_pasien'  => $tanggal ? $tanggal->translatedFormat('d F Y') : '-',
+                'tanggal_lahir_pasien'  => $tanggalFormatted,
                 'golongan_darah' => $pasien->golongan_darah ?? 'Tidak diketahui',
                 'umur'           => $umur,
                 'pekerjaan'      => $pasien->pekerjaan ?? 'Tidak bekerja',

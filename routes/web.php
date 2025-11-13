@@ -70,13 +70,14 @@ Route::middleware(['auth', 'role:dokter'])->prefix('dokter')->name('dokter.')
     Route::get('/profil/edit', [dokter_controller::class, 'edit_profil'])
             ->name('profil.edit');
 
-    Route::put('/profil', [dokter_controller::class, 'update_profil'])
+    Route::put('/profil/update', [dokter_controller::class, 'update_profil'])
         ->name('profil.update');
 
     Route::get('/sip/download', [dokter_controller::class, 'download_sip'])
         ->name('sip.download');
 
-
+    Route::get('/daftar-pasien/riwayat-rekam-medis', [rekam_medis_controller::class, 'riwayat_rekam_medis'])
+        ->name('riwayat_rekam_medis');
     Route::get('/reservasi/{reservasi}/rekam-medis/buat', [rekam_medis_controller::class, 'buat_rekam_medis'])
         ->name('buat_rekam_medis'); 
     Route::post('/reservasi/{reservasi}/rekam-medis', [rekam_medis_controller::class, 'simpan_rekam_medis'])
