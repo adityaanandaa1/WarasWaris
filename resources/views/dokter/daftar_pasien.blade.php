@@ -79,7 +79,7 @@
       @php
         $tanggal = $pasien->reservasi_terbaru?->tanggal_reservasi;
         $kunjungan_terakhir = $tanggal ? \Carbon\Carbon::parse($tanggal)->translatedFormat('d F Y') : '-';
-        $wali = $pasien->wali_pasien?->nama_pasien ??  '-';
+        $wali = $pasien->primary_pasien?->nama_pasien ??  '-';
         $wa   = preg_replace('/\D/', '', (string)($pasien->no_telepon ?? ''));
         $initial = strtoupper(mb_substr($pasien->nama_pasien ?? '-', 0, 1));
       @endphp

@@ -33,7 +33,13 @@
     <div class="dashboard-profile">
         <div class="profile-header">
             <h1 class="profile-title">Profil Saya</h1>
-            <i class="ri-edit-box-line" style="color: #FFFFFF; font-size:18px"></i>
+            <a 
+                href="{{ route('dokter.profil.edit') }}" 
+                class="inline-flex items-center justify-center w-9 h-9 rounded-full bg-blue-600 hover:bg-blue-700 shadow text-white"
+                title="Edit Profil"
+            >
+                <i class="ri-edit-box-line" style="font-size:18px"></i>
+            </a>
         </div>
 
         <div class="profile-body">
@@ -67,7 +73,9 @@
                     <h1 class="profile-separator">|</h1>
                     <div class="detail-item">
                         <p class="detail-label">SIP</p>
-                        <button type="button" class="download-sip">Unduh</button>
+                        <a href="{{ route('dokter.sip.download') }}" class="download-sip">
+                            Unduh
+                        </a>
                     </div>
                 </div>
             </div>

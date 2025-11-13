@@ -12,6 +12,7 @@ use App\Models\reservasi;
 use App\Models\antrian;
 use App\Models\data_pasien;
 use App\Models\rekam_medis;
+use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
 
 class dokter_controller extends Controller
@@ -306,6 +307,78 @@ class dokter_controller extends Controller
 
         return (int) ($terakhir_selesai ?? 0);
     }
+
+    // Tampilkan form edit profil
+    public function edit_profil()
+    {
+        $user   = Auth::user();
+        $dokter = $user->dokter; // relasi user -> dokter
+
+        if (!$dokter) {
+            abort(404, 'Data dokter tidak ditemukan.');
+        }
+
+        return view('dokter.edit_biodata_dokter', compact('dokter'));
+    }
+
+    // Simpan perubahan profil + SIP
+    public function update_profil(Request $request)
+    {
+        $user   = Auth::user();
+        $dokter = $user->dokter;
+
+        if (!$dokter) {
+            abort(404, 'Data dokter tidak ditemukan.');
+        }
+
+        $validated = $request->validate([
+            'nama_dokter'      => 'required|string|max:255',
+            'tanggal_lahir_dokter'    => 'nullable|date|before:today',
+            'sip_file'         => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
+        ]);
+
+        // update field teks
+        $dokter->nama_dokter   = $validated['nama_dokter'];
+        $dokter->tanggal_lahir_dokter = $validated['tanggal_lahir_dokter'] ?? $dokter->tanggal_lahir_dokter;
+
+        // kalau ada file SIP baru
+        if ($request->hasFile('sip_file')) {
+
+            // hapus file lama kalau ada
+            if ($dokter->sip_path && Storage::disk('public')->exists($dokter->sip_path)) {
+                Storage::disk('public')->delete($dokter->sip_path);
+            }
+
+            // simpan file baru
+            $path = $request->file('sip_file')->store(
+                'sip_dokter/' . $dokter->id,
+                'public'
+            );
+
+            $dokter->sip_path = $path;
+        }
+
+        $dokter->save();
+
+        return redirect()
+            ->route('dokter.dashboard') // sesuaikan nama route dashboard doktermu
+            ->with('success', 'Profil dokter berhasil diperbarui.');
+    }
+
+    public function download_sip()
+    {
+        $user   = Auth::user();
+        $dokter = $user->dokter;
+
+        if (!$dokter || !$dokter->sip_path || !Storage::disk('public')->exists($dokter->sip_path)) {
+            return back()->withErrors(['error' => 'File SIP belum diupload.']);
+        }
+
+        $namaFile = 'SIP-' . str_replace(' ', '_', $dokter->nama_dokter) . '.pdf';
+
+        return Storage::disk('public')->download($dokter->sip_path, $namaFile);
+    }
+
 
         private function get_pasien_aktif()
     {

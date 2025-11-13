@@ -66,6 +66,15 @@ Route::middleware(['auth', 'role:dokter'])->prefix('dokter')->name('dokter.')
 
     Route::patch('/reservasi/{reservasi}/periksa', [reservasi_controller_dokter::class, 'mark_periksa'])
         ->name('reservasi.periksa');
+    
+    Route::get('/profil/edit', [dokter_controller::class, 'edit_profil'])
+            ->name('profil.edit');
+
+    Route::put('/profil', [dokter_controller::class, 'update_profil'])
+        ->name('profil.update');
+
+    Route::get('/sip/download', [dokter_controller::class, 'download_sip'])
+        ->name('sip.download');
 
 
     Route::get('/reservasi/{reservasi}/rekam-medis/buat', [rekam_medis_controller::class, 'buat_rekam_medis'])

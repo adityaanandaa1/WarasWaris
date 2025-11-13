@@ -53,7 +53,7 @@ class daftar_pasien_controller extends Controller
             $umur = null; $tanggal = null;
             if ($pasien->tanggal_lahir_pasien) {
                 try {
-                    $tanggal  = Carbon::parse($pasien->tanggal_lahir_pasien);
+                    $tanggal  = Carbon::parse($pasien->tanggal_lahir_pasien)->locale('id');
                     $umur = $tanggal->age;
                 } catch (\Exception $e) {
                     Log::warning("Gagal parse TTL pasien {$id}: ".$e->getMessage());
@@ -78,8 +78,8 @@ class daftar_pasien_controller extends Controller
             $data = [
                 'nama_pasien'    => $pasien->nama_pasien ?? '-',
                 'nama_wali'      => $nama_wali,
-                'jenis_kelamin'  => $jenis_kelamin_pasien,
-                'tanggal_lahir'  => $tanggal ? $tanggal->format('d F Y') : '-',
+                'jenis_kelamin_pasien'  => $jenis_kelamin_pasien,
+                'tanggal_lahir_pasien'  => $tanggal ? $tanggal->translatedFormat('d F Y') : '-',
                 'golongan_darah' => $pasien->golongan_darah ?? 'Tidak diketahui',
                 'umur'           => $umur,
                 'pekerjaan'      => $pasien->pekerjaan ?? 'Tidak bekerja',
