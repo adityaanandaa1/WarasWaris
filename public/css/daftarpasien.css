@@ -1,0 +1,408 @@
+* {
+    font-family: 'Poppins', sans-serif;
+    box-sizing: border-box;
+}
+
+/* Layout Dokter */
+html, body {
+  overflow: auto;
+}
+
+body {
+    background: #E4EDFF;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.layout {
+    margin-left: 60px;
+    margin-right: 0px;
+    padding-right: 0px;
+}
+
+.content {
+    margin: 30px;
+    margin-right: 30px;
+    margin-left: 50px;
+}
+
+/* Sidebar Dokter */
+#sidebar-doctor {
+    margin: 30px;
+}
+
+.sidebar-menu {
+    background: #5A81FA;
+    width: 60px;
+    height: calc(100vh - 60px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 20px;
+    box-shadow: 0px 0px 20px 5px rgba(0, 0, 0, 0.15);
+    padding: 20px 0px;
+    list-style: none;
+}
+
+.sidebar-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sidebar-link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 30px 0px;
+}
+
+.btn-logout {
+    background-color: #ffffff00;
+    border: none;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.btn-logout:hover {
+    background-color: #cedeff50;
+    border: none;
+}
+
+/* Daftar Pasien */
+.header-pasien {
+  display: flex;
+  justify-content: space-between;
+}
+
+.judul-section {
+  display: flex;
+}
+
+.title-pasien {
+  display: flex;
+  flex-direction: column;
+}
+
+.judul-pasien {
+  color: #5A81FA;
+  font-size: 20px;
+  font-weight: bold;
+  margin: 3px 0px;
+}
+
+.subjudul-pasien {
+  font-size: 13px;
+  color: #5A81FA;
+  font-weight: lighter;
+}
+
+.search {
+  background: #FFFFFF;
+  border-radius: 15px;
+  padding: 10px 10px 10px 20px;
+  box-shadow: 0px 0px 20px 5px rgba(0, 0, 0, 0.15);
+}
+
+.search-form {
+  font-size: 14px;
+  color: #979797;
+  font-weight: lighter;
+  border: none;
+}
+
+.search-form:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.total-pasien {
+  font-size: 14px;
+  color: #5A81FA;
+  font-weight: 500;
+  text-align: right;
+  padding-right: 25px;
+  padding-top: 25px;
+  padding-bottom: 5px;
+}
+
+.table-header {
+  display: grid;
+  grid-template-columns: 1fr 4fr 3fr 3fr 2fr 2fr;
+  background-color: #5A81FA;
+  font-weight: bold;
+  color: #FFFFFF;
+  padding: 15px 12px;
+  border-radius: 15px;
+  font-size: 14px;
+}
+
+.table-body {
+  margin-top: 10px;
+}
+
+.table-row {
+  display: grid;
+  grid-template-columns: 1fr 4fr 3fr 3fr 2fr 2fr;
+  align-items: center;
+  background: #FFFFFF;
+  border-radius: 20px;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+  box-shadow: 0px 0px 20px 5px rgba(0, 0, 0, 0.15);
+}
+
+.col-nama-input {
+  font-size: 14px;
+  color: #5A81FA;
+  font-weight: 400;
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  background: #5A81FA;
+  border-radius: 50%;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  margin-left: 10px
+}
+
+.col-wali-input {
+  font-size: 14px;
+  color: #5A81FA;
+  font-weight: 400;
+}
+
+.col-kunjungan-input {
+  font-size: 14px;
+  color: #5A81FA;
+  font-weight: 400;
+}
+
+.link-wa {
+    text-decoration: none;
+}
+
+.link-detail {
+  color: #0066cc;
+  text-decoration: underline;
+  margin-left: 8px;
+  font-size: 14px;
+}
+
+.no-data {
+  color: #666;
+  font-size: 14px;
+  padding: 10px;
+  text-align: center;
+}
+
+/* Modal Biodata */
+.pasien-overlay {
+  position: fixed; 
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  
+  background-color: rgba(0, 0, 0, 0.5); 
+  z-index: 9999;
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  padding: 16px;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.pasien-box{
+  background: #FFFFFF;
+  width: 60%;
+  border-radius: 20px;
+}
+
+.pasien-close-btn {
+  background-color: #CEDEFF;
+  border-radius: 100px;
+  padding: 5px 10px;
+  margin: 15px;
+  margin-left: auto;
+  margin-bottom: 0%;
+  display: block;
+  border: none;
+}
+
+.pasien-title {
+  color: #5A81FA;
+  font-size: 26px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.pasien-biodata {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+}
+
+.avatar-biodata {
+  background: #5A81FA;
+  border-radius: 30px;
+  width: 215px;
+  height: 215px;
+}
+
+.col-data {
+  width: 55%;
+}
+
+.pasien-identitas {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+  background-color: #B5C6FB;
+  border-radius: 30px 30px 0px 0px;
+  padding: 10px 20px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.pasien-identitas-title {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #5A81FA;
+  font-size: 14px;
+  font-weight: lighter;
+  text-align: center;
+}
+
+.divider-identitas {
+  color: #FFFFFF;
+  font-size: 18px;
+  font-weight: normal;
+  text-align: center;
+}
+
+.pasien-identitas-nama {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #FFFFFF;
+  font-size: 18px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.pasien-detail {
+  color: #FFFFFF;
+  font-size: 18px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.pasien-detail {
+  border: 1px solid #dbeafe;
+  border-radius: 0px 0px 30px 40px;
+  padding: 20px;
+  background-color: #ffffff;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.pasien-detail-label {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 12px;
+}
+
+.pasien-detail-label strong {
+  flex: 1;
+  font-weight: 600;
+  color: #464646;
+  text-align: left;
+}
+
+.pasien-detail-label span {
+  flex: 2;
+  font-weight: normal;
+  color: #464646;
+  text-align: left;
+}
+
+.pasien-catatan {
+  background: #B5C6FB;
+  margin: 20px 50px 10px 20px;
+  padding: 5px 25px;
+  border-radius: 30px;
+}
+
+.pasien-catatan strong {
+  font-size: 14px;
+  font-weight: bold;
+  color: #1F4DD9;
+}
+
+.pasien-catatan span {
+  font-size: 12px;
+  font-weight: normal;
+  color: #464646;
+}
+
+.pasien-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+  font-weight: bold;
+  color: #1F4DD9;
+}
+
+.pasien-error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+  font-weight: bold;
+  color: #d91f1f;
+}
+
+.btn-rekam-medis {
+  background-color: #5A81FA;
+  font-size: 14px;
+  font-weight: bold;
+  color: #FFFFFF;
+  padding: 7px;
+  transition: background-color 0.5s ease;
+  border-radius: 15px;
+  width: 200px;
+  text-align: center;
+  margin-left: auto;
+  display: block;
+  margin-bottom: 15px;
+  text-decoration: none;
+}
+
+.btn-rekam-medis:hover {
+  background-color: #CEDEFF;
+}
+
+.pasien-button {
+  padding: 0px 50px;
+}
