@@ -268,9 +268,21 @@
 
             <!-- Action Buttons -->
             <div class="mt-8 flex justify-between items-center">
-                <!-- Delete Button (only for non-primary profiles) -->
+               
+
+                <!-- Update Button -->
+                <button 
+                    type="submit"
+                    class="px-12 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition duration-200 text-lg"
+                >
+                    Perbarui
+                </button>
+            </div>
+
+        </form>
+         <!-- Delete Button (only for non-primary profiles) -->
                 @if(!$pasien->is_primary)
-                <form action="{{ route('pasien.edit_biodata', $pasien->id) }}" method="POST" class="inline">
+                <form action="{{ route('pasien.hapus_biodata', $pasien->id) }}" method="POST" class="inline">
                     @csrf
                     @method('DELETE')
                     <button 
@@ -284,17 +296,6 @@
                 @else
                 <div></div> <!-- Empty div to maintain flex spacing -->
                 @endif
-
-                <!-- Update Button -->
-                <button 
-                    type="submit"
-                    class="px-12 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition duration-200 text-lg"
-                >
-                    Perbarui
-                </button>
-            </div>
-
-        </form>
 
     </div>
 
