@@ -6,9 +6,11 @@ use App\Http\Controllers\pasien\pasien_controller;
 use App\Http\Controllers\pasien\riwayat_pemeriksaan_controller;
 use App\Http\Controllers\dokter\dokter_controller;
 use App\Http\Controllers\dokter\rekam_medis_controller;
-use App\Http\Controllers\dokter\reservasi_Controller_dokter;
+use App\Http\Controllers\dokter\reservasi_controller_dokter;
+use App\Http\Controllers\pasien\reservasi_controller;
 use App\Http\Controllers\dokter\daftar_antrian_controller;
 use App\Http\Controllers\dokter\daftar_pasien_controller;
+use App\Http\Controllers\Dokter\laporan_controller;
 
 Route::get('/', function () {
     return view('homepage');
@@ -42,10 +44,10 @@ Route::middleware(['auth', 'role:pasien'])
         Route::get('/riwayat/{reservasiId}/detail', [riwayat_pemeriksaan_controller::class, 'detail'])->name('riwayat.detail');
         Route::get('/riwayat-pemeriksaan', [riwayat_pemeriksaan_controller::class, 'riwayat_pemeriksaan'])->name('riwayat');
         
-        Route::get('/reservasi', [App\Http\Controllers\Pasien\reservasi_controller::class, 'index_reservasi'])->name('index_reservasi');
-        Route::post('/reservasi', [App\Http\Controllers\Pasien\reservasi_controller::class, 'buat_reservasi'])->name('buat_reservasi');
-        Route::post('/reservasi/{id}/cancel', [App\Http\Controllers\Pasien\reservasi_controller::class, 'batalkan_reservasi'])->name('batalkan_reservasi');
-        Route::get('/reservasi/riwayat', [App\Http\Controllers\Pasien\reservasi_controller::class, 'riwayat_reservasi'])->name('riwayat_reservasi');
+        Route::get('/reservasi', [reservasi_controller::class, 'index_reservasi'])->name('index_reservasi');
+        Route::post('/reservasi', [reservasi_controller::class, 'buat_reservasi'])->name('buat_reservasi');
+        Route::post('/reservasi/{id}/cancel', [reservasi_controller::class, 'batalkan_reservasi'])->name('batalkan_reservasi');
+        Route::get('/reservasi/riwayat', [reservasi_controller::class, 'riwayat_reservasi'])->name('riwayat_reservasi');
 
         
 });
@@ -90,10 +92,10 @@ Route::middleware(['auth', 'role:dokter'])->prefix('dokter')->name('dokter.')
         ->name('pasien.detail');
         
 
-    Route::get('/laporan', [App\Http\Controllers\Dokter\laporan_controller::class, 'laporan'])
+    Route::get('/laporan', [laporan_controller::class, 'laporan'])
         ->name('laporan');
 
-    Route::get('/rekam-medis/{id}/detail', [App\Http\Controllers\Dokter\laporan_controller::class, 'detail_rekam_medis'])
+    Route::get('/rekam-medis/{id}/detail', [laporan_controller::class, 'detail_rekam_medis'])
         ->name('rekam_medis.detail');   
 });
 

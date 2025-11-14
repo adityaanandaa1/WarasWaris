@@ -48,7 +48,7 @@ class data_pasien extends Model
 
     public function primary_pasien() // wali = pasien utama
     {
-        return $this->hasOne(data_pasien::class, 'id_akun', 'id')
+        return $this->hasOne(self::class, 'id_akun', 'id_akun')
                     ->where('is_primary', true);
     }
 

@@ -23,21 +23,36 @@ class daftar_pasien_controller extends Controller
         $search = trim((string) $request->get('q', ''));
 
         $query = data_pasien::with([
-            'primary_pasien:id,id_akun,nama_pasien',
             'reservasi_terbaru' => function ($q) {
                 $q->select('reservasis.id', 'reservasis.id_pasien', 'reservasis.tanggal_reservasi', 'reservasis.status');
             },
         ])
-        ->select('id','id_akun','nama_pasien','no_telepon','jenis_kelamin','tanggal_lahir_pasien',
-                'golongan_darah','pekerjaan','alamat','no_telepon','catatan_pasien'); 
+        ->select(
+            'data_pasiens.id',
+            'data_pasiens.id_akun',
+            'data_pasiens.nama_pasien',
+            'data_pasiens.no_telepon',
+            'data_pasiens.jenis_kelamin',
+            'data_pasiens.tanggal_lahir_pasien',
+            'data_pasiens.golongan_darah',
+            'data_pasiens.pekerjaan',
+            'data_pasiens.alamat',
+            'data_pasiens.catatan_pasien'
+        )
+        ->selectSub(function ($subQuery) {
+            $subQuery->select('wali.nama_pasien')
+                ->from('data_pasiens as wali')
+                ->whereColumn('wali.id_akun', 'data_pasiens.id_akun')
+                ->where('wali.is_primary', true)
+                ->limit(1);
+        }, 'nama_wali');
 
         if ($search !== '') {
-            $query->where('nama_pasien', 'like', '%'.$search.'%');
+            $query->where('data_pasiens.nama_pasien', 'like', '%'.$search.'%');
         }
 
-        $pasien_list   = $query->orderBy('nama_pasien', 'asc')->get();
+        $pasien_list   = $query->orderBy('data_pasiens.nama_pasien', 'asc')->get();
         $total_pasien  = data_pasien::count();
-
         return view('dokter.daftar_pasien', [
             'pasien_list'  => $pasien_list,
             'total_pasien' => $total_pasien,
@@ -69,7 +84,6 @@ class daftar_pasien_controller extends Controller
             }
 
             // wali dari data_pasien (akun yang sama, is_primary = true; fallback pasien pertama)
-            $nama_wali = '-';
             $nama_wali = $pasien->user?->primary_pasien?->nama_pasien ?? '-';
 
             // normalisasi JK

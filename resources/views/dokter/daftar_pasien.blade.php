@@ -79,7 +79,7 @@
       @php
         $tanggal = $pasien->reservasi_terbaru?->tanggal_reservasi;
         $kunjungan_terakhir = $tanggal ? \Carbon\Carbon::parse($tanggal)->translatedFormat('d F Y') : '-';
-        $wali = $pasien->primary_pasien?->nama_pasien ??  '-';
+        $wali = $pasien->nama_wali ?? '-';
         $wa   = preg_replace('/\D/', '', (string)($pasien->no_telepon ?? ''));
         $initial = strtoupper(mb_substr($pasien->nama_pasien ?? '-', 0, 1));
       @endphp
@@ -207,14 +207,12 @@
 
 <script>
     const input = document.getElementById('searchInput');
-    const baseURL = "{{ route('dokter.daftar_pasien') }}";
     const riwayatRekamMedisBaseURL = "{{ route('dokter.riwayat_rekam_medis') }}";
 
     // Enter otomatis submit (default behavior form), kita hanya urus reset.
     input.addEventListener('input', () => {
         if (input.value.trim() === '') {
         // kosong → reset ke daftar penuh (tanpa query ?q=)
-        window.location.href = baseURL;
         }
     });
 
