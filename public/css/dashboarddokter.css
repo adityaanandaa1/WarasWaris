@@ -64,13 +64,19 @@ body {
 .btn-logout {
     background-color: #ffffff00;
     border: none;
-    padding: 5px;
+    padding: 10px;
     border-radius: 5px;
 }
 
 .btn-logout:hover {
     background-color: #cedeff50;
     border: none;
+}
+
+.sidebar-link.active {
+    background-color: #CEDEFF50;
+    border-radius: 5px;
+    padding: 10px;
 }
 
 /* Dashboard Dokter */
