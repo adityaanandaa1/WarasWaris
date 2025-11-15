@@ -1,0 +1,208 @@
+.datepickercomponent {
+    width: auto;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    background-color: #FFFFFF;
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+}
+
+.date-picker {
+    background-color: #CEDEFF;
+    border-radius: 10px;
+    height: 50px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 5px;
+}
+
+.date-input {
+    font-size: 16px;
+    border: none;
+    color: #5A81FA;
+    font-weight: normal;
+    background-color: #CEDEFF;
+    width: auto;
+}
+
+.date-input:hover {
+    border: none;
+    font-weight: bold;
+    background-color: #CEDEFF;
+    color: #5A81FA;
+    font-weight: normal;
+    cursor: pointer;
+}
+
+.date-input:focus {
+    outline: none;
+    box-shadow: none;
+    color: #5A81FA;
+    font-weight: normal;
+    cursor: pointer;
+}
+
+.date-box:focus {
+    outline: none;
+    box-shadow: none;
+    color: #5A81FA;
+    font-weight: normal;
+    cursor: pointer;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+
+.monthYear {
+    text-align: center;
+    font-weight: bold;
+    width: 150px;
+    color: #1F4DD9;
+    cursor: pointer;
+}
+
+.header i {
+    color: #1F4DD9;
+    font-size: 35px;
+    cursor: pointer;
+}
+
+.header button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 25%;
+    background-color: #FFFFFF;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+}
+
+.days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+}
+
+.day {
+    text-align: center;
+    padding: 5px;
+    color: #5A81FA;
+    font-size: 12px;
+    font-weight: normal;
+}
+
+.dates {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+}
+
+.date {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2px;
+    margin: auto;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 16px;
+    color: #5A81FA;
+    border-radius: 5px;
+    width: 40px;
+    height: 40px;
+}
+
+.date:hover, .date.active {
+    background-color: #5A81FA;
+    color: #FFFFFF;
+}
+
+.date.inactive {
+    color: #5A81FA50;
+}
+
+.date.inactive:hover {
+    background-color: #FFFFFF;
+}
+
+.month {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Atur 4 kolom untuk bulan */
+    gap: 15px;
+    padding: 10px;
+    text-align: center;
+    color: #1F4DD9;
+    font-size: 14px;
+    font-weight: normal;
+}
+
+.month div {
+    padding: 10px 5px;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: background-color 0.5s;
+}
+
+.month div:hover {
+    background-color: #6E90FA;
+    border-radius: 10px;
+    color: #FFFFFF;
+}
+
+.month-active {
+    background-color: #6E90FA;
+    border-radius: 10px;
+    color: #FFFFFF;
+}
+
+.year {
+    height: 250px;
+    overflow-y: auto;
+    display: grid;
+    grid-template-columns: repeat(1, 1fr); /* Atur 4 kolom untuk bulan */
+    gap: 8px;
+    padding: 10px;
+    text-align: center;
+    color: #1F4DD9;
+    font-size: 14px;
+    font-weight: normal;
+}
+
+.year div {
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: background-color 0.5s;
+}
+
+.year div:hover {
+    background-color: #6E90FA;
+    border-radius: 10px;
+    color: #FFFFFF;
+}
+
+.year-active {
+    background-color: #6E90FA;
+    border-radius: 10px;
+    color: #FFFFFF;
+}
+
+.no-pointer {
+    pointer-events: none;
+    cursor: default !important;
+}
+
+.hidden-icon {
+    visibility: hidden;
+}
