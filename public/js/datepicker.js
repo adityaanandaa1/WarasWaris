@@ -1,5 +1,6 @@
 document.querySelectorAll('.datepicker-wrapper').forEach(wrapper => {
 
+    // Ambil elemen di dalam wrapper
     const dateInput = wrapper.querySelector('.datepicker-input');
     const calendarIcon = wrapper.querySelector('.datepicker-icon');
     const calendarPopup = wrapper.querySelector('.datepicker');
@@ -16,15 +17,17 @@ document.querySelectorAll('.datepicker-wrapper').forEach(wrapper => {
     let currentDate = selectedDateInput && selectedDateInput.value
         ? new Date(selectedDateInput.value + 'T00:00:00')
         : new Date();
-
     let mode = 'date';
 
+    // Toggle kalender (buka & tutup)
     const toggleCalendar = () => {
         calendarPopup.classList.toggle('hidden');
         if (!calendarPopup.classList.contains('hidden')) updateCalendar();
     };
 
-    // Update Calendar
+    // ================================
+    // UPDATE KALENDAR UTAMA
+    // ================================
     const updateCalendar = () => {
         const year = currentDate.getFullYear();
         const month = currentDate.getMonth();
@@ -38,47 +41,42 @@ document.querySelectorAll('.datepicker-wrapper').forEach(wrapper => {
         const totalDays = new Date(year, month + 1, 0).getDate();
         const prevMonthDays = new Date(year, month, 0).getDate();
 
-        const monthYearString = currentDate.toLocaleString('id-ID', {
-            month: 'long',
-            year: 'numeric'
-        });
+        const monthYearString = currentDate.toLocaleString('id-ID', { month: 'long', year: 'numeric' });
         monthYearElement.textContent = monthYearString;
 
         let datesHTML = '';
         const start = (firstDayIndex === 0 ? 6 : firstDayIndex - 1);
 
-        // Previous month filler
-        for (let i = start; i > 0; i++) {
+        // Hari dari bulan sebelumnya
+        for (let i = start; i > 0; i--) {
             datesHTML += `<div class="opacity-30">${prevMonthDays - i + 1}</div>`;
         }
 
-        // Current month
+        // Hari bulan ini
         for (let i = 1; i <= totalDays; i++) {
-            const formatted = `${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
-            const selected = selectedDateInput.value === formatted
-                ? 'bg-blue-500 text-white rounded'
-                : '';
+            const formatted = `${year}-${String(month+1).padStart(2,'0')}-${String(i).padStart(2,'0')}`;
+            const selected = selectedDateInput.value === formatted ? 'bg-blue-500 text-white rounded' : '';
+
             datesHTML += `<div class="cursor-pointer p-1 rounded ${selected}" data-date="${formatted}">${i}</div>`;
         }
 
-        // Next month filler
+        // Hari bulan berikutnya
         const lastDayIndex = new Date(year, month + 1, 0).getDay();
         const end = 7 - (lastDayIndex === 0 ? 7 : lastDayIndex);
+
         for (let i = 1; i <= end; i++) {
             datesHTML += `<div class="opacity-30">${i}</div>`;
         }
 
         dateElement.innerHTML = datesHTML;
 
-        // Click date
+        // Klik pilih tanggal
         dateElement.querySelectorAll('[data-date]').forEach(div => {
             div.addEventListener('click', () => {
                 const selected = div.dataset.date;
 
                 dateInput.value = new Date(selected).toLocaleDateString('id-ID', {
-                    day: '2-digit',
-                    month: 'long',
-                    year: 'numeric'
+                    day:'2-digit', month:'long', year:'numeric'
                 });
 
                 selectedDateInput.value = selected;
@@ -88,17 +86,18 @@ document.querySelectorAll('.datepicker-wrapper').forEach(wrapper => {
         });
     };
 
-    // Show Month Picker
+    // ================================
+    // MONTH PICKER
+    // ================================
     function showMonthPicker() {
         mode = "month";
-
         dateElement.classList.add("hidden");
         daysRow.classList.add("hidden");
         monthGrid.classList.remove("hidden");
 
         const months = [
-            "Januari", "Februari", "Maret", "April", "Mei", "Juni",
-            "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+            "Januari","Februari","Maret","April","Mei","Juni",
+            "Juli","Agustus","September","Oktober","November","Desember"
         ];
 
         monthGrid.innerHTML = "";
@@ -106,9 +105,9 @@ document.querySelectorAll('.datepicker-wrapper').forEach(wrapper => {
         months.forEach((m, i) => {
             const div = document.createElement("div");
             div.textContent = m;
-            div.classList.add("p-1", "cursor-pointer", "rounded");
+            div.classList.add("p-1","cursor-pointer","rounded");
 
-            if (i === currentDate.getMonth()) div.classList.add("bg-blue-500", "text-white");
+            if (i === currentDate.getMonth()) div.classList.add("bg-blue-500","text-white");
 
             div.onclick = () => {
                 currentDate.setMonth(i);
@@ -122,10 +121,11 @@ document.querySelectorAll('.datepicker-wrapper').forEach(wrapper => {
         monthYearElement.textContent = currentDate.getFullYear();
     }
 
-    // Show Year Picker
+    // ================================
+    // YEAR PICKER
+    // ================================
     function showYearPicker() {
         mode = "year";
-
         monthGrid.classList.add("hidden");
         dateElement.classList.add("hidden");
         daysRow.classList.add("hidden");
@@ -133,12 +133,13 @@ document.querySelectorAll('.datepicker-wrapper').forEach(wrapper => {
 
         yearGrid.innerHTML = "";
 
+        // Range tahun
         for (let y = 2000; y <= 2050; y++) {
             const div = document.createElement("div");
             div.textContent = y;
-            div.classList.add("p-1", "cursor-pointer", "rounded");
+            div.classList.add("p-1","cursor-pointer","rounded");
 
-            if (y === currentDate.getFullYear()) div.classList.add("bg-blue-500", "text-white");
+            if (y === currentDate.getFullYear()) div.classList.add("bg-blue-500","text-white");
 
             div.onclick = () => {
                 currentDate.setFullYear(y);
@@ -151,7 +152,9 @@ document.querySelectorAll('.datepicker-wrapper').forEach(wrapper => {
         monthYearElement.textContent = currentDate.getFullYear();
     }
 
-    // Event Listeners
+    // ================================
+    // EVENT LISTENER
+    // ================================
     monthYearElement.onclick = () => {
         if (mode === "date") showMonthPicker();
         else if (mode === "month") showYearPicker();
@@ -172,11 +175,9 @@ document.querySelectorAll('.datepicker-wrapper').forEach(wrapper => {
     calendarIcon.onclick = toggleCalendar;
     dateInput.onclick = toggleCalendar;
 
-    // Close on click outside
     document.addEventListener('click', e => {
         if (!wrapper.contains(e.target)) calendarPopup.classList.add('hidden');
     });
 
-    // Init
     updateCalendar();
 });
