@@ -32,17 +32,18 @@ class dokter_controller extends Controller
         $hari_enum = strtolower($nama_hari);
 
         //jadwal hari ini
-        $jadwal = jadwal_praktik::firstOrCreate(
-            [
-                'hari' => $hari_enum,
-                'tanggal_jadwal_praktik' => $hari_ini->toDateString(),
-            ],
-            [
+        $jadwal = jadwal_praktik::firstOrNew([
+            'hari' => $hari_enum,
+            'tanggal_jadwal_praktik' => $hari_ini->toDateString(),
+        ]);
+
+        if (!$jadwal->exists) {
+            $jadwal->fill([
                 'jam_mulai' => '09:00:00',
                 'jam_selesai' => '21:00:00',
                 'is_active' => true,
-            ]
-        );
+            ])->save();
+        }
 
         $antrian = antrian::whereDate('tanggal_antrian', $hari_ini)->first();
         if (!$antrian && $hari_ini->isToday()) {
@@ -108,55 +109,41 @@ class dokter_controller extends Controller
     {
         $validated = $request->validate([
             'tanggal' => 'required|date',
-            'status' => 'required|in:buka, libur',
+            'status' => 'required|in:buka,libur',
             'jam_mulai' => 'nullable|required_if:status,buka|date_format:H:i',
             'jam_selesai' => 'nullable|required_if:status,buka|date_format:H:i',
-            'catatan' => 'nullable|required_if:status,libur|string',
+            'catatan' => 'nullable|string',
         ]);
 
         DB::beginTransaction();
 
         try {
             $tanggal = Carbon::parse($validated['tanggal'], 'Asia/Jakarta')->startOfDay();
+            $tanggal->locale('id');
             $nama_hari = $this->get_nama_hari($tanggal);
             $hari_enum = strtolower($nama_hari);
 
-            $jadwal = jadwal_praktik::firstOrCreate(
+            $jadwal = jadwal_praktik::updateOrCreate(
                 [
                     'hari' => $hari_enum,
                     'tanggal_jadwal_praktik' => $tanggal->toDateString(),
                 ],
                 [
-                    'jam_mulai' => '09:00:00',
-                    'jam_selesai' => '21:00:00',
-                    'is_active' => true,
+                    'is_active' => $validated['status'] === 'buka',
+                    'jam_mulai' => $validated['status'] === 'buka' ? $validated['jam_mulai'] : null,
+                    'jam_selesai' => $validated['status'] === 'buka' ? $validated['jam_selesai'] : null,
                 ]
             );
 
-            if ($validated['status'] == 'libur') {
-                // Set libur
-                $jadwal->update([
-                    'is_active' => false,
-                    'jam_mulai' => null,
-                    'jam_selesai' => null,
-                ]);
-
-                // Simpan catatan libur (bisa pakai tabel terpisah atau kolom tambahan)
-                // Untuk sekarang kita pakai session flash
-                $message = "Jadwal {$nama_hari} diset LIBUR. Catatan: " . ($validated['catatan'] ?? '-');
-            } else {
-                $jadwal->update([
-                    'is_active' => true,
-                    'jam_mulai' => $validated['jam_mulai'],
-                    'jam_selesai' => $validated['jam_selesai'],
-                ]);
-
-                $message = "Jadwal {$nama_hari} diperbarui: {$validated['jam_mulai']} - {$validated['jam_selesai']}";
-            }
+            $message = $validated['status'] === 'libur'
+                ? "Jadwal {$nama_hari} diset LIBUR" . ($validated['catatan'] ? ". Catatan: {$validated['catatan']}" : '-')
+                : "Jadwal {$nama_hari} diperbarui: {$validated['jam_mulai']} - {$validated['jam_selesai']}";
 
             DB::commit();
 
-            return back()->with('success', $message);
+            return redirect()
+                ->route('dokter.dashboard', ['tanggal' => $tanggal->toDateString()])
+                ->with('success', $message);
         } catch (\Exception $e) {
             DB::rollBack();
 

@@ -66,13 +66,12 @@ class reservasi_controller extends Controller
 
         //cek jadwal praktik
         $nama_hari = $this->get_nama_hari($tanggal);
-        $jadwal = jadwal_praktik::where('hari', $nama_hari)
-            ->where('is_active', true)
+        $jadwal = jadwal_praktik::whereDate('tanggal_jadwal_praktik', $tanggal->toDateString())
             ->first();
         
-        if(!$jadwal) {
+        if(!$jadwal || !$jadwal->is_active) {
             return back()->withErrors([
-                'error' => 'Klinik tutup pada hari' . $nama_hari
+                'error' => 'Klinik tutup pada hari ' . $nama_hari
             ]);
         }
 
@@ -236,5 +235,4 @@ class reservasi_controller extends Controller
     return $pasienUtama; // bisa null kalau belum punya biodata sama sekali
 }
 }
-
 

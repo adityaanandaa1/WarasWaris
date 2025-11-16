@@ -4,6 +4,7 @@
 
 @php($hari_ini = $hari_ini ?? \Carbon\Carbon::today()->locale('id'))
 @php($nama_hari = $nama_hari ?? $hari_ini->translatedFormat('l'))
+@php($isLibur = $jadwal && !$jadwal->is_active)
 
 <div class="dashboard-doctor">
     <div class="dashboard-welcome-section">
@@ -97,29 +98,42 @@
                 </div>
             </form>
         </div>
-
-        @if($jadwal && $jadwal->is_active)
-        <div class="dashboard-schedule-time">
-            <div class="dashboard-time-item">
-                <h1 class="dashboard-time-label">Buka</h1>
-                <p class="dashboard-time-value">{{ $jadwal->jam_mulai ?? '-' }}</p>
+        @if($jadwal)
+            @if($isLibur)
+            <div class="dashboard-schedule-time">
+                <div class="dashboard-time-item">
+                    <h1 class="dashboard-time-label">Status</h1>
+                    <p class="dashboard-time-value" style="color:#ef4444;">Libur</p>
+                </div>
+                <h1 class="dashboard-time-separator">-</h1>
+                <div class="dashboard-time-item">
+                    <h1 class="dashboard-time-label">Tanggal</h1>
+                    <p class="dashboard-time-value">{{ $hari_ini->translatedFormat('d F Y') }}</p>
+                </div>
             </div>
-            <h1 class="dashboard-time-separator">-</h1>
-            <div class="dashboard-time-item">
-                <h1 class="dashboard-time-label">Tutup</h1>
-                <p class="dashboard-time-value">{{ $jadwal->jam_selesai ?? '-' }}</p>
+            @else
+            <div class="dashboard-schedule-time">
+                <div class="dashboard-time-item">
+                    <h1 class="dashboard-time-label">Buka</h1>
+                    <p class="dashboard-time-value">{{ $jadwal->jam_mulai ?? '-' }}</p>
+                </div>
+                <h1 class="dashboard-time-separator">-</h1>
+                <div class="dashboard-time-item">
+                    <h1 class="dashboard-time-label">Tutup</h1>
+                    <p class="dashboard-time-value">{{ $jadwal->jam_selesai ?? '-' }}</p>
+                </div>
             </div>
+            @endif
+        @else
+        <div class="time-item">
+            <h1 class="time-label">Belum Ada Jadwal</h1>
+            <p class="time-value">{{ $nama_hari }}</p>
         </div>
+        @endif
 
         <button onclick="document.getElementById('modalJadwal').classList.remove('hidden')" type="button" class="btn btn-primary btn-sm btn-schedule">
             Atur Ulang
         </button>
-        @else
-        <div class="dashboard-time-item">
-            <h1 class="dashboard-time-label">Tidak Ada Jadwal</h1>
-            <p class="dashboard-time-value">{{ $nama_hari }}</p>
-        </div>
-        @endif
     </div>
 
     <div class="dashboard-queue">
@@ -202,7 +216,7 @@
                         <path d="M16.7996 5.59997C16.9853 5.59997 17.1633 5.52622 17.2946 5.39494C17.4259 5.26367 17.4996 5.08562 17.4996 4.89997V0.699996C17.4996 0.514345 17.4259 0.336299 17.2946 0.205024C17.1633 0.0737493 16.9853 0 16.7996 0C16.614 0 16.4359 0.0737493 16.3046 0.205024C16.1734 0.336299 16.0996 0.514345 16.0996 0.699996V4.89997C16.0996 5.08562 16.1734 5.26367 16.3046 5.39494C16.4359 5.52622 16.614 5.59997 16.7996 5.59997Z" fill="#464646"/>
                     </svg>
                 
-                    <input type="hidden" name="tanggal" id="selectedDateInput">
+                    <input type="hidden" name="tanggal" id="selectedDateInput" value="{{ $hari_ini->format('Y-m-d') }}">
                 </div>
 
                 <div class="calendar-popup hidden" id="calendarPopup">
@@ -234,21 +248,21 @@
                 </div>
             </div>
 
-            <div class="dashboard-toggle-group">
-                <input type="radio" id="buka" name="status" value="buka" checked onchange="toggleJamInput()">
+            <div class="toggle-group">
+                <input type="radio" id="buka" name="status" value="buka" {{ !$isLibur ? 'checked' : '' }} onchange="toggleJamInput()">
                 <label for="buka">Buka</label>
                             
-                <input type="radio" id="libur" name="status" value="libur" onchange="toggleJamInput()">
+                <input type="radio" id="libur" name="status" value="libur" {{ $isLibur ? 'checked' : '' }} onchange="toggleJamInput()">
                 <label for="libur">Libur</label>
 
                 <span class="toggle-slider"></span>
             </div>
 
-            <div id="jamInputs" class="dashboard-form-group">
-                <h1 class="dashboard-jam-title">Pilih Jam</h1>
-                <div class="dashboard-time-inputs-grid">
-                    <div class="dashboard-time-item-schedule">
-                        <label class="dashboard-form-label">Buka</label>
+            <div id="jamInputs" class="form-group {{ $isLibur ? 'hidden' : '' }}">
+                <h1 class="jam-title">Pilih Jam</h1>
+                <div class="time-inputs-grid">
+                    <div class="time-item-schedule">
+                        <label class="form-label">Buka</label>
                         <input type="time" name="jam_mulai"  value="{{ old('jam_mulai', $jadwal && $jadwal->jam_mulai ? \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') : '09:00') }}"
                             class="dashboard-form-input-jam">
                     </div>
@@ -264,8 +278,8 @@
                 </button>
             </div>
 
-            <div id="catatanInput" class="dashboard-form-group hidden">
-                <label class="dashboard-form-label">Catatan</label>
+            <div id="catatanInput" class="form-group {{ $isLibur ? '' : 'hidden' }}">
+                <label class="form-label">Catatan</label>
                 <textarea name="catatan" rows="5" cols="40" 
                           class="dashboard-form-input dashboard-form-textarea"></textarea>
                 <button type="submit" class="btn-submit-schedule">
@@ -290,6 +304,12 @@ function toggleJamInput() {
         catatanInput.classList.add('hidden');
     }
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    if (document.querySelector('input[name="status"]')) {
+        toggleJamInput();
+    }
+});
 
 function generateCalendar() {
         const today = new Date();

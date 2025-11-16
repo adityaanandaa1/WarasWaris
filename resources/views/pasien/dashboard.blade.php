@@ -112,6 +112,22 @@
             </div>
 
             @if($klinik_tutup)
+                <div class="reservasi-cards">
+                    <div class="info-card-time">
+                        <div class="title">Jam Praktik</div>
+                        <div class="time-row">
+                            <div class="time-group">
+                                <label>Buka</label>
+                                <div class="time" style="color:#ef4444;">Libur</div>
+                            </div>
+                            <div class="separator">-</div>
+                            <div class="time-group">
+                                <label>Tutup</label>
+                                <div class="time" style="color:#ef4444;">Libur</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="empty-state">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>

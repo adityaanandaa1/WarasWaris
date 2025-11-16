@@ -1,104 +1,7 @@
-* {
-    font-family: 'Poppins', sans-serif;
-    box-sizing: border-box;
-}
-
-/* Layout Dokter */
-body {
-    background: #E4EDFF;
-    min-height: 100vh;
-    margin: 0;
-}
-
-.sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-}
-
-.layout {
-    margin-left: 60px;
-    margin-right: 0px;
-    padding-right: 0px;
-}
-
-.content {
-    margin: 30px;
-    margin-right: 30px;
-    margin-left: 50px;
-}
-
-/* Sidebar Dokter */
-#sidebar-doctor {
-    margin: 30px;
-}
-
-.sidebar-menu {
-    background: #5A81FA;
-    width: 60px;
-    height: calc(100vh - 60px);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    border-radius: 20px;
-    box-shadow: 0px 0px 20px 5px rgba(0, 0, 0, 0.15);
-    padding: 20px 0px;
-    list-style: none;
-}
-
-.sidebar-item {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.sidebar-link {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0;
-    padding: 30px 0px;
-}
-
-.btn-logout {
-    background-color: #ffffff00;
-    border: none;
-    padding: 10px;
-    border-radius: 5px;
-}
-
-.btn-logout:hover {
-    background-color: #cedeff50;
-    border: none;
-}
-
-.sidebar-link.active {
-    background-color: #CEDEFF50;
-    border-radius: 5px;
-    padding: 10px;
-}
-
-/* Dashboard Dokter */
-.dashboard-doctor {
-    display: grid;
-    grid-template-columns: repeat(8, 1fr);
-    grid-template-rows: repeat(10, 1fr);
-    gap: 20px;
-
-    /* display: grid;
-    grid-template-columns: repeat(12, 1fr);
-    grid-template-rows: repeat(10, 1fr);
-    gap: 20px; */
-}
-
-/* Dashboard Welcome */
-.welcome-section {
+/* Dashboard Welcome Section */
+.dashboard-welcome-section {
     grid-column: span 5 / span 5;
     grid-row: span 4 / span 4;
-
-    /* grid-column: span 8 / span 8;
-    grid-row: span 4 / span 4; */
 
     background-color: #5A81FA;
     padding-left: 15px;
@@ -107,7 +10,7 @@ body {
     box-shadow: 0px 0px 20px 5px rgba(0, 0, 0, 0.15);
 }
 
-.welcome-date {
+.dashboard-welcome-date {
     background-color: #CEDEFF80;
     padding: 10px;
     width: 210px;
@@ -120,49 +23,45 @@ body {
     position: relative;
 }
 
-.welcome-today {
+.dashboard-welcome-today {
     color: #FFFFFF;
     font-size: 16px;
     margin: 0;
     line-height: 1;
 }
 
-.welcome-greeting {
+.dashboard-welcome-greeting {
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
 }
 
-.greeting-text {
+.dashboard-greeting-text {
     padding-bottom: 30px;
 }
 
-.greeting-title {
+.dashboard-greeting-title {
     padding-bottom: 20px;
 }
 
-.greeting-title-subtitle {
+.dashboard-greeting-title-subtitle {
     font-size: 20px;
     color: #FFFFFF;
     font-weight: bolder;
     line-height: 2;
 }
 
-.greeting-subtitle {
+.dashboard-greeting-subtitle {
     font-size: 15px;
     color: #FFFFFF;
     font-weight: lighter;
 }
 
-/* Dashboard Profile */
+/* Dashboard Profile Section */
 .dashboard-profile {
     grid-column: span 3 / span 3;
     grid-row: span 4 / span 4;
     grid-column-start: 6;
-
-    /* grid-column: span 4 / span 4;
-    grid-row: span 4 / span 4;
-    grid-column-start: 9; */
 
     display: flex;
     flex-direction: column;
@@ -170,7 +69,7 @@ body {
     align-items: center;
 }
 
-.profile-header {
+.dashboard-profile-header {
     background: #5A81FA;
     width: 100%;
     height: auto;
@@ -184,13 +83,13 @@ body {
     z-index: 2;
 }
 
-.profile-title {
+.dashboard-profile-title {
     font-size: 20px;
     font-weight: 500;
     color: #FFFFFF;
 }
 
-.profile-body {
+.dashboard-profile-body {
     width: 97%;
     height: auto;
     background: #FFFFFF;
@@ -202,65 +101,65 @@ body {
     z-index: 1;
 }
 
-.profile-name {
+.dashboard-profile-name {
     font-size: 14px;
     font-weight: bold;
     color: #464646;
     line-height: 2;
 }
 
-.profile-profession {
+.dashboard-profile-profession {
     font-size: 12px;
     font-weight: normal;
     color: #464646;
     line-height: 2;
 }
 
-.profile-location {
+.dashboard-profile-location {
     display: flex;
     gap: 5px;
     line-height: 2;
 }
 
-.location-text {
+.dashboard-location-text {
     font-size: 14px;
     font-weight: normal;
     color: #464646;
 }
 
-.profile-details {
+.dashboard-profile-details {
     display: flex;
     justify-content: space-between;
     margin: 23px 0px 10px 0px;
 }
 
-.detail-item {
+.dashboard-detail-item {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 10px;
 }
 
-.profile-separator {
+.dashboard-profile-separator {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 }
 
-.detail-label {
+.dashboard-detail-label {
     font-size: 13px;
     font-weight: normal;
     color: #464646;
 }
 
-.detail-value {
+.dashboard-detail-value {
     font-size: 12px;
     font-weight: bold;
     color: #464646;
 }
 
-.download-sip {
+.dashboard-download-sip {
     background: #5A81FA;
     box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.25);
     border-radius: 20px;
@@ -271,20 +170,16 @@ body {
     transition: background-color 1s ease;
 }
 
-.download-sip:hover {
+.dashboard-download-sip:hover {
     background: #87A3FB;
     box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.25);
 }
 
-/* Dashboard Jadwal */
+/* Dashboard Schedule Section */
 .dashboard-schedule {
     grid-column: span 2 / span 2;
     grid-row: span 3 / span 3;
     grid-row-start: 5;
-
-    /* grid-column: span 5 / span 5;
-    grid-row: span 3 / span 3;
-    grid-row-start: 5; */
 
     background-color: #FFFFFF;
     border-radius: 20px;
@@ -295,13 +190,13 @@ body {
     gap: 10px;
 }
 
-.schedule-title {
+.dashboard-schedule-title {
     font-size: 14px;
     font-weight: normal;
     color: #464646;
 }
 
-.dropdown-schedule {
+.dashboard-dropdown-schedule {
     background-color: #CEDEFF;
     font-size: 12px;
     font-weight: lighter;
@@ -309,54 +204,49 @@ body {
     border-radius: 10px;
 }
 
-.schedule-time {
+.dashboard-schedule-time {
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 20px;
 }
 
-.time-item {
+.dashboard-time-item {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
-.time-label {
+.dashboard-time-label {
     font-size: 10px;
     font-weight: lighter;
     color: #464646;
 }
 
-.time-value {
+.dashboard-time-value {
     font-size: 24px;
     font-weight: bolder;
     color: #5A81FA;
 }
 
-.time-separator {
+.dashboard-time-separator {
     font-size: 24px;
     font-weight: bolder;
     color: #5A81FA;
 }
 
-.btn-schedule {
+.dashboard-btn-schedule {
     padding: 5px 30px;
     border-radius: 15px;
 }
 
-/* Dashboard Antrian */
+/* Dashboard Queue Section */
 .dashboard-queue {
     grid-column: span 2 / span 2;
     grid-row: span 3 / span 3;
     grid-column-start: 1;
     grid-row-start: 8;
-
-    /* grid-column: span 5 / span 5;
-    grid-row: span 3 / span 3;
-    grid-column-start: 1;
-    grid-row-start: 8; */
 
     background-color: #FFFFFF;
     border-radius: 20px;
@@ -367,29 +257,24 @@ body {
     gap: 10px;
 }
 
-.queue-title {
+.dashboard-queue-title {
     font-size: 14px;
     font-weight: normal;
     color: #464646;
 }
 
-.queue-number {
+.dashboard-queue-number {
     font-size: 96px;
     font-weight: bold;
     color: #5A81FA;
 }
 
-/* Dashboard Laporan */
+/* Dashboard Report Section */
 .dashboard-report {
     grid-column: span 3 / span 3;
     grid-row: span 6 / span 6;
     grid-column-start: 3;
     grid-row-start: 5;
-
-    /* grid-column: span 3 / span 3;
-    grid-row: span 6 / span 6;
-    grid-column-start: 6;
-    grid-row-start: 5; */
 
     background-color: #FFFFFF;
     border-radius: 20px;
@@ -401,13 +286,13 @@ body {
     gap: 30px;
 }
 
-.report-title {
+.dashboard-report-title {
     font-size: 14px;
     font-weight: bolder;
     color: #464646;
 }
 
-.report-item {
+.dashboard-report-item {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -415,49 +300,43 @@ body {
     gap: 5px;
 }
 
-.report-number-1 {
+.dashboard-report-number-1 {
     font-size: 50px;
     font-weight: bolder;
     color: #FF07BD;
 }
 
-.report-number-2 {
+.dashboard-report-number-2 {
     font-size: 50px;
     font-weight: bolder;
     color: #9C6CFE;
 }
 
-.report-number-3 {
+.dashboard-report-number-3 {
     font-size: 50px;
     font-weight: bolder;
     color: #5A81FA;
 }
 
-.report-label {
+.dashboard-report-label {
     font-size: 14px;
     font-weight: normal;
     color: #464646;
 }
 
-/* Dashboard Kalender */
+/* Dashboard Calendar Section */
 .dashboard-calendar {
     grid-column: span 3 / span 3;
     grid-row: span 6 / span 6;
     grid-column-start: 6;
     grid-row-start: 5;
 
-    /* grid-column: span 4 / span 4;
-    grid-row: span 6 / span 6;
-    grid-column-start: 9;
-    grid-row-start: 5; */
-
     display: flex;
     flex-direction: column;
-    /* justify-content: center; */
     align-items: center;
 }
 
-.calendar-header {
+.dashboard-calendar-header {
     background: #5A81FA;
     width: 100%;
     height: auto;
@@ -471,13 +350,13 @@ body {
     z-index: 2;
 }
 
-.calendar-title {
+.dashboard-calendar-title {
     font-size: 20px;
     font-weight: 500;
     color: #FFFFFF;
 }
 
-.calendar-body {
+.dashboard-calendar-body {
     width: 97%;
     height: 100%;
     background: #87A3FB;
@@ -489,7 +368,7 @@ body {
     z-index: 1;
 }
 
-.dropdown-calendar {
+.dashboard-dropdown-calendar {
     background-color: #CEDEFF50;
     font-size: 10px;
     font-weight: lighter;
@@ -497,7 +376,7 @@ body {
     border-radius: 5px;
 }
 
-.calendar-month {
+.dashboard-calendar-month {
     text-align: center;
     margin-bottom: 30px;
     font-size: 24px;
@@ -505,7 +384,7 @@ body {
     color: #FFFFFF;
 }
 
-.calendar-weekdays {
+.dashboard-calendar-weekdays {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 8px;
@@ -514,13 +393,13 @@ body {
     margin-bottom: 8px;
 }
 
-.weekday {
+.dashboard-weekday {
     font-size: 10px;
     font-weight: normal;
     color: #FFFFFF;
 }
 
-.calendar-dates {
+.dashboard-calendar-dates {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 6px;
@@ -562,7 +441,7 @@ body {
 }
 
 /* Modal Atur Jadwal */
-.modal-overlay {
+.dashboard-modal-overlay {
     position: fixed; 
     top: 0;
     left: 0;
@@ -578,7 +457,7 @@ body {
     transition: opacity 0.3s ease-in-out;
 }
 
-.modal-container {
+.dashboard-modal-container {
     background-color: #ffffff; 
     border-radius: 16px; 
     box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
@@ -586,7 +465,7 @@ body {
     padding: 24px; 
 }
 
-.modal-close-btn {
+.dashboard-modal-close-btn {
     color: #9ca3af;
     transition: color 0.15s ease-in-out;
     border: none;
@@ -597,29 +476,29 @@ body {
     margin-left: auto;
 }
 
-.modal-close-btn:hover {
+.dashboard-modal-close-btn:hover {
     color: #4b5563;
 }
 
-.icon-close {
+.dashboard-icon-close {
     width: 20px;
     height: 20px;
 }
 
-.modal-form {
+.dashboard-modal-form {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.datepickercomponent {
+.dashboard-datepickercomponent {
     position: fixed; 
     top: 10;
     left: 10;
     z-index: 9999;
 }
 
-.form-label {
+.dashboard-form-label {
     display: block;
     font-size: 0.875rem;
     font-weight: 500;
@@ -627,7 +506,7 @@ body {
     margin-bottom: 0.5rem;
 }
 
-.toggle-group {
+.dashboard-toggle-group {
     position: relative;
     display: inline-flex;
     border: 1px solid #ccc;
@@ -637,11 +516,11 @@ body {
     margin: 5px;
 }
 
-.toggle-group input[type="radio"] {
+.dashboard-toggle-group input[type="radio"] {
     display: none;
 }
 
-.toggle-group label {
+.dashboard-toggle-group label {
     flex: 1;
     display: flex;
     justify-content: center;
@@ -654,7 +533,7 @@ body {
     transition: all 0.2s ease;
 }
 
-.toggle-group .toggle-slider {
+.dashboard-toggle-group .dashboard-toggle-slider {
     position: absolute;
     top: 0;
     left: 0;

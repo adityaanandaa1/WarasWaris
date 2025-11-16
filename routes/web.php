@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\auth_controller;
+use App\Http\Controllers\reset_password_controller;
 use App\Http\Controllers\pasien\pasien_controller;
 use App\Http\Controllers\pasien\riwayat_pemeriksaan_controller;
 use App\Http\Controllers\dokter\dokter_controller;
@@ -11,6 +12,7 @@ use App\Http\Controllers\pasien\reservasi_controller;
 use App\Http\Controllers\dokter\daftar_antrian_controller;
 use App\Http\Controllers\dokter\daftar_pasien_controller;
 use App\Http\Controllers\Dokter\laporan_controller;
+
 
 Route::get('/', function () {
     return view('homepage');
@@ -100,6 +102,18 @@ Route::middleware(['auth', 'role:dokter'])->prefix('dokter')->name('dokter.')
 });
 
 
+Route::get('/forgot-password', [reset_password_controller::class, 'tampilkan_reset_password'])
+    ->name('password.request');
+
+Route::post('/forgot-password', [reset_password_controller::class, 'kirim_reset_email'])
+    ->name('password.email');
+
+Route::get('/reset-password/{token}', [reset_password_controller::class, 'tampilkan_form_reset'])
+    ->name('password.reset');
+
+Route::post('/reset-password', [reset_password_controller::class, 'simpan_password'])
+    ->name('password.update');
+
 
 Route::get('/login', [auth_controller::class, 'tampilkan_login'])->name('login');
 Route::post('/login', [auth_controller::class, 'login'])->middleware('guest')->name('login.post');
@@ -107,7 +121,6 @@ Route::post('/login', [auth_controller::class, 'login'])->middleware('guest')->n
 // Register (khusus pasien)
 Route::get('/register', [auth_controller::class, 'tampilkan_register'])->name('register');
 Route::post('/register', [auth_controller::class, 'register'])->name('register.post');
-
 
 // Logout (harus sudah login)
 Route::post('/logout', [auth_controller::class, 'logout'])

@@ -246,8 +246,11 @@
             Riwayat Rekam Medis
         </div>
 
+        @php
+            $activeRekamId = optional($rekamMedisAktif)->id ?? request('id');
+        @endphp
         @forelse($riwayatRekamMedis as $index => $rekam)
-        <div class="riwayat-item {{ $loop->first ? 'active' : '' }}" 
+        <div class="riwayat-item {{ $rekam->id == $activeRekamId ? 'active' : '' }}" 
              onclick="loadRekamMedis({{ $rekam->id }})" 
              id="item-{{ $rekam->id }}">
             <div class="riwayat-date">
