@@ -5,7 +5,15 @@
 
 <div class="datepicker-wrapper">
     <div class="datepicker-box">
-        <input type="text" class="datepicker-input" placeholder="{{ $placeholder }}" readonly>
+        <input type="text" 
+            class="datepicker-input"
+            value="{{ request($name)
+                    ? \Carbon\Carbon::parse(request($name))->translatedFormat('d F Y')
+                    : \Carbon\Carbon::today()->translatedFormat('d F Y')
+                }}"
+            placeholder="{{ $placeholder }}"
+            readonly>
+
         <span class="datepicker-icon">
             {{ $icon ?? '' }}
         </span>
@@ -18,13 +26,13 @@
         </div>
 
         <div class="datepicker-days">
-            <div class="datepicker-day">Sen</div>
-            <div class="datepicker-day">Sel</div>
-            <div class="datepicker-day">Rab</div>
-            <div class="datepicker-day">Kam</div>
-            <div class="datepicker-day">Jum</div>
-            <div class="datepicker-day">Sab</div>
-            <div class="datepicker-day">Min</div>
+            <div class="datepicker-day">Senin</div>
+            <div class="datepicker-day">Selasa</div>
+            <div class="datepicker-day">Rabu</div>
+            <div class="datepicker-day">Kamis</div>
+            <div class="datepicker-day">Jumat</div>
+            <div class="datepicker-day">Sabtu</div>
+            <div class="datepicker-day">Minggu</div>
         </div>
 
         <div class="datepicker-dates"></div>
@@ -32,5 +40,9 @@
         <div class="datepicker-year hidden"></div>
     </div>
 
-    <input type="hidden" class="datepicker-hidden" name="{{ $name }}">
+    
+    <input type="hidden"
+        class="datepicker-hidden"
+        name="{{ $name }}"
+        value="{{ request($name) ?? date('Y-m-d') }}">
 </div>

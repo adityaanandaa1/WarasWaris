@@ -1,6 +1,5 @@
 document.querySelectorAll('.datepicker-wrapper').forEach(wrapper => {
 
-    // Ambil elemen di dalam wrapper
     const dateInput = wrapper.querySelector('.datepicker-input');
     const calendarIcon = wrapper.querySelector('.datepicker-icon');
     const calendarPopup = wrapper.querySelector('.datepicker');
@@ -19,15 +18,12 @@ document.querySelectorAll('.datepicker-wrapper').forEach(wrapper => {
         : new Date();
     let mode = 'date';
 
-    // Toggle kalender (buka & tutup)
     const toggleCalendar = () => {
         calendarPopup.classList.toggle('hidden');
         if (!calendarPopup.classList.contains('hidden')) updateCalendar();
     };
 
-    // ================================
-    // UPDATE KALENDAR UTAMA
-    // ================================
+    //DatePicker
     const updateCalendar = () => {
         const year = currentDate.getFullYear();
         const month = currentDate.getMonth();
@@ -36,6 +32,8 @@ document.querySelectorAll('.datepicker-wrapper').forEach(wrapper => {
         yearGrid.classList.add("hidden");
         dateElement.classList.remove("hidden");
         daysRow.classList.remove("hidden");
+        prevBtn.style.visibility = "visible";
+        nextBtn.style.visibility = "visible";
 
         const firstDayIndex = new Date(year, month, 1).getDay();
         const totalDays = new Date(year, month + 1, 0).getDate();
@@ -47,30 +45,32 @@ document.querySelectorAll('.datepicker-wrapper').forEach(wrapper => {
         let datesHTML = '';
         const start = (firstDayIndex === 0 ? 6 : firstDayIndex - 1);
 
-        // Hari dari bulan sebelumnya
         for (let i = start; i > 0; i--) {
-            datesHTML += `<div class="opacity-30">${prevMonthDays - i + 1}</div>`;
+            datesHTML += `<div class="datepicker-date inactive">${prevMonthDays - i + 1}</div>`;
         }
 
-        // Hari bulan ini
         for (let i = 1; i <= totalDays; i++) {
             const formatted = `${year}-${String(month+1).padStart(2,'0')}-${String(i).padStart(2,'0')}`;
-            const selected = selectedDateInput.value === formatted ? 'bg-blue-500 text-white rounded' : '';
 
-            datesHTML += `<div class="cursor-pointer p-1 rounded ${selected}" data-date="${formatted}">${i}</div>`;
+            const isSelected = selectedDateInput.value === formatted;
+            const selectedClass = isSelected ? 'active' : '';
+
+            const today = new Date();
+            const isToday = today.getFullYear() === year && today.getMonth() === month && today.getDate() === i;
+            const todayClass = isToday ? 'today' : '';
+
+            datesHTML += `<div class="datepicker-date cursor-pointer ${selectedClass} ${todayClass}" data-date="${formatted}">${i}</div>`;
         }
 
-        // Hari bulan berikutnya
         const lastDayIndex = new Date(year, month + 1, 0).getDay();
         const end = 7 - (lastDayIndex === 0 ? 7 : lastDayIndex);
 
         for (let i = 1; i <= end; i++) {
-            datesHTML += `<div class="opacity-30">${i}</div>`;
+            datesHTML += `<div class="datepicker-date inactive">${i}</div>`;
         }
 
         dateElement.innerHTML = datesHTML;
 
-        // Klik pilih tanggal
         dateElement.querySelectorAll('[data-date]').forEach(div => {
             div.addEventListener('click', () => {
                 const selected = div.dataset.date;
@@ -81,23 +81,46 @@ document.querySelectorAll('.datepicker-wrapper').forEach(wrapper => {
 
                 selectedDateInput.value = selected;
                 calendarPopup.classList.add('hidden');
-                updateCalendar();
+                
+                const form = wrapper.closest("form");
+                if (form) {
+                    const url = new URL(form.action);
+                    url.searchParams.set(form.querySelector(".datepicker-hidden").name, selected);
+
+                    fetch(url, { method: "GET" })
+                        .then(res => res.text())
+                        .then(html => {
+                            const parser = new DOMParser();
+                            const doc = parser.parseFromString(html, "text/html");
+                        
+                            const newSchedule = doc.querySelector(".dashboard-schedule-time") 
+                                             || doc.querySelector(".time-item");
+                            const oldSchedule = document.querySelector(".dashboard-schedule-time") 
+                                             || document.querySelector(".time-item");
+                            if (newSchedule && oldSchedule) {
+                                oldSchedule.replaceWith(newSchedule);
+                            }
+                        });
+                }
+                dateElement.querySelectorAll('[data-date].active').forEach(el => el.classList.remove('active'));
+                div.classList.add('active');
             });
         });
     };
 
-    // ================================
-    // MONTH PICKER
-    // ================================
+    //MonthPicker
     function showMonthPicker() {
         mode = "month";
+
         dateElement.classList.add("hidden");
         daysRow.classList.add("hidden");
+        yearGrid.classList.add("hidden");
         monthGrid.classList.remove("hidden");
+        prevBtn.style.visibility = "visible";
+        nextBtn.style.visibility = "visible";
 
         const months = [
-            "Januari","Februari","Maret","April","Mei","Juni",
-            "Juli","Agustus","September","Oktober","November","Desember"
+            "Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"
         ];
 
         monthGrid.innerHTML = "";
@@ -107,69 +130,89 @@ document.querySelectorAll('.datepicker-wrapper').forEach(wrapper => {
             div.textContent = m;
             div.classList.add("p-1","cursor-pointer","rounded");
 
-            if (i === currentDate.getMonth()) div.classList.add("bg-blue-500","text-white");
+            if (i === currentDate.getMonth()) div.classList.add("datepicker-month-active");
+                div.onclick = () => {
+                    monthGrid.querySelectorAll('.datepicker-month-active').forEach(el => el.classList.remove('datepicker-month-active'));
+                    currentDate.setMonth(i);
 
-            div.onclick = () => {
-                currentDate.setMonth(i);
-                mode = "date";
-                updateCalendar();
-            };
-
-            monthGrid.appendChild(div);
+                    div.classList.add('datepicker-month-active');
+                    mode = "date";
+                    updateCalendar();
+                };
+            
+                monthGrid.appendChild(div);
         });
 
         monthYearElement.textContent = currentDate.getFullYear();
     }
 
-    // ================================
-    // YEAR PICKER
-    // ================================
+    //YearPicker
     function showYearPicker() {
         mode = "year";
+
         monthGrid.classList.add("hidden");
         dateElement.classList.add("hidden");
         daysRow.classList.add("hidden");
         yearGrid.classList.remove("hidden");
+        prevBtn.style.visibility = "hidden";
+        nextBtn.style.visibility = "hidden";
 
         yearGrid.innerHTML = "";
 
-        // Range tahun
         for (let y = 2000; y <= 2050; y++) {
             const div = document.createElement("div");
             div.textContent = y;
             div.classList.add("p-1","cursor-pointer","rounded");
 
-            if (y === currentDate.getFullYear()) div.classList.add("bg-blue-500","text-white");
+            if (y === currentDate.getFullYear()) div.classList.add("datepicker-year-active");
 
             div.onclick = () => {
+                yearGrid.querySelectorAll('.datepicker-year-active')
+                .forEach(el => el.classList.remove('datepicker-year-active'));
+                
+                div.classList.add('datepicker-year-active');
                 currentDate.setFullYear(y);
+                yearGrid.classList.add("hidden");
+
                 showMonthPicker();
             };
-
             yearGrid.appendChild(div);
         }
-
         monthYearElement.textContent = currentDate.getFullYear();
+        const active = yearGrid.querySelector('.datepicker-year-active');
+        if (active) active.scrollIntoView({ block: 'center' });
     }
 
-    // ================================
-    // EVENT LISTENER
-    // ================================
+    //Event On-Click Button
     monthYearElement.onclick = () => {
         if (mode === "date") showMonthPicker();
         else if (mode === "month") showYearPicker();
     };
 
     prevBtn.onclick = () => {
-        if (mode === 'date') currentDate.setMonth(currentDate.getMonth() - 1);
-        else if (mode === 'month') currentDate.setFullYear(currentDate.getFullYear() - 1);
-        updateCalendar();
+        if (mode === "date") {
+            currentDate.setMonth(currentDate.getMonth() - 1);
+            updateCalendar();
+        } else if (mode === "month") {
+            currentDate.setFullYear(currentDate.getFullYear() - 1);
+            showMonthPicker();
+        } else if (mode === "year") {
+            currentDate.setFullYear(currentDate.getFullYear() - 12);
+            showYearPicker();
+        }
     };
 
     nextBtn.onclick = () => {
-        if (mode === 'date') currentDate.setMonth(currentDate.getMonth() + 1);
-        else if (mode === 'month') currentDate.setFullYear(currentDate.getFullYear() + 1);
-        updateCalendar();
+        if (mode === "date") {
+            currentDate.setMonth(currentDate.getMonth() + 1);
+            updateCalendar();
+        } else if (mode === "month") {
+            currentDate.setFullYear(currentDate.getFullYear() + 1);
+            showMonthPicker();
+        } else if (mode === "year") {
+            currentDate.setFullYear(currentDate.getFullYear() + 12);
+            showYearPicker();
+        }
     };
 
     calendarIcon.onclick = toggleCalendar;

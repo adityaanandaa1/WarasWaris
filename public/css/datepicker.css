@@ -29,10 +29,29 @@
     transition: opacity 0.3s ease-in-out;
 }
 
+.datepicker-box {
+    border-radius: 10px;
+    background-color: #CEDEFF;
+    padding: 10px 10px;
+}
+
 .datepicker-input {
     border: none;
-    padding: 10px 20px;
     background-color: #CEDEFF;
+    color: #5A81FA;
+}
+
+.datepicker-input:hover {
+    cursor: pointer;
+}
+
+.datepicker-input:focus {
+    cursor: pointer;
+    outline: none;
+}
+
+.datepicker-icon:hover {
+    cursor: pointer;
 }
 
 .datepicker-header {
@@ -118,7 +137,7 @@
 
 .datepicker-month {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* Atur 4 kolom untuk bulan */
+    grid-template-columns: repeat(3, 1fr);
     gap: 15px;
     padding: 10px;
     text-align: center;

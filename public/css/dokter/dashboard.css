@@ -87,6 +87,17 @@
     font-size: 20px;
     font-weight: 500;
     color: #FFFFFF;
+    margin-bottom: 0;
+}
+
+.ri-edit-box-line {
+    font-size: 18px;
+    color: #FFFFFF;
+    text-decoration: none; 
+}
+
+.ri-edit-box-line:hover {
+    text-decoration: none;
 }
 
 .dashboard-profile-body {
@@ -95,7 +106,7 @@
     background: #FFFFFF;
     box-shadow: 0px 0px 27px 7px rgba(0, 0, 0, 0.15);
     border-radius: 0px 0px 15px 15px;
-    padding: 35px 30px 10px 30px;
+    padding: 50px 30px 10px 30px;
     margin-top: -15px;
     position: relative;
     z-index: 1;
@@ -106,6 +117,7 @@
     font-weight: bold;
     color: #464646;
     line-height: 2;
+    margin-bottom: 0;
 }
 
 .dashboard-profile-profession {
@@ -113,6 +125,7 @@
     font-weight: normal;
     color: #464646;
     line-height: 2;
+    margin-bottom: 0;
 }
 
 .dashboard-profile-location {
@@ -125,19 +138,20 @@
     font-size: 14px;
     font-weight: normal;
     color: #464646;
+    margin-bottom: 0;
 }
 
 .dashboard-profile-details {
     display: flex;
-    justify-content: space-between;
-    margin: 23px 0px 10px 0px;
+    justify-content: center;
+    margin: 35px 0px 1px 0px;
+    gap: 50px;
 }
 
 .dashboard-detail-item {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
 }
 
 .dashboard-profile-separator {
@@ -145,6 +159,8 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    margin: 0;
+    font-weight: 100;
 }
 
 .dashboard-detail-label {
@@ -168,6 +184,7 @@
     font-size: 10px;
     padding: 5px 10px;
     transition: background-color 1s ease;
+    text-decoration: none;
 }
 
 .dashboard-download-sip:hover {
@@ -194,6 +211,8 @@
     font-size: 14px;
     font-weight: normal;
     color: #464646;
+    font-weight: 500;
+    margin: 0;
 }
 
 .dashboard-dropdown-schedule {
@@ -222,12 +241,14 @@
     font-size: 10px;
     font-weight: lighter;
     color: #464646;
+    margin: 0;
 }
 
 .dashboard-time-value {
     font-size: 24px;
     font-weight: bolder;
     color: #5A81FA;
+    margin: 0;
 }
 
 .dashboard-time-separator {
@@ -238,7 +259,18 @@
 
 .dashboard-btn-schedule {
     padding: 5px 30px;
-    border-radius: 15px;
+    border-radius: 10px;
+    background-color: #5A81FA;
+    border: none;
+    font-size: 12px;
+    font-weight: bolder;
+    color: #ffffff;
+    transition: background-color 0.5s ease;
+    box-shadow: 0px 0px 20px 5px rgba(0, 0, 0, 0.15);
+}
+
+.dashboard-btn-schedule:hover {
+    background-color: #87A3FB;
 }
 
 /* Dashboard Queue Section */
@@ -261,6 +293,7 @@
     font-size: 14px;
     font-weight: normal;
     color: #464646;
+    font-weight: 500;
 }
 
 .dashboard-queue-number {
@@ -472,7 +505,7 @@
     cursor: pointer;
     background-color: #CEDEFF;
     border-radius: 100%;
-    padding: 5px;
+    padding: 5px 8px;
     margin-left: auto;
 }
 
@@ -545,16 +578,16 @@
     z-index: 1;
 }
 
-.toggle-group input#libur:checked ~ .toggle-slider {
+.dashboard-toggle-group input#libur:checked ~ .dashboard-toggle-slider {
     left: 50%;
 }
 
-.toggle-group input#buka:checked + label[for="buka"],
-.toggle-group input#libur:checked + label[for="libur"] {
+.dashboard-toggle-group input#buka:checked + label[for="buka"],
+.dashboard-toggle-group input#libur:checked + label[for="libur"] {
     color: white;
 }
 
-.form-group {
+.dashboard-form-group {
     background-color: #5A81FA;
     border-radius: 10px;
     display: flex;
@@ -567,14 +600,14 @@
     box-shadow: 0px 0px 20px 5px rgba(0, 0, 0, 0.15);
 }
 
-.jam-title {
+.dashboard-jam-title {
     font-size: 20px;
     font-weight: 500;
     color: #FFFFFF;
     margin-bottom: 20px;
 }
 
-.time-inputs-grid {
+.dashboard-time-inputs-grid {
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -582,26 +615,31 @@
     gap: 50px;
 }
 
-.form-label {
+.dashboard-form-label {
     font-size: 14px;
     font-weight: normal;
     color: #FFFFFF;
 }
 
-.form-input-jam {
+.dashboard-form-input-jam {
     background-color: #CEDEFF;
     padding: 25px 15px;
     border-radius: 10px;
+    border: none;
 }
 
-.time-item-schedule {
+.dashboard-form-input-jam:focus {
+    outline: none;
+}
+
+.dashboard-time-item-schedule {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
-.btn-submit-schedule {
+.dashboard-btn-submit-schedule {
     background-color: #1647E0;
     color: #FFFFFF;
     font-size: 16px;
@@ -611,19 +649,143 @@
     margin-top: 40px;
     transition: background-color 0.5s ease;
     box-shadow: 0px 0px 20px 5px rgba(0, 0, 0, 0.15);
+    border: none;
 }
 
-.btn-submit-schedule:hover {
+.dashboard-btn-submit-schedule:hover {
     background-color: #6D8BE9;
 }
 
-.form-textarea {
+.dashboard-form-textarea {
     background-color: #CEDEFF;
     width: 100%;
     border-radius: 30px;
+    padding: 15px 20px;
+    font-size: 12px;
+    font-weight: normal;
+    color: #464646;
+}
+
+.dashboard-form-textarea:focus {
+    outline: none;
 }
 
 /* --- UTILITY CSS --- */
 .hidden {
     display: none !important;
 }
+
+/* MonthPicker */
+.monthpicker {
+      width: auto;
+      height: auto;
+      display: flex;
+      flex-direction: column;
+      padding: 10px;
+      background-color: #FFFFFF;
+      border-radius: 15px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+
+      position: absolute; 
+    top: 100%;
+    left: 0;
+    margin-top: 4px;
+    z-index: 999;
+    transition: opacity 0.3s ease-in-out;
+    }
+
+    .monthpicker-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+    }
+
+    .monthpicker-monthYear {
+      text-align: center;
+      font-weight: bold;
+      width: 150px;
+      color: #1F4DD9;
+      cursor: pointer;
+    }
+
+    .monthpicker-header i {
+      color: #1F4DD9;
+      font-size: 35px;
+      cursor: pointer;
+    }
+
+    .monthpicker-header button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      border-radius: 25%;
+      background-color: #FFFFFF;
+      cursor: pointer;
+      width: 40px;
+      height: 40px;
+    }
+
+    .monthpicker-months {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr); /* Atur 4 kolom untuk bulan */
+      gap: 15px;
+      padding: 10px;
+      text-align: center;
+      color: #1F4DD9;
+      font-size: 14px;
+      font-weight: normal;
+    }
+
+    .monthpicker-month {
+        padding: 10px 5px;
+        cursor: pointer;
+        border-radius: 10px;
+        transition: background-color 0.5s;
+    }
+
+    .monthpicker-month:hover {
+        background-color: #6E90FA;
+        border-radius: 10px;
+        color: #FFFFFF;
+    }
+
+    .monthpicker-month-active {
+        background-color: #6E90FA;
+        border-radius: 10px;
+        color: #FFFFFF;
+    }
+
+    .monthpicker-year {
+      height: 250px;
+      overflow-y: auto;
+      display: grid;
+      grid-template-columns: repeat(1, 1fr); /* Atur 4 kolom untuk bulan */
+      gap: 8px;
+      padding: 10px;
+      text-align: center;
+      color: #1F4DD9;
+      font-size: 14px;
+      font-weight: normal;
+    }
+
+    .monthpicker-year div {
+        padding: 10px;
+        text-align: center;
+        cursor: pointer;
+        border-radius: 10px;
+        transition: background-color 0.5s;
+    }
+
+    .monthpicker-year div:hover {
+        background-color: #6E90FA;
+        border-radius: 10px;
+        color: #FFFFFF;
+    }
+
+    .monthpicker-year-active {
+        background-color: #6E90FA;
+        border-radius: 10px;
+        color: #FFFFFF;
+    }
