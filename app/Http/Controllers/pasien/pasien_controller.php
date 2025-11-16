@@ -26,9 +26,18 @@ class pasien_controller extends Controller
     // Ambil data untuk tab reservasi
     $tanggal_dipilih = today();
     $nama_hari = $this->get_nama_hari($tanggal_dipilih);
+    $hari_enum = strtolower($nama_hari);
     
-    // Cek jadwal
-    $jadwal = jadwal_praktik::where('hari', $nama_hari)->first();
+    // Ambil jadwal spesifik tanggal, fallback ke jadwal terbaru untuk hari yang sama
+    $jadwal = jadwal_praktik::whereDate('tanggal_jadwal_praktik', $tanggal_dipilih->toDateString())
+        ->first();
+
+    if (!$jadwal) {
+        $jadwal = jadwal_praktik::where('hari', $hari_enum)
+            ->latest('tanggal_jadwal_praktik')
+            ->first();
+    }
+
     $klinik_tutup = !$jadwal || !$jadwal->is_active;
     
     // Ambil antrian

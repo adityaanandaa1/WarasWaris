@@ -26,7 +26,7 @@
                         autocomplete="off">
                 </div>
                 <button type="submit" class="btn-filter">
-                   filter
+                   Filter
                 </button>
           
             </div>

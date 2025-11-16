@@ -430,7 +430,11 @@
                             class="checkbox"
                         >
                         <label for="remember">Ingat saya</label>
+                        
                     </div>
+                    <a href="{{ route('password.request') }}" class="text-sm text-blue-600">
+                            Lupa password?
+                        </a>
 
                     <button type="submit" class="btn-submit">MASUK</button>
                 </form>

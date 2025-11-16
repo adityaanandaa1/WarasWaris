@@ -14,7 +14,9 @@ const daysRow = document.querySelector('.days'); // Mengambil class days pertama
 const monthGrid = document.getElementById('month');
 const yearGrid = document.getElementById('year');
 
-let currentDate = new Date();
+let currentDate = selectedDateInput && selectedDateInput.value
+    ? new Date(selectedDateInput.value + 'T00:00:00')
+    : new Date();
 let mode = 'date';
 
 // Fungsi untuk membuka/menutup popup kalender

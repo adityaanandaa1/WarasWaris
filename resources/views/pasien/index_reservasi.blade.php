@@ -146,6 +146,28 @@
                     </div>
                 </div>
 
+                <!-- Jadwal Praktik -->
+                <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Jadwal Praktik</h3>
+                    <div class="flex items-center gap-4 p-4 {{ $klinik_tutup ? 'bg-red-50' : 'bg-green-50' }} rounded-lg">
+                        <svg class="w-8 h-8 {{ $klinik_tutup ? 'text-red-500' : 'text-green-600' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        <div>
+                            <p class="font-semibold text-gray-900">
+                                {{ $klinik_tutup ? 'Klinik Libur' : 'Klinik Buka' }}
+                            </p>
+                            <p class="text-sm text-gray-600">
+                                @if($klinik_tutup)
+                                    Libur
+                                @else
+                                    {{ \Carbon\Carbon::parse($jadwal->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($jadwal->jam_selesai)->format('H:i') }} WIB
+                                @endif
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
                 @if($klinik_tutup)
                     <!-- Klinik Tutup -->
                     <div class="bg-red-50 border border-red-200 rounded-lg p-8 text-center">
@@ -159,22 +181,6 @@
                         </p>
                     </div>
                 @else
-                    <!-- Jadwal Praktik -->
-                    <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
-                        <h3 class="text-lg font-semibold text-gray-900 mb-4">Jadwal Praktik</h3>
-                        <div class="flex items-center gap-4 p-4 bg-green-50 rounded-lg">
-                            <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                            </svg>
-                            <div>
-                                <p class="font-semibold text-gray-900">Klinik Buka</p>
-                                <p class="text-sm text-gray-600">
-                                    {{ $jadwal->jam_mulai->format('H:i') }} - {{ $jadwal->jam_selesai->format('H:i') }} WIB
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
                     <!-- Antrian Real-Time -->
                     <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
                         <h3 class="text-lg font-semibold text-gray-900 mb-4">Antrian Saat Ini</h3>
