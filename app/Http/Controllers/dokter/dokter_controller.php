@@ -82,13 +82,6 @@ class dokter_controller extends Controller
             ->orderBy('nomor_antrian')
             ->get();
 
-        $statistik = [
-            'total_reservasi' => reservasi::whereDate('tanggal_reservasi', $hari_ini)->count(),
-            'menunggu' => reservasi::whereDate('tanggal_reservasi', $hari_ini)->where('status', 'menunggu')->count(),
-            'selesai' => reservasi::whereDate('tanggal_reservasi', $hari_ini)->where('status', 'selesai')->count(),
-            'batal' => reservasi::whereDate('tanggal_reservasi', $hari_ini)->where('status', 'batal')->count(),
-        ];
-
         return view('dokter.dashboard', compact(
             'user',
             'dokter',
@@ -98,7 +91,6 @@ class dokter_controller extends Controller
             'total_reservasi',
             'pasien_terlayani',
             'pasien_batal',
-            'statistik',
             'hari_ini',
             'nama_hari'
         ));
@@ -399,7 +391,7 @@ class dokter_controller extends Controller
         return $pasien_utama;
     }
 
-     private function get_nama_hari($tanggal)
+    private function get_nama_hari($tanggal)
     {
         $hari_inggris = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
         $hari_indonesia = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];

@@ -6,6 +6,7 @@ use App\Http\Controllers\reset_password_controller;
 use App\Http\Controllers\pasien\pasien_controller;
 use App\Http\Controllers\pasien\riwayat_pemeriksaan_controller;
 use App\Http\Controllers\dokter\dokter_controller;
+use App\Http\Controllers\resepsionis\resepsionis_controller;
 use App\Http\Controllers\dokter\rekam_medis_controller;
 use App\Http\Controllers\dokter\reservasi_controller_dokter;
 use App\Http\Controllers\pasien\reservasi_controller;
@@ -50,14 +51,13 @@ Route::middleware(['auth', 'role:pasien'])
         Route::post('/reservasi', [reservasi_controller::class, 'buat_reservasi'])->name('buat_reservasi');
         Route::post('/reservasi/{id}/cancel', [reservasi_controller::class, 'batalkan_reservasi'])->name('batalkan_reservasi');
         Route::get('/reservasi/riwayat', [reservasi_controller::class, 'riwayat_reservasi'])->name('riwayat_reservasi');
-
-        
 });
 
 
 // Dashboard Dokter
-Route::middleware(['auth', 'role:dokter'])->prefix('dokter')->name('dokter.')
-->group(function () {
+Route::middleware(['auth', 'role:dokter'])
+    ->prefix('dokter')->name('dokter.')
+    ->group(function () {
     // Dashboard
     Route::get('/dashboard', [dokter_controller::class, 'dashboard'])
         ->name('dashboard');
@@ -72,8 +72,7 @@ Route::middleware(['auth', 'role:dokter'])->prefix('dokter')->name('dokter.')
         ->name('reservasi.periksa');
     
     Route::get('/profil/edit', [dokter_controller::class, 'edit_profil'])
-            ->name('profil.edit');
-
+        ->name('profil.edit');
     Route::put('/profil/update', [dokter_controller::class, 'update_profil'])
         ->name('profil.update');
 
@@ -101,6 +100,17 @@ Route::middleware(['auth', 'role:dokter'])->prefix('dokter')->name('dokter.')
         ->name('rekam_medis.detail');   
 });
 
+Route::middleware(['auth', 'role:resepsionis'])
+    ->prefix('resepsionis')->name('resepsionis.')
+    ->group(function () {
+
+    Route::get('/dashboard', [resepsionis_controller::class, 'dashboard'])
+        ->name('dashboard');
+    
+    
+
+    });
+
 
 Route::get('/forgot-password', [reset_password_controller::class, 'tampilkan_reset_password'])
     ->name('password.request');
@@ -127,10 +137,3 @@ Route::post('/logout', [auth_controller::class, 'logout'])
     ->name('logout')
     ->middleware('auth');
 
-
-// Dashboard Resepsionis
-Route::middleware(['auth', 'role:resepsionis'])->prefix('resepsionis')->name('resepsionis.')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('resepsionis.dashboard');
-    })->name('dashboard');
-});
