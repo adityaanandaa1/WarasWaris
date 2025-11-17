@@ -15,7 +15,6 @@ use App\Http\Controllers\dokter\daftar_pasien_controller;
 use App\Http\Controllers\Dokter\laporan_controller;
 use App\Http\Controllers\resepsionis\daftar_antrian_res_controller;
 use App\Http\Controllers\resepsionis\daftar_pasien_res_controller;
-use App\Http\Controllers\resepsionis\laporan_res_controller;
 
 Route::get('/', function () {
     return view('homepage');
@@ -130,8 +129,8 @@ Route::middleware(['auth', 'role:resepsionis'])
         ->name('pasien.detail');
         
 
-    Route::get('/laporan', [laporan_res_controller::class, 'laporan_res'])
-        ->name('laporan_res');
+    Route::get('/laporan', [laporan_controller::class, 'laporan'])
+        ->name('laporan');
     });
 
 
