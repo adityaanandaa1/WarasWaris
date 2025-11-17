@@ -58,11 +58,12 @@ class laporan_controller extends Controller
                 'data' => $daftar_reservasi->map(function($reservasi) {
                     return [
                         'id' => $reservasi->id,
+                        'id_pasien' => $reservasi->id_pasien, // Tambahkan ini untuk modal
                         'nomor_antrian' => $reservasi->nomor_antrian,
                         'nama_pasien' => $reservasi->data_pasien->nama_pasien,
                         'no_telepon' => $reservasi->data_pasien->no_telepon,
                         'jenis_kelamin' => $reservasi->data_pasien->jenis_kelamin,
-                        'umur' => $reservasi->data_pasien->tanggal_lahir_pasien->age,
+                        'umur' => $reservasi->data_pasien->tanggal_lahir_pasien->age ?? 0,
                         'status' => $reservasi->status,
                         'waktu' => $reservasi->rekam_medis ? $reservasi->updated_at->format('H:i') : null,
                         'rekam_medis_id' => $reservasi->rekam_medis ? $reservasi->rekam_medis->id : null,
@@ -97,7 +98,7 @@ class laporan_controller extends Controller
         ));
     }
 
-public function detail_pasien($id)
+    public function detail_pasien($id)
     {
         try {
             Log::info("Mengakses detail pasien ID: {$id}");
@@ -118,9 +119,11 @@ public function detail_pasien($id)
                 }
             }
 
-            // wali dari data_pasien (akun yang sama, is_primary = true; fallback pasien pertama)
-            $nama_wali = '-';
-            $nama_wali = $pasien->user?->primary_pasien?->nama_pasien ?? '-';
+            // wali dari data_pasien (akun yang sama, is_primary = true)
+            $wali = data_pasien::where('id_akun', $pasien->id_akun)
+                ->where('is_primary', true)
+                ->first();
+            $nama_wali = $wali ? $wali->nama_pasien : '-';
 
             // normalisasi JK
             $jenis_kelamin_pasien = strtolower((string)($pasien->jenis_kelamin ?? ''));
@@ -132,22 +135,23 @@ public function detail_pasien($id)
                 $jenis_kelamin_pasien = '-';
             }
 
-            // response
+            // response dengan field name yang sesuai dengan JavaScript
             $data = [
-                'nama_pasien'    => $pasien->nama_pasien ?? '-',
-                'nama_wali'      => $nama_wali,
-                'jenis_kelamin'  => $jenis_kelamin_pasien,
-                'tanggal_lahir'  => $tanggal ? $tanggal->format('d F Y') : '-',
-                'golongan_darah' => $pasien->golongan_darah ?? 'Tidak diketahui',
-                'umur'           => $umur,
-                'pekerjaan'      => $pasien->pekerjaan ?? 'Tidak bekerja',
-                'alamat'         => $pasien->alamat ?? '-',
-                'no_telepon'     => $pasien->no_telepon ?? '-',
-                'catatan_pasien' => $pasien->catatan_pasien ?? '-',
+                'nama_pasien'              => $pasien->nama_pasien ?? '-',
+                'nama_wali'                => $nama_wali,
+                'jenis_kelamin_pasien'     => $jenis_kelamin_pasien,  // Sesuai dengan JS
+                'tanggal_lahir_pasien'     => $tanggal ? $tanggal->format('d F Y') : '-',  // Sesuai dengan JS
+                'golongan_darah'           => $pasien->golongan_darah ?? 'Tidak diketahui',
+                'umur'                     => $umur,
+                'pekerjaan'                => $pasien->pekerjaan ?? 'Tidak bekerja',
+                'alamat'                   => $pasien->alamat ?? '-',
+                'no_telepon'               => $pasien->no_telepon ?? '-',
+                'catatan_pasien'           => $pasien->catatan_pasien ?? '-',
             ];
 
             return response()->json($data);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            Log::error("Data pasien ID {$id} tidak ditemukan");
             return response()->json(['error' => 'Data pasien tidak ditemukan'], 404);
         } catch (\Throwable $e) {
             Log::error('detail_pasien error: '.$e->getMessage());

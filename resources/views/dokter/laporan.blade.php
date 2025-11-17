@@ -9,12 +9,11 @@
     <form method="GET" action="{{ route('dokter.laporan') }}">
         <div class="header">
             <div class="header-left">
-                    <input id="tanggalInput" 
-                            class="date-selector"
-                            type="date" 
-                            name="tanggal" 
-                            value="{{ $tanggal_dipilih->format('Y-m-d') }}">
-               
+                <input id="tanggalInput" 
+                        class="date-selector"
+                        type="date" 
+                        name="tanggal" 
+                        value="{{ $tanggal_dipilih->format('Y-m-d') }}">
             </div>
             <div class="header-right">
                 <div class="search">
@@ -22,16 +21,13 @@
                         type="text" 
                         name="search" 
                         value="{{ $search ?? '' }}"
-                        placeholder="Cari"
+                        placeholder="Cari nama pasien..."
                         autocomplete="off">
                 </div>
                 <button type="submit" class="btn-filter">
                    Filter
                 </button>
-          
             </div>
-
-           
         </div>
     </form>
 
@@ -83,7 +79,7 @@
                         </a>
                     </div>
 
-                  <div class="patient-action">
+                    <div class="patient-action">
                         @if($reservasi->status == 'selesai' && $reservasi->rekam_medis)
                             <button class="btn-detail" onclick="openPasienModal({{ $reservasi->data_pasien->id }})">
                                 <i class="fas fa-eye"></i> Lebih Detail
@@ -115,7 +111,6 @@
                                 @break
                         @endswitch
                     </div>
-
                 </div>
                 @endforeach
             @endif
@@ -125,108 +120,96 @@
 
 <!-- Modal Rekam Medis -->
 <div id="pasienOverlay" class="pasien-overlay" hidden>
-  <div id="pasienBox" role="dialog" aria-modal="true" aria-labelledby="pasienTitle" class="pasien-box">
-    <div class="pasien-header">
-      <button type="button" class="pasien-close-btn" onclick="closePasienModal()"><i class="ri-close-line"></i></button>
-      <h3 id="pasienTitle" class="pasien-title">Biodata Pasien</h3>
-    </div>
-
-    <div id="pasien-loading" class="pasien-loading">Memuat data…</div>
-    <div id="pasien-error" class="pasien-error">Terjadi kesalahan saat memuat data.</div>
-
-    <div id="pasien-content" hidden class="pasien-content">
-      <div class="pasien-biodata">
-        <div class="col-foto">
-          <div class="avatar-biodata"></div>
+    <div id="pasienBox" role="dialog" aria-modal="true" aria-labelledby="pasienTitle" class="pasien-box">
+        <div class="pasien-header">
+            <button type="button" class="pasien-close-btn" onclick="closePasienModal()"><i class="ri-close-line"></i></button>
+            <h3 id="pasienTitle" class="pasien-title">Biodata Pasien</h3>
         </div>
 
-        <div class="col-data">
-          <div class="pasien-identitas">
-            <div class="pasien-identitas-title">
-              Nama
-              <span id="p-nama-pasien" class="pasien-identitas-nama">-</span>
+        <div id="pasien-loading" class="pasien-loading">Memuat data…</div>
+        <div id="pasien-error" class="pasien-error">Terjadi kesalahan saat memuat data.</div>
+
+        <div id="pasien-content" hidden class="pasien-content">
+            <div class="pasien-biodata">
+                <div class="col-foto">
+                    <div class="avatar-biodata"></div>
+                </div>
+
+                <div class="col-data">
+                    <div class="pasien-identitas">
+                        <div class="pasien-identitas-title">
+                            Nama
+                            <span id="p-nama-pasien" class="pasien-identitas-nama">-</span>
+                        </div>
+                        <div class="divider-identitas">|</div>
+                        <div class="pasien-identitas-title">
+                            Wali
+                            <span id="p-nama-wali" class="pasien-identitas-nama">-</span>
+                        </div>
+                    </div>
+                    
+                    <div class="pasien-detail">
+                        <div class="pasien-detail-label">
+                            <strong>Jenis Kelamin</strong>
+                            <span id="p-jenis-kelamin-pasien">-</span>
+                        </div>
+                        <div class="pasien-detail-label">
+                            <strong>Tanggal Lahir</strong>
+                            <span id="p-tanggal-lahir-pasien">-</span>
+                        </div>
+                        <div class="pasien-detail-label">
+                            <strong>Umur</strong>
+                            <span id="p-umur">-</span>
+                        </div>
+                        <div class="pasien-detail-label">
+                            <strong>Gol. Darah</strong>
+                            <span id="p-golongan-darah">-</span>
+                        </div>
+                        <div class="pasien-detail-label">
+                            <strong>Pekerjaan</strong>
+                            <span id="p-pekerjaan">-</span>
+                        </div>
+                        <div class="pasien-detail-label">
+                            <strong>Alamat</strong>
+                            <span id="p-alamat">-</span>
+                        </div>
+                        <div class="pasien-detail-label">
+                            <strong>No. Telepon</strong>
+                            <span id="p-no-telepon">-</span>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="divider-identitas">
-              |
+
+            <div class="pasien-catatan">
+                <strong>Catatan Pasien</strong> <br>
+                <span id="p-catatan-pasien">-</span>
             </div>
-            <div class="pasien-identitas-title">
-              Wali
-              <span id="p-nama-wali" class="pasien-identitas-nama">-</span>
-            </div>
-          </div>
-          
-          <div class="pasien-detail">
-            <div class="pasien-detail-label">
-              <strong>Jenis Kelamin</strong>
-              <span id="p-jenis-kelamin-pasien">-</span>
-            </div>
-            <div class="pasien-detail-label">
-              <strong>Tanggal Lahir</strong>
-              <span id="p-tanggal-lahir-pasien">-</span>
-            </div>
-            <div class="pasien-detail-label">
-              <strong>Umur</strong>
-              <span id="p-umur">-</span>
-            </div>
-            <div class="pasien-detail-label">
-              <strong>Gol. Darah</strong>
-              <span id="p-golongan-darah">-</span>
-            </div>
-            <div class="pasien-detail-label">
-              <strong>Pekerjaan</strong>
-              <span id="p-pekerjaan">-</span>
-            </div>
-            <div class="pasien-detail-label">
-              <strong>Alamat</strong>
-              <span id="p-alamat">-</span>
-            </div>
-            <div class="pasien-detail-label">
-              <strong>No. Telepon</strong>
-              <span id="p-no-telepon">-</span>
-            </div>
-          </div>
         </div>
-      </div>
 
-      <div class="pasien-catatan">
-        <strong>Catatan Pasien</strong> <br>
-        <span id="p-catatan-pasien">-</span>
-      </div>
+        <div class="pasien-button">
+            <a href="#" class="btn-rekam-medis">Lihat Rekam Medis</a>
+        </div>
     </div>
-
-    <div class="pasien-button">
-       <a href=# class="btn-rekam-medis">
-            Lihat Rekam Medis
-        </a>
-    </div>
-  </div>
 </div>
 
 <script>
-// Real-time AJAX Search
+// ========================================
+// AJAX SEARCH (TANPA RELOAD HALAMAN)
+// ========================================
 (function() {
     const searchInput = document.getElementById('searchInput');
     const tanggalInput = document.getElementById('tanggalInput');
     const tableContainer = document.getElementById('tableContainer');
     let searchTimeout;
 
-    // Fungsi untuk melakukan pencarian
+    // Fungsi untuk melakukan pencarian dengan AJAX
     function doSearch() {
         const searchValue = searchInput.value.trim();
         const tanggal = tanggalInput.value;
 
-        // Update URL tanpa reload
-        const newUrl = new URL(window.location.href);
-        newUrl.searchParams.set('tanggal', tanggal);
-        if (searchValue) {
-            newUrl.searchParams.set('search', searchValue);
-        } else {
-            newUrl.searchParams.delete('search');
-        }
-        window.history.pushState({}, '', newUrl);
-
         // Buat URL untuk AJAX request
-        const url = new URL("{{ route('dokter.laporan') }}", window.location.origin);
+        const url = new URL(window.location.origin + '{{ route("dokter.laporan") }}');
         url.searchParams.set('tanggal', tanggal);
         if (searchValue) {
             url.searchParams.set('search', searchValue);
@@ -240,18 +223,28 @@
                 'Accept': 'application/json'
             }
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.json();
+        })
         .then(data => {
+            console.log('Data received:', data);
             if (data.success) {
                 updateTable(data.data);
             }
         })
         .catch(error => {
             console.error('Error:', error);
+            tableContainer.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <p>Terjadi kesalahan saat memuat data</p>
+                </div>
+            `;
         });
     }
 
-    // Fungsi untuk update tabel
+    // Fungsi untuk update tabel dengan data hasil search
     function updateTable(data) {
         if (data.length === 0) {
             tableContainer.innerHTML = `
@@ -273,15 +266,14 @@
                     <div class="patient-number">${reservasi.nomor_antrian}</div>
                     <div class="patient-info">
                         <div class="patient-name">${reservasi.nama_pasien}</div>
-                        <div class="patient-meta">${reservasi.jenis_kelamin}, ${reservasi.umur} tahun</div>
                     </div>
                     <div class="patient-contact">
                         <a href="https://wa.me/${reservasi.no_telepon}" target="_blank" class="whatsapp-btn">
-                            <i class="fab fa-whatsapp"></i>
+                            <i class="ri-whatsapp-fill" style="color: #00C42E; font-size: 30px; margin-left: 10px;"></i>
                         </a>
                     </div>
-                    <div class="patient-status">${statusBadge}</div>
                     <div class="patient-action">${actionButton}</div>
+                    <div class="patient-status">${statusBadge}</div>
                 </div>
             `;
         });
@@ -306,22 +298,23 @@
 
     function getActionButton(reservasi) {
         if (reservasi.status === 'selesai' && reservasi.rekam_medis_id) {
-            return `<button class="btn-detail" onclick="lihatRekamMedis(${reservasi.rekam_medis_id})">
-                        <i class="fas fa-eye"></i> Lihat Detail
+            return `<button class="btn-detail" onclick="openPasienModal(${reservasi.id_pasien})">
+                        <i class="fas fa-eye"></i> Lebih Detail
                     </button>`;
         } else if (reservasi.status === 'batal') {
             return '<button class="btn-cancel" disabled>Dibatalkan</button>';
         } else {
-            return '<button class="btn-detail" disabled>Belum Selesai</button>';
+            return '<button class="btn-detail2" disabled>Belum Selesai</button>';
         }
     }
 
-    // Event listeners
+    // Event listener untuk search input (dengan debounce)
     searchInput.addEventListener('input', function() {
         clearTimeout(searchTimeout);
-        searchTimeout = setTimeout(doSearch, 300);
+        searchTimeout = setTimeout(doSearch, 300); // Delay 300ms
     });
 
+    // Clear search dengan ESC
     searchInput.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
             e.preventDefault();
@@ -330,11 +323,26 @@
         }
     });
 
-    tanggalInput.addEventListener('change', function() {
-        doSearch();
-    });
+    // PENTING: Tanggal input TIDAK pakai AJAX, langsung submit form
+    // Tidak ada event listener untuk tanggalInput.addEventListener('change')
 })();
 
+// ========================================
+// AUTO-RELOAD HANYA UNTUK HARI INI
+// ========================================
+@if($tanggal_dipilih->isToday())
+setInterval(() => {
+    // Jangan reload jika modal sedang terbuka
+    const modal = document.getElementById('pasienOverlay');
+    if (modal && !modal.hidden) return;
+    
+    location.reload();
+}, 30000); // Reload setiap 30 detik
+@endif
+
+// ========================================
+// MODAL BIODATA PASIEN
+// ========================================
 function openPasienModal(pasienId) {
     const overlay = document.getElementById('pasienOverlay');
     const loadEl  = document.getElementById('pasien-loading');
@@ -353,7 +361,6 @@ function openPasienModal(pasienId) {
 
     // URL ke controller detail_pasien
     const url = "{{ route('dokter.pasien.detail', ['id' => '__ID__']) }}".replace('__ID__', pasienId);
-    console.log('Fetching URL:', url);
 
     fetch(url, {
         method: 'GET',
@@ -364,18 +371,14 @@ function openPasienModal(pasienId) {
         credentials: 'same-origin'
     })
     .then(async (response) => {
-        console.log('Response status:', response.status);
         const text = await response.text();
         if (!response.ok) {
-            console.error('Error response:', text);
             throw new Error(`HTTP ${response.status}: ${text.substring(0, 200)}`);
         }
         try { return JSON.parse(text); }
         catch { throw new Error('Response bukan JSON: ' + text.substring(0, 200)); }
     })
     .then((data) => {
-        console.log('Data received:', data);
-
         // Isi konten modal
         document.getElementById('p-nama-pasien').textContent = data.nama_pasien ?? '-';
         document.getElementById('p-nama-wali').textContent = data.nama_wali ?? '-';
@@ -419,12 +422,5 @@ function closePasienModal() {
     document.body.style.overflow = '';
     document.removeEventListener('keydown', escCloserPasien);
 }
-
-@if($tanggal_dipilih->isToday())
-setInterval(() => {
-    if(document.getElementById('modalRekamMedis').style.display !== 'none') return;
-    location.reload();
-}, 30000);
-@endif
 </script>
 @endsection
