@@ -93,13 +93,8 @@
             @if($isLibur)
             <div class="dashboard-schedule-time">
                 <div class="dashboard-time-item">
-                    <h1 class="dashboard-time-label">Status</h1>
-                    <p class="dashboard-time-value" style="color:#ef4444;">Libur</p>
-                </div>
-                <h1 class="dashboard-time-separator">-</h1>
-                <div class="dashboard-time-item">
-                    <h1 class="dashboard-time-label">Tanggal</h1>
-                    <p class="dashboard-time-value">{{ $hari_ini->translatedFormat('d F Y') }}</p>
+                    <h1 class="dashboard-time-label">Libur</h1>
+                    <p class="dashboard-time-value" style="color:#ef4444;">catatan</p>
                 </div>
             </div>
             @else
@@ -153,12 +148,13 @@
     <div class="dashboard-calendar">
         <div class="dashboard-calendar-header">
             <h1 class="dashboard-calendar-title">Kalender Saya</h1>
-            <div class="dashboard-dropdown-calendar">
-                <button class="btn dropdown-toggle" id="monthBtn" type="button" data-bs-toggle="dropdown">
-                    November
-                </button>
-                <ul class="dropdown-menu" id="monthList"></ul>
-            </div>
+            <x-monthpicker>
+                <x-slot:icon>
+                    <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7.66699 0.999979L0.333659 0.999979L4.00033 7.33331" fill="white"/>
+                    </svg>
+                </x-slot:icon>
+            </x-monthpicker>
         </div>
 
         <div class="dashboard-calendar-body">
@@ -269,55 +265,5 @@ document.addEventListener('DOMContentLoaded', () => {
         toggleJamInput();
     }
 });
-
-function generateCalendar() {
-        const today = new Date();
-        const year = today.getFullYear();
-        const month = today.getMonth();
-        const currentDate = today.getDate();
-
-        const monthNames = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
-                            'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-        
-        document.getElementById('calendarMonth').textContent = monthNames[month];
-
-        const currentDay = today.getDay();
-        const dayNames = document.querySelectorAll('.day-name');
-
-        let adjustedIndex = currentDay - 1;
-        if (adjustedIndex < 0) adjustedIndex = 6;
-
-        dayNames.forEach((day, index) => {
-            if (index === adjustedIndex) {
-                day.classList.add('current');
-            }
-        });
-
-        const firstDay = new Date(year, month, 1).getDay();
-        const daysInMonth = new Date(year, month + 1, 0).getDate();
-        const daysInPrevMonth = new Date(year, month, 0).getDate();
-
-        const calendarDates = document.getElementById('calendarDates');
-        let html = '';
-
-        const startDay = firstDay === 0 ? 6 : firstDay - 1;
-        for (let i = startDay; i > 0; i--) {
-            html += `<div class="date-cell prev-month">${daysInPrevMonth - i + 1}</div>`;
-        }
-
-        for (let i = 1; i <= daysInMonth; i++) {
-            const isToday = i === currentDate ? 'current' : '';
-            html += `<div class="date-cell ${isToday}">${i}</div>`;
-        }
-
-        const remainingCells = 42 - (startDay + daysInMonth);
-        for (let i = 1; i <= remainingCells; i++) {
-            html += `<div class="date-cell next-month">${i}</div>`;
-        }
-
-        calendarDates.innerHTML = html;
-    }
-
-    document.addEventListener('DOMContentLoaded', generateCalendar);
 </script>
 @endsection

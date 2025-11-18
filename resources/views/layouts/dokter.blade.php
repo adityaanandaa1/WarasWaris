@@ -13,7 +13,6 @@
     {{-- CSS Framework --}}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet">
-    {{-- <script src="https://cdn.tailwindcss.com"></script> --}}
 
     {{-- CSS Custom Page --}}
     <link rel="stylesheet" href="{{ asset('css/dokter/layouts.css') }}">
@@ -21,6 +20,7 @@
     
     {{-- CSS Custom Component --}}
     <link rel="stylesheet" href="{{ asset('css/datepicker.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/monthpicker.css') }}">
     <link rel="stylesheet" href="{{ asset('css/dokter/sidebar.css') }}">
 </head>
 <body>
@@ -37,6 +37,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('js/todaydate.js') }}"></script>
     <script src="{{ asset('js/datepicker.js') }}"></script>
+    <script src="{{ asset('js/monthpicker.js') }}"></script>
     <script src="{{ asset('js/windowscroll.js') }}"></script>
 </body>
 </html>
