@@ -120,6 +120,8 @@ Route::middleware(['auth', 'role:resepsionis'])
 
     Route::patch('/reservasi/{reservasi}/periksa', [reservasi_controller_dokter::class, 'mark_periksa'])
         ->name('reservasi.periksa');
+    Route::patch('/reservasi/{reservasi}/lewati', [daftar_antrian_res_controller::class, 'lewati_antrian'])
+        ->name('reservasi.lewati');
 
     Route::get('/sip/download', [resepsionis_controller::class, 'download_sip'])
         ->name('sip.download');
@@ -129,7 +131,6 @@ Route::middleware(['auth', 'role:resepsionis'])
     Route::get('/pasien/{id}/detail', [daftar_pasien_res_controller::class, 'detail_pasien'])
         ->name('pasien.detail');
         
-
     Route::get('/laporan', [laporan_res_controller::class, 'laporan_res'])
         ->name('laporan_res');
     });
@@ -159,4 +160,3 @@ Route::post('/register', [auth_controller::class, 'register'])->name('register.p
 Route::post('/logout', [auth_controller::class, 'logout'])
     ->name('logout')
     ->middleware('auth');
-

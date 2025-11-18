@@ -74,12 +74,14 @@
                         
                         @if ($reservasi->status === 'selesai')
                             <span>Selesai</span>
+                        @elseif ($reservasi->status === 'batal')
+                            <span>Dibatalkan</span>
                         @else
-                            <form action="{{ route('dokter.reservasi.periksa', $reservasi->id) }}" method="POST">
+                            <form action="{{ route('resepsionis.reservasi.lewati', $reservasi->id) }}" method="POST">
                                 @csrf
                                 @method('PATCH')
                                 <button type="submit" class="periksa-btn">
-                                    Periksa
+                                    Lewati
                                 </button>
                             </form>
                         @endif
@@ -198,7 +200,7 @@ function openReservasiModal(reservasiId) {
     document.body.style.overflow = 'hidden';
 
     // Build URL dengan route helper Laravel
-    const url = `{{ route('dokter.reservasi.detail', ':id') }}`.replace(':id', reservasiId);
+    const url = `{{ route('resepsionis.reservasi.detail', ':id') }}`.replace(':id', reservasiId);
     
     console.log('Fetching URL:', url); // Debug
 

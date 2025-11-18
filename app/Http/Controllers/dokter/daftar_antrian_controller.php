@@ -60,6 +60,7 @@ class daftar_antrian_controller extends Controller
             'antrian'
         ));
     }
+    
 
     public function detail_reservasi($id)
     {

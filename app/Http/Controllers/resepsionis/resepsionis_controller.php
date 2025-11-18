@@ -96,6 +96,52 @@ class resepsionis_controller extends Controller
         ));
     }
 
+    public function update_jadwal(Request $request)
+    {
+        $validated = $request->validate([
+            'tanggal' => 'required|date',
+            'status' => 'required|in:buka,libur',
+            'jam_mulai' => 'nullable|required_if:status,buka|date_format:H:i',
+            'jam_selesai' => 'nullable|required_if:status,buka|date_format:H:i',
+            'catatan' => 'nullable|string',
+        ]);
+
+        DB::beginTransaction();
+
+        try {
+            $tanggal = Carbon::parse($validated['tanggal'], 'Asia/Jakarta')->startOfDay();
+            $tanggal->locale('id');
+            $nama_hari = $this->get_nama_hari($tanggal);
+            $hari_enum = strtolower($nama_hari);
+
+            $jadwal = jadwal_praktik::updateOrCreate(
+                [
+                    'hari' => $hari_enum,
+                    'tanggal_jadwal_praktik' => $tanggal->toDateString(),
+                ],
+                [
+                    'is_active' => $validated['status'] === 'buka',
+                    'jam_mulai' => $validated['status'] === 'buka' ? $validated['jam_mulai'] : null,
+                    'jam_selesai' => $validated['status'] === 'buka' ? $validated['jam_selesai'] : null,
+                ]
+            );
+
+            $message = $validated['status'] === 'libur'
+                ? "Jadwal {$nama_hari} diset LIBUR" . ($validated['catatan'] ? ". Catatan: {$validated['catatan']}" : '-')
+                : "Jadwal {$nama_hari} diperbarui: {$validated['jam_mulai']} - {$validated['jam_selesai']}";
+
+            DB::commit();
+
+            return redirect()
+                ->route('resepsionis.dashboard', ['tanggal' => $tanggal->toDateString()])
+                ->with('success', $message);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return back()->withErrors(['error' => 'Gagal memperbarui jadwal']);
+        }
+    }
+
     private function get_nomor_antrian_sekarang(Carbon $tanggal): int
     {
         $sedang_dilayani = reservasi::whereDate('tanggal_reservasi', $tanggal)

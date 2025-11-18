@@ -77,7 +77,7 @@
     <div class="dashboard-schedule">
         <h2 class="dashboard-schedule-title">Jam Praktik</h2>
         <div class="dashboard-dropdown-schedule">
-            <form id="formJadwal" action="{{ route('dokter.dashboard') }}" method="GET">
+            <form id="formJadwal" action="{{ route('resepsionis.dashboard') }}" method="GET">
                 <div>
                     <x-datepicker name="tanggal">
                         <x-slot:icon>

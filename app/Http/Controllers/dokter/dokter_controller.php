@@ -22,19 +22,23 @@ class dokter_controller extends Controller
         $user = Auth::user();
         $dokter = $user->data;
 
-        //tanggal dipilih (default hari ini)
-        $hari_ini = $request->filled('tanggal')
+        // tanggal statistik selalu hari ini
+        $hari_ini = Carbon::today('Asia/Jakarta');
+        $tanggal_statistik = $hari_ini->toDateString();
+        // tanggal yang dipilih hanya untuk melihat jadwal praktik
+        $tanggal_dipilih = $request->filled('tanggal')
             ? Carbon::parse($request->input('tanggal'), 'Asia/Jakarta')->startOfDay()
-            : Carbon::today('Asia/Jakarta');
+            : $hari_ini->copy();
 
         $hari_ini->locale('id');
-        $nama_hari = $this->get_nama_hari($hari_ini);
+        $tanggal_dipilih->locale('id');
+
+        $nama_hari = $this->get_nama_hari($tanggal_dipilih);
         $hari_enum = strtolower($nama_hari);
 
-        //jadwal hari ini
         $jadwal = jadwal_praktik::firstOrNew([
             'hari' => $hari_enum,
-            'tanggal_jadwal_praktik' => $hari_ini->toDateString(),
+            'tanggal_jadwal_praktik' => $tanggal_dipilih->toDateString(),
         ]);
 
         if (!$jadwal->exists) {
@@ -45,10 +49,10 @@ class dokter_controller extends Controller
             ])->save();
         }
 
-        $antrian = antrian::whereDate('tanggal_antrian', $hari_ini)->first();
+        $antrian = antrian::where('tanggal_antrian', $tanggal_statistik)->first();
         if (!$antrian && $hari_ini->isToday()) {
             $antrian = antrian::create([
-                'tanggal_antrian' => $hari_ini->toDateString(),
+                'tanggal_antrian' => $tanggal_statistik,
                 'nomor_sekarang' => 0,
                 'total_antrian' => 0,
             ]);
@@ -60,24 +64,24 @@ class dokter_controller extends Controller
         } else {
             $antrian = (object) [
                 'nomor_sekarang' => $nomor_sekarang,
-                'total_antrian' => reservasi::whereDate('tanggal_reservasi', $hari_ini)
+                'total_antrian' => reservasi::where('tanggal_reservasi', $tanggal_statistik)
                     ->whereIn('status', ['menunggu', 'sedang_dilayani'])
                     ->count(),
             ];
         }
 
-        $total_reservasi = reservasi::whereDate('tanggal_reservasi', $hari_ini)
+        $total_reservasi = reservasi::where('tanggal_reservasi', $tanggal_statistik)
             ->whereIn('status', ['menunggu', 'sedang_dilayani', 'selesai'])
             ->count();
-        $pasien_terlayani = reservasi::whereDate('tanggal_reservasi', $hari_ini)
+        $pasien_terlayani = reservasi::where('tanggal_reservasi', $tanggal_statistik)
             ->where('status', 'selesai')
             ->count();
-        $pasien_batal = reservasi::whereDate('tanggal_reservasi', $hari_ini)
+        $pasien_batal = reservasi::where('tanggal_reservasi', $tanggal_statistik)
             ->where('status', 'batal')
             ->count();
 
-        $reservasis = reservasi::whereDate('tanggal_reservasi', $hari_ini)
-            ->whereIn('status', ['menunggu', 'sedang_diperiksa'])
+        $reservasis = reservasi::where('tanggal_reservasi', $tanggal_statistik)
+            ->whereIn('status', ['menunggu', 'sedang_dilayani'])
             ->with('data_pasien')
             ->orderBy('nomor_antrian')
             ->get();
@@ -92,7 +96,8 @@ class dokter_controller extends Controller
             'pasien_terlayani',
             'pasien_batal',
             'hari_ini',
-            'nama_hari'
+            'nama_hari',
+            'tanggal_dipilih'
         ));
     }
     
@@ -178,33 +183,6 @@ class dokter_controller extends Controller
             DB::rollBack();
 
             return back()->withErrors(['error' => 'Gagal memanggil antrian']);
-        }
-    }
-
-    public function lewati_antrian($id)
-    {
-        DB::beginTransaction();
-
-        try{
-            $reservasi = reservasi::findOrFail($id);
-
-            //update status
-            $reservasi->update(['status' => 'batal']);
-
-            //panggil antrian berikutnya
-            $antrian = antrian::where('tanggal_antrian', today())->first();
-            if ($antrian) {
-                $antrian->increment('nomor_sekarang');
-            }
-
-            DB::commit();
-
-            return back()->with('succes', "pasien #{$reservasi->nomor_antrian} dilewati");
-        
-        } catch (\Exception $e) {
-            DB::rollBack();
-
-            return back()->withErrors(['error' => 'Gagal melewati antrian']);
         }
     }
 

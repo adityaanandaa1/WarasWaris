@@ -5,6 +5,7 @@ namespace App\Http\Controllers\resepsionis;
 use App\Http\Controllers\Controller;
 use App\Models\data_dokter;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -12,6 +13,7 @@ use App\Models\jadwal_praktik;
 use App\Models\reservasi;
 use App\Models\data_pasien;
 use App\Models\akun_user;
+use App\Models\antrian;
 
 
 class daftar_antrian_res_controller extends Controller
@@ -30,7 +32,7 @@ class daftar_antrian_res_controller extends Controller
         // Ambil daftar pasien yang reservasi hari ini
         $daftar_antrian = reservasi::query()
             ->whereDate('tanggal_reservasi', $hari_ini)
-            ->whereIn('status', ['menunggu', 'sedang_dilayani', 'selesai'])
+            ->whereIn('status', ['menunggu', 'sedang_dilayani', 'selesai', 'batal'])
             ->with(['data_pasien:id,nama_pasien'])
             ->orderByRaw('CAST(nomor_antrian AS UNSIGNED) ASC')
             ->get();
@@ -59,6 +61,57 @@ class daftar_antrian_res_controller extends Controller
             'daftar_antrian',
             'antrian'
         ));
+    }
+
+    public function lewati_antrian($id)
+    {
+        DB::beginTransaction();
+
+        try{
+            $reservasi = reservasi::findOrFail($id);
+
+            //update status
+            $reservasi->update(['status' => 'batal']);
+
+            $today = today();
+
+            // cari pasien menunggu berikutnya (prioritas nomor setelah yang dilewati)
+            $nomor_selanjutnya = reservasi::whereDate('tanggal_reservasi', $today)
+                ->where('status', 'menunggu')
+                ->whereRaw('CAST(nomor_antrian AS UNSIGNED) > ?', [(int) $reservasi->nomor_antrian])
+                ->orderByRaw('CAST(nomor_antrian AS UNSIGNED) ASC')
+                ->first();
+
+            if (!$nomor_selanjutnya) {
+                $nomor_selanjutnya = reservasi::whereDate('tanggal_reservasi', $today)
+                    ->where('status', 'menunggu')
+                    ->orderByRaw('CAST(nomor_antrian AS UNSIGNED) ASC')
+                    ->first();
+            }
+
+            $nomor_dilayani = reservasi::whereDate('tanggal_reservasi', $today)
+                ->where('status', 'sedang_dilayani')
+                ->exists();
+
+            // otomatis jadikan nomor berikutnya "sedang dilayani" layaknya tombol periksa
+            if ($nomor_selanjutnya && !$nomor_dilayani) {
+                $nomor_selanjutnya->update(['status' => 'sedang_dilayani']);
+
+                $antrian = antrian::where('tanggal_antrian', $today)->first();
+                if ($antrian) {
+                    $antrian->update(['nomor_sekarang' => (int) $nomor_selanjutnya->nomor_antrian]);
+                }
+            }
+
+            DB::commit();
+
+            return back()->with('succes', "pasien #{$reservasi->nomor_antrian} dilewati");
+        
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return back()->withErrors(['error' => 'Gagal melewati antrian']);
+        }
     }
 
     public function detail_reservasi($id)

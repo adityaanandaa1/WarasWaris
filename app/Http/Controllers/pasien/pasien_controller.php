@@ -9,6 +9,7 @@ use App\Models\data_pasien;
 use App\Models\antrian;
 use App\Models\jadwal_praktik;
 use App\Models\reservasi;
+use Carbon\Carbon;
 
 class pasien_controller extends Controller
 {
@@ -41,19 +42,20 @@ class pasien_controller extends Controller
     $klinik_tutup = !$jadwal || !$jadwal->is_active;
     
     // Ambil antrian
-    $antrian = Antrian::where('tanggal_antrian', today())->first();
+    $antrian = Antrian::whereDate('tanggal_antrian', $tanggal_dipilih)->first();
     if (!$antrian) {
         $antrian = Antrian::create([
-            'tanggal_antrian' => today(),
+            'tanggal_antrian' => $tanggal_dipilih->toDateString(),
             'nomor_sekarang' => 0,
             'total_antrian' => 0,
         ]);
     }
+    $antrian->nomor_sekarang = $this->get_nomor_antrian_sekarang($tanggal_dipilih);
     
     // Cek reservasi aktif
     $reservasi_aktif = Reservasi::where('id_pasien', $pasien_aktif->id)
-        ->where('tanggal_reservasi', today())
-        ->whereIn('status', ['menunggu', 'sedang_diperiksa'])
+        ->whereDate('tanggal_reservasi', $tanggal_dipilih)
+        ->whereIn('status', ['menunggu', 'sedang_dilayani', 'sedang_diperiksa'])
         ->first();
     
     // Cek reminder
@@ -95,6 +97,24 @@ private function get_nama_hari($tanggal)
     $hariInggris = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
     $hariIndonesia = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
     return str_replace($hariInggris, $hariIndonesia, $tanggal->format('l'));
+}
+
+private function get_nomor_antrian_sekarang(Carbon $tanggal): int
+{
+    $sedang_dilayani = reservasi::whereDate('tanggal_reservasi', $tanggal)
+        ->whereIn('status', ['sedang_dilayani', 'sedang_diperiksa'])
+        ->orderByDesc('updated_at')
+        ->value('nomor_antrian');
+
+    if ($sedang_dilayani) {
+        return (int) $sedang_dilayani;
+    }
+
+    $terakhir_selesai = reservasi::whereDate('tanggal_reservasi', $tanggal)
+        ->where('status', 'selesai')
+        ->max('nomor_antrian');
+
+    return (int) ($terakhir_selesai ?? 0);
 }
 
     //tampilkan form untuk pasien baru atau anggota keluarga

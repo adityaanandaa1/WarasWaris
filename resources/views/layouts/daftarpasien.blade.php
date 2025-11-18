@@ -30,7 +30,7 @@
 <body>
     <div class="layout">
         <div class="sidebar">
-         @include('partials.sidebar_resepsionis')
+         @include('partials.sidebar')
         </div>
 
         <div class="content ">
