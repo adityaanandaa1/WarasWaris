@@ -15,6 +15,8 @@
     <!-- CSS Custom -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" href="{{ asset('css/homepage.css') }}">
+
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
 </head>
 <body style="margin: 0%;">
 
@@ -25,6 +27,9 @@
 
         <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
         <script src="{{ asset('js/datepicker.js') }}"></script>
+       
+        <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+        <script src="{{  asset('js/animate.js') }}"></script>
     </main>
 </body>
 </html>

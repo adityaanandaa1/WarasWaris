@@ -9,17 +9,17 @@
             </svg>
         </div>
         
-        <div class="hero-content">
+        <div class="hero-content" >
             <div class="hero-text">
-                <h1 class="hero-title">Bergabung dengan Klinik WarasWaris</h1>
-                <p class="hero-subtitle">
+                <h1 class="hero-title" data-aos="fade-down"><span>Bergabunglah</span> dengan Klinik WarasWaris!</h1>
+                <p class="hero-subtitle" data-aos="fade-down">
                     Kami hadir untuk memberikan solusi layanan kesehatan yang cepat, aman, dan terpercaya. 
                     Pelayanan profesional, kemudahan akses, dan kecepatan respon.
                 </p>
             </div>
 
             <div class="hero-button">
-                <a href="{{ route('register') }}" class="btn-ajakan">
+                <a href="{{ route('login') }}?mode=register" class="btn-ajakan" data-aos="fade-down">
                     Gabung Klinik WarasWaris
                     <i class="ri-arrow-right-double-line"></i>
                 </a>
