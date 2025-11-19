@@ -170,6 +170,10 @@
         border-radius: 0.5rem;
         margin-bottom: 1.5rem;
         font-size: 0.875rem;
+        text-align: center;
+        align-items: center;
+        width: 350px;
+        margin-top: 90%;
     }
 
     .alert-error {
@@ -385,7 +389,7 @@
         background-color: #5A81FA;
         color: white;
     }
-    
+
     .password-toggle {
         position: absolute;
         top: 50%;
@@ -431,7 +435,7 @@
                 </div>
 
                 @if($errors->any())
-                    <div class="alert alert-error">
+                    <div class="alert alert-error" id="error-alert">
                         <ul>
                             @foreach($errors->all() as $error)
                                 <li>{{ $error }}</li>
@@ -441,7 +445,7 @@
                 @endif
 
                 @if(session('success'))
-                    <div class="alert alert-success">
+                    <div class="alert alert-success" id="success-alert">
                         {{ session('success') }}
                     </div>
                 @endif
@@ -665,6 +669,18 @@
             eyeOn.style.display = 'none';
         }
     }
+
+    setTimeout(function() {
+        const errorAlert = document.getElementById('error-alert');
+        const successAlert = document.getElementById('success-alert');
+        
+        if (errorAlert) {
+            errorAlert.style.display = 'none';
+        }
+        if (successAlert) {
+            successAlert.style.display = 'none';
+        }
+    }, 2000); 
 
 </script>
 
