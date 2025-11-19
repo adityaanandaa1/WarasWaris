@@ -209,7 +209,7 @@
         const tanggal = tanggalInput.value;
 
         // Buat URL untuk AJAX request
-        const url = new URL(window.location.origin + '{{ route("dokter.laporan") }}');
+        const url = new URL(window.location.origin + '{{ route("resepsionis.laporan_res") }}');
         url.searchParams.set('tanggal', tanggal);
         if (searchValue) {
             url.searchParams.set('search', searchValue);
@@ -360,7 +360,7 @@ function openPasienModal(pasienId) {
     document.body.style.overflow = 'hidden';
 
     // URL ke controller detail_pasien
-    const url = "{{ route('dokter.pasien.detail', ['id' => '__ID__']) }}".replace('__ID__', pasienId);
+    const url = "{{ route('resepsionis.pasien.detail', ['id' => '__ID__']) }}".replace('__ID__', pasienId);
 
     fetch(url, {
         method: 'GET',

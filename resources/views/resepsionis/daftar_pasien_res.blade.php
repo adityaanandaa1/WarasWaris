@@ -1,4 +1,4 @@
-@extends('layouts.daftarpasien')
+@extends('layouts.daftarpasien_resepsionis')
 
 @section('title','Daftar Pasien')
 
@@ -244,7 +244,7 @@
     document.body.style.overflow = 'hidden';
 
     // URL ke controller detail_pasien
-    const url = "{{ route('dokter.pasien.detail', ['id' => '__ID__']) }}".replace('__ID__', pasienId);
+    const url = "{{ route('resepsionis.pasien.detail', ['id' => '__ID__']) }}".replace('__ID__', pasienId);
     console.log('Fetching URL:', url);
 
     fetch(url, {
