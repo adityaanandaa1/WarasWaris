@@ -17,6 +17,8 @@
     {{-- CSS Custom Page --}}
     <link rel="stylesheet" href="{{ asset('css/dokter/layouts.css') }}">
     <link rel="stylesheet" href="{{ asset('css/dokter/dashboard.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/dokter/antrean.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/dokter/daftarpasien.css') }}">
     
     {{-- CSS Custom Component --}}
     <link rel="stylesheet" href="{{ asset('css/datepicker.css') }}">
@@ -38,6 +40,5 @@
     <script src="{{ asset('js/todaydate.js') }}"></script>
     <script src="{{ asset('js/datepicker.js') }}"></script>
     <script src="{{ asset('js/monthpicker.js') }}"></script>
-    <script src="{{ asset('js/windowscroll.js') }}"></script>
 </body>
 </html>
