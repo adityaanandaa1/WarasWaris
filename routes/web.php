@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\auth_controller;
+use App\Http\Controllers\homepage_controller;
 use App\Http\Controllers\reset_password_controller;
 use App\Http\Controllers\pasien\pasien_controller;
 use App\Http\Controllers\pasien\riwayat_pemeriksaan_controller;
@@ -17,9 +18,7 @@ use App\Http\Controllers\resepsionis\daftar_antrian_res_controller;
 use App\Http\Controllers\resepsionis\daftar_pasien_res_controller;
 use App\Http\Controllers\resepsionis\laporan_res_controller;
 
-Route::get('/', function () {
-    return view('homepage');
-});
+Route::get('/', [homepage_controller::class, 'homepage'])->name('homepage');
 
 Route::get('/dbajax', function () {
     return view('pasien.dbpakeajax');

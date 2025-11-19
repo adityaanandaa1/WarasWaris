@@ -1,46 +1,69 @@
 * {
-    font-family: 'Poppins', sans-serif;
+    font-family: "Poppins", sans-serif;
 }
 
 html {
-  scroll-behavior: smooth;
+    scroll-behavior: smooth;
 }
 
 /* Navbar */
 #navbar {
     display: flex;
-    justify-content: center; 
+    justify-content: center;
     align-items: center;
     position: fixed;
-    z-index: 1000;   
-    width: 100%;     
+    z-index: 1000;
+    width: 100%;
     top: 20px;
     position: fixed;
 }
-        
+
 .navbar-container {
     display: flex;
-    background-color: #87A3FB;
+    background-color: #87a3fb;
     border-radius: 30px;
     align-items: center;
     justify-content: space-between;
-    padding: 5px 24px;
-    width: 90%;
+    padding: 5px 20px;
+    width: 85%;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
 }
-        
+
+.logo {
+    width:0px;
+}
+
 .navbar-menu {
     display: flex;
     list-style: none;
-    padding: 0;
+    padding: 0px 0px 0px 80px;
 }
 
 .navbar-link {
     font-size: 15px;
     text-decoration: none;
     color: #ffffff;
-    font-weight: bold;
+    font-weight: 400;
     text-align: center;
     padding: 15px;
+    position: relative; 
+    transition: text-shadow 0.3s ease;
+}
+.navbar-link::after {
+    content: '';
+    position: absolute;
+    width: 0; 
+    height: 3px; 
+    bottom: 10px; 
+    left: 15px; 
+    background-color: #ffffff; 
+    transition: width 0.3s ease; 
+}
+.navbar-link:hover::after {
+    width: calc(100% - 30px);
+}
+.navbar-link:hover {
+     text-shadow: 0 0 0.5px #ffffff, 0 0 0.5px #ffffff;
 }
 
 .btn-login {
@@ -48,7 +71,7 @@ html {
     font-size: 14px;
     font-weight: 700;
     text-decoration: none;
-    color: #5A81FA;
+    color: #5a81fa;
     border: none;
     border-radius: 200px;
     margin: 0px;
@@ -59,7 +82,7 @@ html {
 }
 
 .btn-login:hover {
-    background-color: #5A81FA;
+    background-color: #5a81fa;
     font-size: 14px;
     font-weight: 700;
     text-decoration: none;
@@ -72,7 +95,7 @@ html {
 
 /* Homepage */
 .home-background {
-    background-color: #CEDEFF;
+    background-color: #cedeff;
     position: relative;
     width: 100%;
     overflow: hidden;
@@ -83,7 +106,7 @@ html {
     width: 100%;
     height: 500px;
     top: 50px;
-    background: #5A81FA;
+    background: #5a81fa;
     clip-path: ellipse(70% 100% at 50% 0%);
     z-index: 0;
     display: flex;
@@ -116,7 +139,7 @@ html {
 
 .home-title-2 {
     font-size: 50px;
-    color: #1F4DD9;
+    color: #1f4dd9;
     margin: 0;
     padding-top: 10px;
     line-height: 1;
@@ -133,7 +156,7 @@ html {
 }
 
 .btn-home {
-    background-color: #87A3FB;
+    background-color: #87a3fb;
     border-radius: 30px;
     font-size: 16px;
     font-weight: 700;
@@ -145,7 +168,7 @@ html {
 }
 
 .btn-home:hover {
-    background-color: #5A81FA;
+    background-color: #5a81fa;
     box-shadow: 0 2px 5px rgba(54, 54, 54, 0.6);
     transition: background-color 0.5s ease;
 }
@@ -156,16 +179,15 @@ html {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 40px;
-    background-color: #5A81FA;
+    background-color: #5a81fa;
     max-width: 900px;
     width: 90%;
     border-radius: 30px;
-    box-shadow: 0 0 15px rgba(0,0,0,0.6);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
     z-index: 10;
     margin: 0 auto;
     padding: 40px 60px;
 }
-
 
 .home-service-item {
     display: flex;
@@ -189,12 +211,12 @@ html {
 }
 
 .home-service-button:hover {
-     box-shadow: 0 0px 15px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0px 15px rgba(0, 0, 0, 0.2);
 }
 
 .home-service-button i {
     font-size: 24px;
-    color: #5A81FA;
+    color: #5a81fa;
 }
 
 .home-service-title {
@@ -202,7 +224,7 @@ html {
     font-weight: 500;
     color: #ffffff;
     margin: 0 0 10px 0;
-    text-align:center;
+    text-align: center;
     max-width: 300px;
 }
 
@@ -219,10 +241,10 @@ html {
 
 /* Homepage Layanan */
 #service {
-    background-image: linear-gradient(to bottom, #CEDEFF 0%, #FFFFFF 20%);
+    background-image: linear-gradient(to bottom, #cedeff 0%, #ffffff 20%);
     padding-top: 80px;
 }
-    
+
 .service-header {
     height: 185px;
     padding-left: 100px;
@@ -234,7 +256,7 @@ html {
 
 .service-heading {
     font-size: 28px;
-    color: #5A81FA;
+    color: #5a81fa;
 }
 
 .service-description {
@@ -242,13 +264,13 @@ html {
     font-size: 17px;
     color: #464646;
 }
-    
+
 .service-list {
     width: 90%;
     height: 320px;
     padding-left: 100px;
 }
-    
+
 .service-item {
     display: flex;
     align-items: center;
@@ -261,14 +283,14 @@ html {
     padding: 15px 15px;
     border-radius: 100%;
     border: none;
-    box-shadow:0 0px 16px 0 rgba(0,0,0,0.6);
+    box-shadow: 0 0px 16px 0 rgba(0, 0, 0, 0.6);
     aspect-ratio: 1 / 1;
-    height:60px;
+    height: 60px;
     width: 60px;
 }
 
 .service-button i {
-    color: #5A81FA; 
+    color: #5a81fa;
     font-size: 30px;
 }
 
@@ -286,11 +308,10 @@ html {
 
 .hero-section {
     position: relative;
-    background-color: #5A81FA;
-    width: 100%; 
+    background-color: #5a81fa;
+    width: 100%;
     height: 480px;
     border-radius: 50px;
-    
 }
 
 .emotmask {
@@ -346,7 +367,7 @@ html {
     font-size: 21px;
     font-weight: 700;
     text-decoration: none;
-    color: #5A81FA;
+    color: #5a81fa;
     border: none;
     border-radius: 200px;
     padding: 20px 40px;
@@ -356,7 +377,7 @@ html {
 }
 
 .btn-ajakan i {
-    background: #5A81FA;
+    background: #5a81fa;
     color: white;
     border-radius: 50%;
     padding: 10px;
@@ -372,14 +393,14 @@ html {
 
 .btn-ajakan:hover i {
     transform: translateX(20px);
-    background-color: #FFFFFF;
-    color:#5A81FA;
+    background-color: #ffffff;
+    color: #5a81fa;
 }
 
 .btn-ajakan:hover {
-    background-color: #5A81FA;
+    background-color: #5a81fa;
     color: #ffffff;
-   transform: scale(1.3);
+    transform: scale(1.3);
     box-shadow: 0 5px 10px rgba(90, 129, 250, 0.3);
     transition: background-color 0.5s ease;
 }
@@ -397,7 +418,7 @@ html {
 
 .schedule-title {
     font-size: 35px;
-    color: #1F4DD9;
+    color: #1f4dd9;
     margin: 10px;
     margin-bottom: 0px;
     text-align: center;
@@ -406,7 +427,7 @@ html {
 
 .schedule-subtitle {
     font-size: 30px;
-    color: #5A81FA;
+    color: #5a81fa;
     margin-top: 0px;
     margin-bottom: 30px;
     text-align: center;
@@ -414,11 +435,11 @@ html {
 }
 
 .schedule-box {
-    background-color: #5A81FA;
+    background-color: #5a81fa;
     width: 60%;
-    border-radius: 15px;
+    border-radius: 40px;
     margin: auto;
-    box-shadow:0 4px 16px 0 rgba(0,0,0,0.6)
+    box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.6);
 }
 
 .schedule-info {
@@ -426,20 +447,21 @@ html {
     justify-content: space-between;
     padding-top: 25px;
     padding-bottom: 25px;
-    padding-left: 50px;
-    padding-right: 50px;
+    padding-left: 90px;
+    padding-right: 70px;
     align-items: center;
 }
 
 .info-title {
-    font-size: 32px;
+    font-size: 24px;
     color: #ffffff;
     margin: 5px;
-    font-weight: bold;
+    text-align:flex-end;
+    font-weight: 500;
 }
 
 .schedule-divider {
-    background-color: #D9D9D9;
+    background-color: #ffffff;
     height: 15px;
     padding: 0;
 }
@@ -464,9 +486,9 @@ html {
 .time-label {
     font-size: 20px;
     color: #ffffff;
-    font-weight: bold;
-    margin: 0;        
-    text-align: center;    
+    font-weight: 400;
+    margin: 0;
+    text-align: center;
 }
 
 .time-value {
@@ -478,43 +500,58 @@ html {
 }
 
 .date-picker {
-    background-color: #799AFF;
-    border-radius: 10px;
+    background-color: #799aff;
+    border-radius: 20px;
     height: 20px;
     padding: 15px;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 5px;
+    gap: 20px;
+}
+
+.date-picker label {
+    display: flex;
+    align-items: center;
+    line-height: 0; 
+}
+
+.date-picker svg {
+    display: block; 
 }
 
 .date-input {
     font-size: 18px;
     border: none;
     color: #ffffff;
-    font-weight: bold;
-    background-color: #799AFF;
-    width: 200px;
-    justify-items: center;
+    font-weight: 500;
+    background-color: #799aff;
+    width: 100px;
 }
 
-.date-input:hover {
+.date-picker:hover, .date-picker:focus-within {
     border: none;
     font-weight: bold;
-    background-color: #799AFF;
-    width: 200px;
+    background-color: #39529c;
+    box-shadow:0 0 16px 0 rgba(0, 0, 0, 0.2);
+}
+
+.date-picker:hover .date-input {
+    background-color: #39529c;
 }
 
 .date-input:focus {
     outline: none;
     box-shadow: none;
+      background-color: #39529c;
 }
+
 
 /* Homepage Lokasi */
 #location {
     margin-left: 100px;
     margin-right: 100px;
-    margin-top: 60px
+    margin-top: 60px;
 }
 
 .location-header {
@@ -528,13 +565,13 @@ html {
 
 .location-heading {
     font-size: 28px;
-    color: #1F4DD9;
+    color: #1f4dd9;
     margin: 0;
 }
 
 .location-subheading {
     font-size: 28px;
-    color: #5A81FA;
+    color: #5a81fa;
     margin: 0;
 }
 
@@ -550,24 +587,24 @@ html {
 }
 
 .map-frame {
-    box-shadow: 0 5px 16px 0 rgba(0,0,0,0.6)
+    box-shadow: 0 5px 16px 0 rgba(0, 0, 0, 0.6);
 }
 
-.map-caption{
+.map-caption {
     font-size: 14px;
-    color: #5A81FA;
+    color: #5a81fa;
     text-align: center;
 }
 
 /* Homepage Aboutus */
 #aboutus {
-    background-color: #CEDEFF;
+    background-color: #cedeff;
     display: flex;
     height: 250px;
     margin: 0;
     padding: 5px 100px;
 }
-    
+
 .container-about {
     display: flex;
     justify-content: space-between;
@@ -600,7 +637,7 @@ html {
 
 .section-title {
     font-size: 20px;
-    color: #405FBD;
+    color: #405fbd;
     font-weight: bold;
     text-align: center;
 }
@@ -608,16 +645,16 @@ html {
 .about-links a {
     font-size: 16px;
     color: #464646;
-    text-decoration: none;  
+    text-decoration: none;
 }
 
 .about-links a:hover {
-    text-decoration: underline;  
+    text-decoration: underline;
 }
 
 .contact-section {
     font-size: 24px;
-    color: #405FBD;
+    color: #405fbd;
     font-weight: bold;
 }
 
@@ -628,14 +665,15 @@ html {
 
 .btn-aboutus {
     color: #464646;
-    text-decoration: none; 
-    padding: 10px; 
+    text-decoration: none;
+    padding: 10px;
     font-size: 35px;
     display: flex;
     align-items: center;
     justify-content: center;
     width: 35px;
-    height: 35px; 
+    height: 35px;
+    font-weight: 100;
 }
 
 .btn-aboutus:hover {
@@ -643,4 +681,3 @@ html {
     transition: background-color 0.5s ease;
     border-radius: 100%;
 }
-
