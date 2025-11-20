@@ -7,6 +7,7 @@
     <div class="datepicker-box">
         <input type="text" 
             class="datepicker-input"
+            id="{{ $name }}Input"
             value="{{ request($name)
                     ? \Carbon\Carbon::parse(request($name))->translatedFormat('d F Y')
                     : \Carbon\Carbon::today()->translatedFormat('d F Y')

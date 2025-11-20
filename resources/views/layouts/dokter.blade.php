@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="{{ asset('css/dokter/dashboard.css') }}">
     <link rel="stylesheet" href="{{ asset('css/dokter/antrean.css') }}">
     <link rel="stylesheet" href="{{ asset('css/dokter/daftarpasien.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/dokter/laporan.css') }}">
     
     {{-- CSS Custom Component --}}
     <link rel="stylesheet" href="{{ asset('css/datepicker.css') }}">

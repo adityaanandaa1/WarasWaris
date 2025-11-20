@@ -33,7 +33,6 @@ class rekam_medis_controller extends Controller
             'rencana_tindak_lanjut'  => 'required|string',
             'catatan_tambahan'       => 'nullable|string',
             'riwayat_alergi'         => 'nullable|string',
-            'resep_obat'             => 'required|string',
         ]);
 
         // Ambil pasien_id dari reservasi (support dua nama kolom)
