@@ -34,9 +34,6 @@
     <div class="dashboard-profile">
         <div class="dashboard-profile-header">
             <h1 class="dashboard-profile-title">Profil Saya</h1>
-            <a href="{{ route('dokter.profil.edit') }}" class="dashboard-profile-edit" title="Edit Profil">
-                <i class="ri-edit-box-line"></i>
-            </a>
         </div>
 
         <div class="dashboard-profile-body">
@@ -46,7 +43,7 @@
             <div class="dashboard-profile-info">
                 <div class="dashboard-profile-identity">
                     <p class="dashboard-profile-name">
-                        
+                        {{ optional($dokter_aktif)->nama_dokter ?? '-' }}
                     </p>
                     <p class="dashboard-profile-profession">Dokter Umum</p>
                     <div class="dashboard-profile-location">
@@ -59,13 +56,13 @@
                     <div class="dashboard-detail-item">
                         <p class="dashboard-detail-label">Tanggal Lahir</p>
                         <p class="dashboard-detail-value">
-                            
+                            {{ optional($dokter_aktif)->tanggal_lahir_dokter }}
                         </p>
                     </div>
                     <h1 class="dashboard-profile-separator">|</h1>
                     <div class="dashboard-detail-item">
                         <p class="dashboard-detail-label">SIP</p>
-                        <a href="{{ route('dokter.sip.download') }}" class="dashboard-download-sip">
+                        <a href="{{ route('resepsionis.sip.download') }}" class="dashboard-download-sip">
                             Unduh
                         </a>
                     </div>

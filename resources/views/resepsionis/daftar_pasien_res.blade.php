@@ -196,12 +196,6 @@
         <span id="p-catatan-pasien">-</span>
       </div>
     </div>
-
-    <div class="pasien-button">
-        <a href="{{ route('dokter.riwayat_rekam_medis') }}" id="btn-rekam-medis" class="btn-rekam-medis">
-            Lihat Rekam Medis
-        </a>
-    </div>
   </div>
 </div>
 
@@ -224,8 +218,6 @@
         window.location.href = baseURL;
         }
     });
-
-
 
   function openPasienModal(pasienId) {
     const overlay = document.getElementById('pasienOverlay');

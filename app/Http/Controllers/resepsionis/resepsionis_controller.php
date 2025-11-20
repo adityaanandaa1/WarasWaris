@@ -20,7 +20,7 @@ class resepsionis_controller extends Controller
     public function dashboard(Request $request)
     {
         $user = Auth::user();
-        $dokter = $user->data;
+        $dokter_aktif = data_dokter::with('user')->first();
 
         //tanggal dipilih (default hari ini)
         $hari_ini = $request->filled('tanggal')
@@ -84,7 +84,7 @@ class resepsionis_controller extends Controller
 
         return view('resepsionis.dashboard', compact(
             'user',
-            'dokter',
+            'dokter_aktif',
             'jadwal',
             'antrian',
             'reservasis',
@@ -158,6 +158,20 @@ class resepsionis_controller extends Controller
             ->max('nomor_antrian');
 
         return (int) ($terakhir_selesai ?? 0);
+    }
+
+    public function download_sip()
+    {
+        $user   = Auth::user();
+        $dokter = $user->dokter;
+
+        if (!$dokter || !$dokter->sip_path || !Storage::disk('public')->exists($dokter->sip_path)) {
+            return back()->withErrors(['error' => 'File SIP belum diupload.']);
+        }
+
+        $namaFile = 'SIP-' . str_replace(' ', '_', $dokter->nama_dokter) . '.pdf';
+
+        return Storage::disk('public')->download($dokter->sip_path, $namaFile);
     }
 
     private function get_nama_hari($tanggal)
