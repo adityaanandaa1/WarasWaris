@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'WarasWaris - Dokter')</title>
+    <title>@yield('title', 'WarasWaris - Resepsionis')</title>
     
     <!-- CSS -->
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
@@ -14,7 +14,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- CSS Custom -->
-    <link rel="stylesheet" href="{{ asset('css/daftarpasien.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/resepsionis/layouts_res.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/resepsionis/daftarpasien_res.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/resepsionis/sidebar_res.css') }}">
     
     <!-- Font Google -->
     <link rel="preconnect" href="https://fonts.googleapis.com">

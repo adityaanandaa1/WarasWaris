@@ -16,12 +16,12 @@
     {{-- <script src="https://cdn.tailwindcss.com"></script> --}}
 
     {{-- CSS Custom Page --}}
-    <link rel="stylesheet" href="{{ asset('css/resepsionis/layouts.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/resepsionis/dashboard.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/resepsionis/layouts_res.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/resepsionis/dashboard_res.css') }}">
     
     {{-- CSS Custom Component --}}
     <link rel="stylesheet" href="{{ asset('css/datepicker.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/resepsionis/sidebar.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/resepsionis/sidebar_res.css') }}">
 </head>
 <body>
     <div class="layout">

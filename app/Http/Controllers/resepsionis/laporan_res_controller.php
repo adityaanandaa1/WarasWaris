@@ -17,7 +17,7 @@ class laporan_res_controller extends Controller
     public function laporan_res(Request $request)
     {
         $user = Auth::user();
-        $dokter = $user->dokter;
+        $resepsionis = $user->data;
 
         // Ambil tanggal dari request atau default hari ini
         $tanggal_input    = $request->input('tanggal');
@@ -58,7 +58,7 @@ class laporan_res_controller extends Controller
                 'data' => $daftar_reservasi->map(function($reservasi) {
                     return [
                         'id' => $reservasi->id,
-                        'id_pasien' => $reservasi->id_pasien, // Tambahkan ini untuk modal
+                        'id_pasien' => $reservasi->id_pasien, 
                         'nomor_antrian' => $reservasi->nomor_antrian,
                         'nama_pasien' => $reservasi->data_pasien->nama_pasien,
                         'no_telepon' => $reservasi->data_pasien->no_telepon,

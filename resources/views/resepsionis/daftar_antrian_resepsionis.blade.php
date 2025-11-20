@@ -1,30 +1,9 @@
 @extends('layouts.antrean_resepsionis')
 
 @section('content')
-
-<style>
-    /* Sembunyikan elemen dengan atribut hidden */
-  [hidden] { display: none !important; }
-
-  /* Overlay layar penuh */
-  #reservasiOverlay {
-    position: fixed; inset: 0;
-    background: rgba(0,0,0,.5);
-    z-index: 9999;
-    display: flex; align-items: center; justify-content: center;
-  }
-
-  /* Kotak modal sederhana */
-  #reservasiBox {
-    background: #fff;
-    width: 90%; max-width: 600px;
-    padding: 16px;
-    border-radius: 8px;
-  }
-</style>
-
-<div class="parent">
-        <div class="header-date"> 
+<div class="queue-doctor">
+    <div class="queue-header">
+        <div class="queue-header-date"> 
             <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g clip-path="url(#clip0_291_1315)">
                     <path d="M24.9478 4.64169H21.8535V6.96243C21.8535 7.18592 21.8095 7.40722 21.724 7.61371C21.6384 7.82019 21.5131 8.0078 21.355 8.16583C21.197 8.32387 21.0094 8.44922 20.8029 8.53475C20.5964 8.62028 20.3751 8.6643 20.1516 8.6643C19.9281 8.6643 19.7068 8.62028 19.5004 8.53475C19.2939 8.44922 19.1063 8.32387 18.9482 8.16583C18.7902 8.0078 18.6648 7.82019 18.5793 7.61371C18.4938 7.40722 18.4498 7.18592 18.4498 6.96243V4.64169H9.43757V6.96243C9.43757 7.41379 9.25827 7.84667 8.93911 8.16583C8.61994 8.485 8.18707 8.6643 7.7357 8.6643C7.28434 8.6643 6.85146 8.485 6.5323 8.16583C6.21313 7.84667 6.03383 7.41379 6.03383 6.96243V4.64169H2.93952C2.75542 4.6396 2.57278 4.67444 2.40238 4.74416C2.23199 4.81388 2.07731 4.91707 1.94749 5.04761C1.81767 5.17815 1.71534 5.3334 1.64657 5.50418C1.57779 5.67495 1.54396 5.85779 1.54707 6.04187V23.3546C1.544 23.5354 1.57658 23.7151 1.64296 23.8833C1.70933 24.0515 1.8082 24.2051 1.93391 24.3351C2.05962 24.4651 2.20972 24.5691 2.37563 24.6411C2.54154 24.7131 2.72 24.7517 2.90084 24.7547H24.9478C25.1287 24.7517 25.3071 24.7131 25.473 24.6411C25.6389 24.5691 25.789 24.4651 25.9148 24.3351C26.0405 24.2051 26.1393 24.0515 26.2057 23.8833C26.2721 23.7151 26.3047 23.5354 26.3016 23.3546V6.04187C26.3047 5.86103 26.2721 5.68137 26.2057 5.51313C26.1393 5.34489 26.0405 5.19137 25.9148 5.06135C25.789 4.93133 25.6389 4.82734 25.473 4.75534C25.3071 4.68333 25.1287 4.64471 24.9478 4.64169ZM7.7357 20.1133H6.18854V18.5661H7.7357V20.1133ZM7.7357 16.2454H6.18854V14.6982H7.7357V16.2454ZM7.7357 12.3775H6.18854V10.8303H7.7357V12.3775ZM12.3772 20.1133H10.83V18.5661H12.3772V20.1133ZM12.3772 16.2454H10.83V14.6982H12.3772V16.2454ZM12.3772 12.3775H10.83V10.8303H12.3772V12.3775ZM17.0186 20.1133H15.4715V18.5661H17.0186V20.1133ZM17.0186 16.2454H15.4715V14.6982H17.0186V16.2454ZM17.0186 12.3775H15.4715V10.8303H17.0186V12.3775ZM21.6601 20.1133H20.113V18.5661H21.6601V20.1133ZM21.6601 16.2454H20.113V14.6982H21.6601V16.2454ZM21.6601 12.3775H20.113V10.8303H21.6601V12.3775Z" fill="white"/>
@@ -40,48 +19,46 @@
             <span>{{ $hari_ini->format('d F Y') }}</span>
         </div>         
             
-        <div class="search">
+        <div class="queue-search">
             <input type="text" 
                     id="searchInput"
                     placeholder="Cari">
         </div>
+    </div>
             
-    <div class="antrean">
-        <h3 class="antrean-header">
+    <div class="queue-body">
+        <h3 class="queue-body-header">
             Daftar Pasien Hari Ini
-            <span class="antrean-jumlah">
+            <span class="queue-count">
                 {{ $daftar_antrian->count() }} Pasien
             </span>
         </h3>
 
-        <div class="antrean-main" id="patientList">
+        <div class="queue-list" id="patientList">
             @forelse($daftar_antrian as $reservasi)
-            <div class="antrean-daftar patient-item">
-                <div class="antrean-data">
-                    <div class="data-nomor">
+            <div class="queue-item">
+                <div class="queue-item-data">
+                    <div class="queue-item-number">
                         <span>{{ $reservasi->nomor_antrian }}</span>
                     </div>
 
-                    <div class="data-nama">
+                    <div class="queue-item-name">
                         <h4 class="patient-name">{{ $reservasi->nama_pasien }}</h4>
                     </div>
 
-                    <div class="data-status">
-                          <button onclick="openReservasiModal({{ $reservasi->getKey() }})" 
-                                       class="px-4 py-2  border-2 border-blue-500 text-blue-600 rounded-lg font-semibold hover:bg-blue-50 transition-colors duration-200 flex items-center gap-2">
-                                        Lihat Reservasi
-                            </button>
-                        
+                    <div class="queue-item-status">
+                        <a href="javascript:void(0)" onclick="openReservasiModal({{ $reservasi->getKey() }})" class="queue-btn-view">
+                            Lihat <br> Reservasi
+                        </a>
+                          
                         @if ($reservasi->status === 'selesai')
                             <span>Selesai</span>
-                        @elseif ($reservasi->status === 'batal')
-                            <span>Dibatalkan</span>
                         @else
-                            <form action="{{ route('resepsionis.reservasi.lewati', $reservasi->id) }}" method="POST">
+                            <form action="{{ route('dokter.reservasi.periksa', $reservasi->id) }}" method="POST">
                                 @csrf
                                 @method('PATCH')
-                                <button type="submit" class="periksa-btn">
-                                    Lewati
+                                <button type="submit" class="queue-btn-check">
+                                    Periksa
                                 </button>
                             </form>
                         @endif
@@ -89,81 +66,139 @@
                 </div>
             </div>
             @empty
-            <div class="data-kosong">
+            <div class="queue-empty">
                 <p>Belum ada pasien antrian hari ini</p>
             </div>
             @endforelse
         </div>
     </div>
 
-        <div class="jam">
-            @if($jadwal && $jadwal->is_active)
-            <h3>Jam Praktik</h3>
-            <div class="jam-value">
-                <div class="value-wrap">
-                    <div class="value-mulai">
-                        <p class="value-text">Buka</p>
-                        <p class="value-jam">{{ $jadwal->jam_mulai ?? '-' }}</p>
+    <div class="queue-schedule">
+        @if($jadwal && $jadwal->is_active)
+        <h3>Jam Praktik</h3>
+        <div class="queue-schedule-value">
+            <div class="queue-schedule-wrap">
+                <div class="queue-schedule-open">
+                    <p class="queue-schedule-label">Buka</p>
+                    <p class="queue-schedule-time">{{ $jadwal->jam_mulai ?? '-' }}</p>
+                </div>
+                <div class="queue-schedule-divider">-</div>
+                <div class="queue-schedule-close">
+                    <p class="queue-schedule-label">Tutup</p>
+                    <p class="queue-schedule-time">{{ $jadwal->jam_selesai ?? '-' }}</p>
+                </div>
+            </div>
+        </div>
+        @else
+        <div class="queue-schedule-empty">                      
+            <p>Tidak Ada Jadwal</p>
+        </div>
+        @endif
+    </div>
+
+    <div class="queue-current">
+        <h3>Nomor Antrean Berjalan</h3>
+        
+        <div class="queue-current-wrap">
+            <p class="queue-current-value">{{ $antrian->nomor_sekarang ?? 0 }}</p>
+            <p class="queue-current-text">Sedang Dilayani</p>
+        </div>
+    </div>
+
+    <div class="queue-total">
+        <h3>Jumlah Antrean</h3>
+        
+        <div class="queue-total-wrap">
+            <p class="queue-total-value">{{ $antrian->total_antrian ?? 0 }}</p>
+            <p class="queue-total-text">Pasien Hari Ini</p>
+        </div>
+    </div>
+</div>
+
+<!-- Modal polos (disembunyikan default) -->
+<div id="reservasiOverlay" class="reservasi-overlay" hidden>
+    <div id="reservasiBox" class="reservasi-modal" role="dialog" aria-modal="true" aria-labelledby="reservasiTitle">
+        <div class="reservasi-header">
+            <button type="button" class="reservasi-close-btn" onclick="closeReservasiModal()"><i class="ri-close-line"></i></button>
+            <h3 class="reservasi-title">Reservasi Pasien</h3>
+        </div>
+
+        <div id="reservasi-loading" class="reservasi-loading">Memuat data…</div>
+        <div id="reservasi-error" class="reservasi-error" style="display:none;"></div>
+
+        <div id="reservasi-content" class="reservasi-content" hidden>
+            <div class="reservasi-content-header">
+                <div class="reservasi-field">
+                    <div class="reservasi-avatar">B</div>
+                </div>
+
+                <div class="reservasi-field-keluhan">
+                    <span class="reservasi-label-title">Keluhan</span> <br>
+                    <span class="reservasi-value-subtitle" id="m-keluhan">-</span>
+                </div>
+            </div>
+
+            <div class="reservasi-content-body">
+                <div class="reservasi-content-body-header">
+                    <div class="reservasi-header-name">
+                        <span class="reservasi-header-label">Pasien</span>
+                        <span class="reservasi-header-value" id="m-nama-pasien">-</span>
                     </div>
-                    <div class="value-strip">-</div>
-                    <div class="value-tutup">
-                        <p class="value-text">Tutup</p>
-                        <p class="value-jam">{{ $jadwal->jam_selesai ?? '-' }}</p>
+                    <div class="reservasi-divider-identitas">
+                        |
+                    </div>
+                    <div class="reservasi-header-name">
+                        <span class="reservasi-header-label">Wali</span>
+                        <span class="reservasi-header-value" id="m-nama-wali">-</span>
+                    </div>
+                </div>
+
+                <div class="reservasi-content-body-details">
+                    <div class="reservasi-field">
+                        <span class="reservasi-label">Jenis Kelamin</span>
+                        <span class="reservasi-value" id="m-jenis-kelamin">-</span>
+                    </div>
+
+                    <div class="reservasi-field">
+                        <span class="reservasi-label">Tanggal Lahir</span>
+                        <span class="reservasi-value" id="m-tanggal-lahir">-</span>
+                    </div>
+
+                    <div class="reservasi-field">
+                        <span class="reservasi-label">Umur</span>
+                        <span class="reservasi-value" id="m-umur">-</span>
+                    </div>
+
+                    <div class="reservasi-field">
+                        <span class="reservasi-label">Golongan Darah</span>
+                        <span class="reservasi-value" id="m-golongan-darah">-</span>
+                    </div>
+
+                    <div class="reservasi-field">
+                        <span class="reservasi-label">Pekerjaan</span>
+                        <span class="reservasi-value" id="m-pekerjaan">-</span>
+                    </div>
+
+                    <div class="reservasi-field">
+                        <span class="reservasi-label">Alamat</span>
+                        <span class="reservasi-value" id="m-alamat">-</span>
+                    </div>
+
+                    <div class="reservasi-field">
+                        <span class="reservasi-label">Nomor Telepon</span>
+                        <span class="reservasi-value" id="m-no-telepon">-</span>
                     </div>
                 </div>
             </div>
-            @else
-            <div class="jam-kosong">                      
-                <p>Tidak Ada Jadwal</p>
-            </div>
-            @endif
-        </div>
 
-        <div class="nomor-antrean">
-            <h3>Nomor Antrean Berjalan</h3>
-            
-            <div class="nomor-wrap">
-                <p class="nomor-value">{{ $antrian->nomor_sekarang ?? 0 }}</p>
-                <p class="nomor-text">Sedang Dilayani</p>
-            </div>
-        </div>
-
-        <div class="jumlah-antrean">
-            <h3>Jumlah Antrean</h3>
-            
-            <div class="jumlah-wrap">
-                <p class="jumlah-angka">{{ $antrian->total_antrian ?? 0 }}</p>
-                <p class="jumlah-text">Pasien Hari Ini</p>
-            </div>
-        </div>
-
-        <!-- Modal polos (disembunyikan default) -->
-        <div id="reservasiOverlay" hidden>
-            <div id="reservasiBox" role="dialog" aria-modal="true" aria-labelledby="reservasiTitle">
-                <div style="display:flex;justify-content:space-between;align-items:center; margin-bottom:8px;">
-                <h3 id="reservasiTitle" style="margin:0;">Detail Reservasi</h3>
-                <button type="button" onclick="closeReservasiModal()">Tutup</button>
-                </div>
-
-                <div id="reservasi-loading">Memuat data…</div>
-                <div id="reservasi-error" style="display:none;color:red;"></div>
-
-                <div id="reservasi-content" hidden>
-                <div>Nama Pasien: <span id="m-nama-pasien">-</span></div>
-                <div>Nama Wali: <span id="m-nama-wali">-</span></div>
-                <div>Jenis Kelamin: <span id="m-jenis-kelamin">-</span></div>
-                <div>Tanggal Lahir: <span id="m-tanggal-lahir">-</span></div>
-                <div>Umur: <span id="m-umur">-</span></div>
-                <div>Gol. Darah: <span id="m-golongan-darah">-</span></div>
-                <div>Pekerjaan: <span id="m-pekerjaan">-</span></div>
-                <div>Alamat: <span id="m-alamat">-</span></div>
-                <div>No. Telepon: <span id="m-no-telepon">-</span></div>
-                <div>Keluhan: <span id="m-keluhan">-</span></div>
-                <div>Catatan: <span id="m-catatan">-</span></div>
+            <div class="reservasi-content-note">
+                <div class="reservasi-field">
+                    <span class="reservasi-label-title">Catatan</span> <br>
+                    <span class="reservasi-value-subtitle" id="m-catatan">-</span>
                 </div>
             </div>
         </div>
-
+    </div>
 </div>
 
 <script>
@@ -200,7 +235,7 @@ function openReservasiModal(reservasiId) {
     document.body.style.overflow = 'hidden';
 
     // Build URL dengan route helper Laravel
-    const url = `{{ route('resepsionis.reservasi.detail', ':id') }}`.replace(':id', reservasiId);
+    const url = `{{ route('dokter.reservasi.detail', ':id') }}`.replace(':id', reservasiId);
     
     console.log('Fetching URL:', url); // Debug
 

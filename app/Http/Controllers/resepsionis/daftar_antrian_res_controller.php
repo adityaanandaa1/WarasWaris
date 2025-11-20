@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\jadwal_praktik;
 use App\Models\reservasi;
 use App\Models\data_pasien;
+use App\Models\data_resepsionis;
 use App\Models\akun_user;
 use App\Models\antrian;
 
@@ -21,7 +22,7 @@ class daftar_antrian_res_controller extends Controller
     public function daftar_antrian_res()
     {
         $user = Auth::user();
-        $dokter = $user->dokter ?? data_dokter::where('id_akun', $user->id)->first();
+        $resepsionis = $user->data;
 
         $hari_ini = today();
         $nama_hari = $hari_ini->locale('id')->translatedFormat('l');

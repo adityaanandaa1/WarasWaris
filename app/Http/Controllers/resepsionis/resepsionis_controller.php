@@ -21,6 +21,7 @@ class resepsionis_controller extends Controller
     {
         $user = Auth::user();
         $dokter_aktif = data_dokter::with('user')->first();
+        $resepsionis = $user->data;
 
         //tanggal dipilih (default hari ini)
         $hari_ini = $request->filled('tanggal')
@@ -82,9 +83,10 @@ class resepsionis_controller extends Controller
             ->orderBy('nomor_antrian')
             ->get();
 
-        return view('resepsionis.dashboard', compact(
+        return view('resepsionis.dashboard_res', compact(
             'user',
             'dokter_aktif',
+            'resepsionis',
             'jadwal',
             'antrian',
             'reservasis',
