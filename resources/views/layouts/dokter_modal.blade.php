@@ -13,6 +13,7 @@
     {{-- CSS Custom Page --}}
     <link rel="stylesheet" href="{{ asset('css/dokter/layoutsmodal.css') }}">
     <link rel="stylesheet" href="{{ asset('css/dokter/formrekammedis.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/dokter/medicalrecords.css') }}">
 
     {{-- CSS Framework --}}
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet">

@@ -29,7 +29,7 @@
 <body>
     <div class="layout">
         <div class="sidebar">
-         @include('partials.sidebar')
+            @include('partials.sidebar')
         </div>
 
         <div class="content ">

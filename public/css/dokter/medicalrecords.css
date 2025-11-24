@@ -1,0 +1,142 @@
+.medicalrecord-action-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    z-index: 1000;
+    width: 100%;
+    top: 20px;
+}
+
+.medicalrecord-btn-print {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 15px;
+    border-radius: 20px;
+    gap: 10px;
+    border: none;
+    background-color: green;
+    color: #FFFFFF;
+}
+
+.medicalrecord-page {
+    display: flex;
+}
+
+.medicalrecord-sidebar {
+    display: flex;
+    flex-direction: column;
+    width: 25%;
+    background-color: #587EF4;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+
+.medicalrecord-sidebar-header {
+    display: flex;
+    align-items: center;
+    padding: 10px 10px 0px 10px;
+    gap: 10px;
+}
+
+.medicalrecord-sidebar-back {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #CEDEFF;
+    color: #000000;
+    font-size: 20px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    text-decoration: none;
+    margin: 20px 0;
+    cursor: pointer;
+    position: relative;
+    z-index: 9999;
+}
+
+.medicalrecord-sidebar-back:hover {
+    background-color: #FFFFFF;
+}
+
+.medicalrecord-sidebar-back i {
+    pointer-events: none;
+}
+
+.medicalrecord-sidebar-title {
+    font-size: 18px;
+    color: #FFFFFF;
+    font-weight: bold;
+}
+
+.medicalrecord-sidebar-item-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.medicalrecord-sidebar-item {
+    background-color: #CEDEFF;
+    border-radius: 20px;
+    margin: 5px 20px;
+    border: none;
+    padding: 15px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+}
+
+.medicalrecord-sidebar-item:hover {
+    background-color: #FFFFFF;
+}
+
+.medicalrecord-sidebar-item-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ri-arrow-right-s-line {
+    font-size: 20px;
+    color: #1647E0;
+    font-weight: bold;
+}
+
+.medicalrecord-sidebar-item-date {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    background-color: #5A81FA50;
+    padding: 5px;
+    border-radius: 10px;
+}
+
+.medicalrecord-sidebar-item-subtitle {
+    font-size: 14px;
+    color: #464646;
+    font-weight: normal;
+    margin-bottom: 0;
+}
+
+@media print {
+    .medicalrecord-wrapper {
+        visibility: hidden;
+    }
+
+    .medicalrecord-content, 
+    .medicalrecord-content * {
+        visibility: visible;
+    }
+
+    .medicalrecord-content {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+    }
+}

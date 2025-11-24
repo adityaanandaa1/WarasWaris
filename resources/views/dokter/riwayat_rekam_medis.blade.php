@@ -1,327 +1,11 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rekam Medis - {{ $rekamMedisAktif->nomor_rekam_medis }}</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+@extends('layouts.dokter_modal')
 
-        body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 0;
-            margin: 0;
-        }
+@section('title', 'Rekam Medis - {{ $rekamMedisAktif->nomor_rekam_medis }}')
 
-        /* Wrapper untuk layout */
-        .page-wrapper {
-            display: flex;
-            min-height: 100vh;
-        }
-
-        /* Container untuk preview */
-        .container {
-            flex: 1;
-            max-width: 100%;
-            margin: 0;
-            background: white;
-            padding: 0;
-            overflow-y: auto;
-        }
-
-        /* Tombol aksi - hidden saat print */
-        .action-buttons {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            display: flex;
-            gap: 10px;
-            z-index: 1000;
-        }
-
-        .btn {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s;
-        }
-
-        .btn-preview {
-            background-color: #3B82F6;
-            color: white;
-        }
-
-        .btn-preview:hover {
-            background-color: #2563EB;
-        }
-
-        .btn-print {
-            background-color: #10B981;
-            color: white;
-        }
-
-        .btn-print:hover {
-            background-color: #059669;
-        }
-
-        /* Dokumen rekam medis */
-        .document {
-            background: white;
-            padding: 40px;
-            box-shadow: none;
-            min-height: 100vh;
-            max-width: 210mm;
-            margin: 0 auto;
-        }
-
-        /* Header */
-        .header {
-            text-align: left;
-            border-bottom: 2px solid #333;
-            padding-bottom: 15px;
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .header h1 {
-            color: #2563EB;
-            font-size: 24px;
-            margin-bottom: 0;
-        }
-
-        .header .subtitle {
-            display: none;
-        }
-
-        .nomor-rm {
-            display: inline-block;
-            background: transparent;
-            color: #333;
-            padding: 0;
-            border-radius: 0;
-            font-weight: 400;
-            font-size: 13px;
-        }
-
-        /* Section */
-        .section {
-            margin-bottom: 25px;
-        }
-
-        .section-title {
-            background: transparent;
-            padding: 8px 0;
-            font-weight: 600;
-            color: #333;
-            font-size: 13px;
-            text-transform: none;
-            letter-spacing: 0;
-            margin-bottom: 10px;
-            margin-top: 15px;
-            border-left: none;
-            border-bottom: 1px solid #ddd;
-        }
-
-
-
-        /* Footer */
-        .footer {
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 2px solid #E2E8F0;
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 40px;
-        }
-
-        .signature-box {
-            text-align: center;
-        }
-
-        .signature-label {
-            font-size: 12px;
-            color: #64748B;
-            margin-bottom: 60px;
-        }
-
-        .signature-name {
-            font-weight: 700;
-            color: #1E293B;
-            padding-top: 10px;
-            border-top: 2px solid #1E293B;
-        }
-
-        /* Layout dua kolom untuk data */
-        .data-row {
-            display: grid;
-            grid-template-columns: 200px 1fr 200px 1fr;
-            gap: 10px 20px;
-            margin-bottom: 10px;
-            align-items: center;
-        }
-
-        .data-row .data-label {
-            text-align: left;
-            font-size: 13px;
-            color: #333;
-            font-weight: 500;
-            background: none;
-            padding: 0;
-            border: none;
-        }
-
-        .data-row .data-value {
-            font-size: 13px;
-            color: #000;
-            padding: 6px 10px;
-            background: white;
-            border: 1px solid #ddd;
-            border-radius: 3px;
-        }
-
-        .data-row.full-row {
-            grid-template-columns: 200px 1fr;
-        }
-
-        .data-row.full-row .data-value {
-            grid-column: 2 / -1;
-        }
-
-        /* Style untuk textarea yang lebih tinggi */
-        .data-row.textarea-row {
-            grid-template-columns: 1fr;
-            align-items: start;
-        }
-
-        .data-row.textarea-row .data-label {
-            display: none;
-        }
-
-        .data-row.textarea-row .data-value {
-            min-height: 80px;
-            grid-column: 1 / -1;
-        }
-
-        /* Print styles */
-        @media print {
-            body {
-                background: white !important;
-                margin: 0 !important;
-                padding: 0 !important;
-            }
-
-            /* Sembunyikan semua kecuali container */
-            .page-wrapper > *:not(.container) {
-                display: none !important;
-            }
-
-            /* Sembunyikan sidebar dan buttons */
-            .sidebar-riwayat,
-            .action-buttons,
-            .rekam-medis-container {
-                display: none !important;
-            }
-
-            /* Container full width untuk print */
-            .page-wrapper {
-                display: block !important;
-                background: white !important;
-            }
-
-            .container {
-                max-width: 100% !important;
-                width: 100% !important;
-                box-shadow: none !important;
-                margin: 0 !important;
-                padding: 0 !important;
-                background: white !important;
-            }
-
-            .document {
-                box-shadow: none !important;
-                padding: 15mm !important;
-                margin: 0 !important;
-                max-width: 100% !important;
-            }
-
-            /* Hindari page break di tengah section */
-            .section {
-                page-break-inside: avoid;
-            }
-
-            /* Ukuran kertas A4 dengan margin */
-            @page {
-                size: A4 portrait;
-                margin: 10mm;
-            }
-
-            /* Reset header untuk print */
-            .header {
-                margin-bottom: 15px;
-                padding-bottom: 10px;
-            }
-        }
-
-        /* Responsive untuk layar kecil */
-        @media (max-width: 768px) {
-            .page-wrapper {
-                flex-direction: column;
-            }
-
-            .sidebar-riwayat {
-                width: 100%;
-            }
-
-            .data-row {
-                grid-template-columns: 1fr;
-            }
-
-            .data-row.full-row {
-                grid-template-columns: 1fr;
-            }
-
-            .action-buttons {
-                position: static;
-                margin-bottom: 20px;
-                justify-content: center;
-            }
-
-            .document {
-                padding: 20px;
-            }
-
-            .header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 10px;
-            }
-        }
-    </style>
-</head>
-<body>
+<div class="medicalrecord-wrapper">
     <!-- Tombol Aksi -->
-    <div class="action-buttons">
-        <button class="btn btn-preview" onclick="previewPDF()">
-            <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
-                <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/>
-            </svg>
-            Preview
-        </button>
-        <button class="btn btn-print" onclick="window.print()">
+    <div class="medicalrecord-action-buttons">
+        <button class="medicalrecord-btn-print" onclick="window.print()">
             <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
                 <path fill-rule="evenodd" d="M5 4v3H4a2 2 0 00-2 2v3a2 2 0 002 2h1v2a2 2 0 002 2h6a2 2 0 002-2v-2h1a2 2 0 002-2V9a2 2 0 00-2-2h-1V4a2 2 0 00-2-2H7a2 2 0 00-2 2zm8 0H7v3h6V4zm0 8H7v4h6v-4z" clip-rule="evenodd"/>
             </svg>
@@ -330,199 +14,215 @@
     </div>
 
     <!-- WRAPPER: sidebar kiri + dokumen kanan -->
-    <div class="page-wrapper">
+    <div class="medicalrecord-page">
         <!-- SIDEBAR RIWAYAT -->
-        <aside class="sidebar-riwayat">
-            <h2>Riwayat Rekam Medis</h2>
+        <div class="medicalrecord-sidebar">
+            <div class="medicalrecord-sidebar-header">
+                <a href="{{ route('dokter.daftar_pasien') }}" class="medicalrecord-sidebar-back">
+                    <i class="ri-arrow-left-line"></i>
+                </a>
+                <h2 class="medicalrecord-sidebar-title">Riwayat Rekam Medis</h2>
+            </div>
 
             @foreach($riwayatRekamMedis as $rekam)
                 <button type="button"
-                        class="riwayat-item {{ optional($rekamMedisAktif)->id === $rekam->id ? 'active' : '' }}"
+                        class="medicalrecord-sidebar-item {{ optional($rekamMedisAktif)->id === $rekam->id ? 'active' : '' }}"
                         onclick="loadRekamMedis({{ $rekam->id }})">
-                    <div class="riwayat-item-tanggal">
-                        {{ \Carbon\Carbon::parse($rekam->created_at)->format('j F Y') }}
+                    <div class="medicalrecord-sidebar-item-wrapper">
+                        <div class="medicalrecord-sidebar-item-date">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <g clip-path="url(#clip0_345_2057)">
+                                    <path d="M17.917 3.33307H15.6948V4.99974C15.6948 5.16024 15.6632 5.31918 15.6018 5.46746C15.5403 5.61575 15.4503 5.75049 15.3368 5.86398C15.2233 5.97747 15.0886 6.0675 14.9403 6.12892C14.792 6.19035 14.6331 6.22196 14.4726 6.22196C14.3121 6.22196 14.1531 6.19035 14.0049 6.12892C13.8566 6.0675 13.7218 5.97747 13.6083 5.86398C13.4948 5.75049 13.4048 5.61575 13.3434 5.46746C13.282 5.31918 13.2504 5.16024 13.2504 4.99974V3.33307H6.77814V4.99974C6.77814 5.32389 6.64937 5.63477 6.42016 5.86398C6.19095 6.09319 5.88007 6.22196 5.55592 6.22196C5.23176 6.22196 4.92088 6.09319 4.69167 5.86398C4.46246 5.63477 4.33369 5.32389 4.33369 4.99974V3.33307H2.11147C1.97926 3.33157 1.84809 3.35659 1.72572 3.40666C1.60335 3.45673 1.49227 3.53084 1.39903 3.62459C1.3058 3.71834 1.23232 3.82983 1.18292 3.95248C1.13353 4.07512 1.10923 4.20643 1.11147 4.33863V16.772C1.10926 16.9018 1.13266 17.0309 1.18033 17.1517C1.228 17.2725 1.299 17.3828 1.38928 17.4761C1.47957 17.5695 1.58736 17.6442 1.70651 17.6959C1.82566 17.7476 1.95382 17.7753 2.08369 17.7775H17.917C18.0469 17.7753 18.1751 17.7476 18.2942 17.6959C18.4134 17.6442 18.5212 17.5695 18.6114 17.4761C18.7017 17.3828 18.7727 17.2725 18.8204 17.1517C18.8681 17.0309 18.8915 16.9018 18.8892 16.772V4.33863C18.8915 4.20876 18.8681 4.07973 18.8204 3.95891C18.7727 3.83808 18.7017 3.72783 18.6114 3.63446C18.5212 3.54108 18.4134 3.4664 18.2942 3.41469C18.1751 3.36298 18.0469 3.33524 17.917 3.33307ZM5.55592 14.4442H4.4448V13.3331H5.55592V14.4442ZM5.55592 11.6664H4.4448V10.5553H5.55592V11.6664ZM5.55592 8.88863H4.4448V7.77752H5.55592V8.88863ZM8.88925 14.4442H7.77814V13.3331H8.88925V14.4442ZM8.88925 11.6664H7.77814V10.5553H8.88925V11.6664ZM8.88925 8.88863H7.77814V7.77752H8.88925V8.88863ZM12.2226 14.4442H11.1115V13.3331H12.2226V14.4442ZM12.2226 11.6664H11.1115V10.5553H12.2226V11.6664ZM12.2226 8.88863H11.1115V7.77752H12.2226V8.88863ZM15.5559 14.4442H14.4448V13.3331H15.5559V14.4442ZM15.5559 11.6664H14.4448V10.5553H15.5559V11.6664ZM15.5559 8.88863H14.4448V7.77752H15.5559V8.88863Z" fill="white"/>
+                                    <path d="M5.55556 5.55577C5.7029 5.55577 5.84421 5.49724 5.94839 5.39305C6.05258 5.28887 6.11111 5.14756 6.11111 5.00022V1.66688C6.11111 1.51954 6.05258 1.37823 5.94839 1.27405C5.84421 1.16986 5.7029 1.11133 5.55556 1.11133C5.40821 1.11133 5.26691 1.16986 5.16272 1.27405C5.05853 1.37823 5 1.51954 5 1.66688V5.00022C5 5.14756 5.05853 5.28887 5.16272 5.39305C5.26691 5.49724 5.40821 5.55577 5.55556 5.55577Z" fill="white"/>
+                                    <path d="M14.4442 5.55577C14.5916 5.55577 14.7329 5.49724 14.8371 5.39305C14.9413 5.28887 14.9998 5.14756 14.9998 5.00022V1.66688C14.9998 1.51954 14.9413 1.37823 14.8371 1.27405C14.7329 1.16986 14.5916 1.11133 14.4442 1.11133C14.2969 1.11133 14.1556 1.16986 14.0514 1.27405C13.9472 1.37823 13.8887 1.51954 13.8887 1.66688V5.00022C13.8887 5.14756 13.9472 5.28887 14.0514 5.39305C14.1556 5.49724 14.2969 5.55577 14.4442 5.55577Z" fill="white"/>
+                                </g>
+                                <defs>
+                                    <clipPath id="clip0_345_2057">
+                                        <rect width="20" height="20" fill="white"/>
+                                    </clipPath>
+                                </defs>
+                            </svg>
+                            {{ \Carbon\Carbon::parse($rekam->created_at)->format('j F Y') }}
+                        </div>
+                        <div class="medicalrecord-sidebar-item-content">
+                            <p class="medicalrecord-sidebar-item-subtitle">Ketuk untuk melihat lebih detail tentang riwayat rekam medis</p>
+                        </div>
                     </div>
-                    <div class="riwayat-item-subtitle">
-                        Ketuk untuk melihat lebih detail tentang riwayat rekam medis
-                    </div>
+                    <i class="ri-arrow-right-s-line"></i>
                 </button>
             @endforeach
-        </aside>
+        </div>
 
         <!-- AREA DOKUMEN (KANAN) -->
-        <div class="container">
-            <div class="document">
+        <div class="medicalrecord-content">
+            <div class="medicalrecord-document">
                 @if($rekamMedisAktif)
                 <!-- Header -->
-                <div class="header">
-                    <div style="display: flex; align-items: center; gap: 15px;">
+                <div class="medicalrecord-header">
+                    <div class="medicalrecord-header-brand">
                         <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="20" cy="20" r="18" fill="#2563EB"/>
-                            <path d="M20 10v20M10 20h20" stroke="white" stroke-width="3" stroke-linecap="round"/>
                         </svg>
-                        <h1>WarasWaris</h1>
+                        <h1 class="medicalrecord-header-title">WarasWaris</h1>
                     </div>
-                    <div class="nomor-rm">Nomor Rekam Medis: {{ $rekamMedisAktif->nomor_rekam_medis }}</div>
+                    <div class="medicalrecord-header-number">Nomor Rekam Medis: {{ $rekamMedisAktif->nomor_rekam_medis }}</div>
                 </div>
 
                 <!-- Biodata Pasien -->
-                <div class="section">
-                    <div class="section-title">Nama Pasien</div>
+                <div class="medicalrecord-section">
+                    <div class="medicalrecord-section-title">Nama Pasien</div>
                     
-                    <div class="data-row">
-                        <div class="data-label">Nama Pasien</div>
-                        <div class="data-value">{{ $pasienData->nama_pasien }}</div>
-                        <div class="data-label">Golongan Darah</div>
-                        <div class="data-value">{{ $pasienData->golongan_darah ?? 'A+' }}</div>
+                    <div class="medicalrecord-row">
+                        <div class="medicalrecord-label">Nama Pasien</div>
+                        <div class="medicalrecord-value">{{ $pasienData->nama_pasien }}</div>
+                        <div class="medicalrecord-label">Golongan Darah</div>
+                        <div class="medicalrecord-value">{{ $pasienData->golongan_darah ?? 'A+' }}</div>
                     </div>
 
-                    <div class="data-row">
-                        <div class="data-label">Tanggal Lahir</div>
-                        <div class="data-value">
+                    <div class="medicalrecord-row">
+                        <div class="medicalrecord-label">Tanggal Lahir</div>
+                        <div class="medicalrecord-value">
                             {{ \Carbon\Carbon::parse($pasienData->tanggal_lahir_pasien)->format('d-m-Y') }}
                             / {{ $pasienData->umur }} tahun
                         </div>
-                        <div class="data-label">Pekerjaan</div>
-                        <div class="data-value">{{ $pasienData->pekerjaan ?? 'Petani' }}</div>
+                        <div class="medicalrecord-label">Pekerjaan</div>
+                        <div class="medicalrecord-value">{{ $pasienData->pekerjaan ?? 'Petani' }}</div>
                     </div>
 
-                    <div class="data-row">
-                        <div class="data-label">Jenis Kelamin</div>
-                        <div class="data-value">{{ $pasienData->jenis_kelamin }}</div>
-                        <div class="data-label">No. Telepon</div>
-                        <div class="data-value">{{ $pasienData->no_telepon ?? '-' }}</div>
+                    <div class="medicalrecord-row">
+                        <div class="medicalrecord-label">Jenis Kelamin</div>
+                        <div class="medicalrecord-value">{{ $pasienData->jenis_kelamin }}</div>
+                        <div class="medicalrecord-label">No. Telepon</div>
+                        <div class="medicalrecord-value">{{ $pasienData->no_telepon ?? '-' }}</div>
                     </div>
 
-                    <div class="data-row full-row">
-                        <div class="data-label">Alamat</div>
-                        <div class="data-value">{{ $pasienData->alamat }}</div>
+                    <div class="medicalrecord-row medicalrecord-row-full">
+                        <div class="medicalrecord-label">Alamat</div>
+                        <div class="medicalrecord-value">{{ $pasienData->alamat }}</div>
                     </div>
                 </div>
 
                 <!-- Data Dokter -->
-                <div class="section">
-                    <div class="section-title">Nama Dokter</div>
+                <div class="medicalrecord-section">
+                    <div class="medicalrecord-section-title">Nama Dokter</div>
                     
-                    <div class="data-row full-row">
-                        <div class="data-label">Nama Dokter</div>
-                        <div class="data-value">{{ $dokterData->nama_dokter }}</div>
+                    <div class="medicalrecord-row medicalrecord-row-full">
+                        <div class="medicalrecord-label">Nama Dokter</div>
+                        <div class="medicalrecord-value">{{ $dokterData->nama_dokter }}</div>
                     </div>
 
-                    <div class="data-row full-row">
-                        <div class="data-label">Alamat</div>
-                        <div class="data-value">{{ $dokterData->alamat }}</div>
+                    <div class="medicalrecord-row medicalrecord-row-full">
+                        <div class="medicalrecord-label">Alamat</div>
+                        <div class="medicalrecord-value">{{ $dokterData->alamat }}</div>
                     </div>
                 </div>
 
                 <!-- Pemeriksaan Fisik -->
-                <div class="section">
-                    <div class="section-title">Pemeriksaan Fisik</div>
+                <div class="medicalrecord-section">
+                    <div class="medicalrecord-section-title">Pemeriksaan Fisik</div>
                     
-                    <div class="data-row">
-                        <div class="data-label">Tekanan Darah</div>
-                        <div class="data-value">{{ $rekamMedisAktif->tekanan_darah }} mmHg</div>
-                        <div class="data-label">Tinggi Badan</div>
-                        <div class="data-value">{{ $rekamMedisAktif->tinggi_badan }} cm</div>
+                    <div class="medicalrecord-row">
+                        <div class="medicalrecord-label">Tekanan Darah</div>
+                        <div class="medicalrecord-value">{{ $rekamMedisAktif->tekanan_darah }} mmHg</div>
+                        <div class="medicalrecord-label">Tinggi Badan</div>
+                        <div class="medicalrecord-value">{{ $rekamMedisAktif->tinggi_badan }} cm</div>
                     </div>
 
-                    <div class="data-row">
-                        <div class="data-label">Suhu Tubuh</div>
-                        <div class="data-value">{{ $rekamMedisAktif->suhu }} °C</div>
-                        <div class="data-label">Berat Badan</div>
-                        <div class="data-value">{{ $rekamMedisAktif->berat_badan }} kg</div>
+                    <div class="medicalrecord-row">
+                        <div class="medicalrecord-label">Suhu Tubuh</div>
+                        <div class="medicalrecord-value">{{ $rekamMedisAktif->suhu }} °C</div>
+                        <div class="medicalrecord-label">Berat Badan</div>
+                        <div class="medicalrecord-value">{{ $rekamMedisAktif->berat_badan }} kg</div>
                     </div>
                 </div>
 
                 <!-- Keluhan Pasien -->
-                <div class="section">
-                    <div class="section-title">Keluhan Pasien</div>
-                    <div class="data-row textarea-row">
-                        <div class="data-value">
+                <div class="medicalrecord-section">
+                    <div class="medicalrecord-section-title">Keluhan Pasien</div>
+                    <div class="medicalrecord-row medicalrecord-textarea">
+                        <div class="medicalrecord-value">
                             {{ $rekamMedisAktif->reservasi->keluhan ?? 'Faringitis ringan disertai gejala batuk kering dan demam ringan.' }}
                         </div>
                     </div>
                 </div>
 
                 <!-- Diagnosa & Saran -->
-                <div class="section">
-                    <div class="section-title">Diagnosa</div>
-                    <div class="data-row textarea-row">
-                        <div class="data-value">{{ $rekamMedisAktif->diagnosa }}</div>
+                <div class="medicalrecord-section">
+                    <div class="medicalrecord-section-title">Diagnosa</div>
+                    <div class="medicalrecord-row medicalrecord-textarea">
+                        <div class="medicalrecord-value">{{ $rekamMedisAktif->diagnosa }}</div>
                     </div>
                 </div>
 
-                <div class="section">
-                    <div class="section-title">Saran</div>
-                    <div class="data-row textarea-row">
-                        <div class="data-value">{{ $rekamMedisAktif->saran }}</div>
+                <div class="medicalrecord-section">
+                    <div class="medicalrecord-section-title">Saran</div>
+                    <div class="medicalrecord-row medicalrecord-textarea">
+                        <div class="medicalrecord-value">{{ $rekamMedisAktif->saran }}</div>
                     </div>
                 </div>
 
                 <!-- Rencana Tindak Lanjut & Riwayat Alergi -->
-                <div class="section">
-                    <div class="section-title">Rencana Tindak Lanjut</div>
-                    <div class="data-row textarea-row">
-                        <div class="data-value">{{ $rekamMedisAktif->rencana_tindak_lanjut }}</div>
+                <div class="medicalrecord-section">
+                    <div class="medicalrecord-section-title">Rencana Tindak Lanjut</div>
+                    <div class="medicalrecord-row medicalrecord-textarea">
+                        <div class="medicalrecord-value">{{ $rekamMedisAktif->rencana_tindak_lanjut }}</div>
                     </div>
                 </div>
 
-                <div class="section">
-                    <div class="section-title">Riwayat Alergi</div>
-                    <div class="data-row textarea-row">
-                        <div class="data-value">{{ $rekamMedisAktif->alergi ?? '-' }}</div>
+                <div class="medicalrecord-section">
+                    <div class="medicalrecord-section-title">Riwayat Alergi</div>
+                    <div class="medicalrecord-row medicalrecord-textarea">
+                        <div class="medicalrecord-value">{{ $rekamMedisAktif->alergi ?? '-' }}</div>
                     </div>
                 </div>
 
                 <!-- Catatan Tambahan -->
-                <div class="section">
-                    <div class="section-title">Catatan Tambahan</div>
-                    <div class="data-row textarea-row">
-                        <div class="data-value">{{ $rekamMedisAktif->catatan_tambahan ?? '-' }}</div>
+                <div class="medicalrecord-section">
+                <div class="medicalrecord-section-title">Catatan Tambahan</div>
+                    <div class="medicalrecord-row medicalrecord-textarea">
+                        <div class="medicalrecord-value">{{ $rekamMedisAktif->catatan_tambahan ?? '-' }}</div>
                     </div>
                 </div>
                 @else
-                    <p>Tidak ada rekam medis yang dipilih.</p>
+                    <p class="medicalrecord-empty">Tidak ada rekam medis yang dipilih.</p>
                 @endif
             </div>
         </div>
     </div>
+</div>
 
-    <script>
-        function previewPDF() {
+<script>
+    function previewPDF() {
+        window.print();
+    }
+
+    function loadRekamMedis(id) {
+        const currentUrl = window.location.href.split('?')[0];
+        window.location.href = currentUrl + '?id=' + id;
+    }
+
+    document.addEventListener('keydown', function(e) {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
+            e.preventDefault();
             window.print();
         }
+    });
 
-        function loadRekamMedis(id) {
-            const currentUrl = window.location.href.split('?')[0];
-            window.location.href = currentUrl + '?id=' + id;
+    window.addEventListener('beforeprint', function() {
+        const now = new Date();
+        const dateStr = now.toLocaleDateString('id-ID', { 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+        console.log('Dokumen dicetak pada: ' + dateStr);
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const container = document.querySelector('.medicalrecord-content');
+        if (container) {
+            container.scrollTop = 0;
         }
-
-        document.addEventListener('keydown', function(e) {
-            if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
-                e.preventDefault();
-                window.print();
-            }
-        });
-
-        window.addEventListener('beforeprint', function() {
-            const now = new Date();
-            const dateStr = now.toLocaleDateString('id-ID', { 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-            });
-            console.log('Dokumen dicetak pada: ' + dateStr);
-        });
-
-        document.addEventListener('DOMContentLoaded', function() {
-            const container = document.querySelector('.container');
-            if (container) {
-                container.scrollTop = 0;
-            }
-        });
-    </script>
-</body>
-
-</html>
+    });
+</script>
