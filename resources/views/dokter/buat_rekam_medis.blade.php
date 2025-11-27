@@ -37,37 +37,38 @@
                 <div class="recordform-info-left">
                     <div class="recordform-info-item">
                         <strong>Nama Pasien</strong>
-                        <span>: Budi Santoso</span>
+                        <span id="rf-nama-pasien">: -</span>
                     </div>
                     <div class="recordform-info-item">
                         <strong>Tanggal Lahir</strong>
-                        <span>: -</span>
+                        <span id="rf-tanggal-lahir">: -</span>
                     </div>
                     <div class="recordform-info-item">
                         <strong>Jenis Kelamin</strong>
-                        <span>: -</span>
+                        <span id="rf-jenis-kelamin">: -</span>
                     </div>
                     <div class="recordform-info-item">
                         <strong>Nomor Telepon</strong>
-                        <span>: -</span>
+                        <span id="rf-no-telepon">: -</span>
                     </div>
                 </div>
+            
                 <div class="recordform-info-right">
                     <div class="recordform-info-item">
                         <strong>Golongan Darah</strong>
-                        <span>: -</span>
+                        <span id="rf-golongan-darah">: -</span>
                     </div>
                     <div class="recordform-info-item">
                         <strong>Pekerjaan</strong>
-                        <span>: -</span>
+                        <span id="rf-pekerjaan">: -</span>
                     </div>
                     <div class="recordform-info-item">
                         <strong>Alamat</strong>
-                        <span>: -</span>
+                        <span id="rf-alamat">: -</span>
                     </div>
                     <div class="recordform-info-item">
-                        <strong>Keluhan Pasien</strong>
-                        <span>: -</span>
+                        <strong>Keluhan Pasien :</strong>
+                        <span id="rf-keluhan">-</span>
                     </div>
                 </div>
             </div>
@@ -75,11 +76,11 @@
             <div class="recordform-doctor-info">
                 <div class="recordform-info-item">
                     <strong>Nama Dokter</strong>
-                    <span>: -</span>
+                    <span id="rf-nama-dokter">: -</span>
                 </div>
                 <div class="recordform-info-item">
                     <strong>Alamat</strong>
-                    <span>: -</span>
+                    <span id="rf-alamat-dokter">: -</span>
                 </div>
             </div>
 
@@ -178,3 +179,24 @@
     </div>
 </div>
 @endsection
+
+<script>
+    const reservasiId = {{ $reservasi->id }};
+    fetch(`/dokter/reservasi/{{ $reservasi->id }}/detail`)
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById('rf-nama-pasien').textContent       = ': ' + (data.nama_pasien ?? '-');
+        document.getElementById('rf-tanggal-lahir').textContent     = ': ' + (data.tanggal_lahir_pasien ?? '-');
+        document.getElementById('rf-jenis-kelamin').textContent     = ': ' + (data.jenis_kelamin_pasien ?? '-');
+        document.getElementById('rf-no-telepon').textContent        = ': ' + (data.no_telepon ?? '-');
+    
+        document.getElementById('rf-golongan-darah').textContent    = ': ' + (data.golongan_darah ?? '-');
+        document.getElementById('rf-pekerjaan').textContent         = ': ' + (data.pekerjaan ?? '-');
+        document.getElementById('rf-alamat').textContent            = ': ' + (data.alamat ?? '-');
+        document.getElementById('rf-keluhan').textContent           = ': ' + (data.keluhan ?? '-');
+    
+        document.getElementById('rf-nama-dokter').textContent       = ': ' + (data.nama_dokter ?? '-');
+        document.getElementById('rf-alamat-dokter').textContent     = ': ' + (data.alamat_dokter ?? '-');
+    })
+    .catch(err => console.error("Gagal load data:", err));
+</script>

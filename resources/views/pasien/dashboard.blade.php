@@ -35,8 +35,8 @@
                     <h1>Dashboard</h1>
                     <div class="date" id="currentDate"></div>
                 </div>
-                <a href="{{ route('pasien.edit_biodata', $pasien_aktif->id) }}" class="btn-primary">
-                    Edit Biodata
+                <a href="{{ route('pasien.edit_biodata', $pasien_aktif->id) }}" class="btn-edit-dashboard">
+                    <i class="ri-settings-5-fill"></i>
                 </a>
             </div>
 
