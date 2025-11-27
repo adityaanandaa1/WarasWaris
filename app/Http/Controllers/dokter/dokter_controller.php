@@ -292,6 +292,7 @@ class dokter_controller extends Controller
             'nama_dokter'      => 'required|string|max:255',
             'tanggal_lahir_dokter'    => 'nullable|date|before:today',
             'sip_file'         => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
+            'foto'             => 'nullable|image|mimes:jpeg,jpg,png|max:2048',
         ]);
 
         // update field teks
@@ -313,6 +314,19 @@ class dokter_controller extends Controller
             );
 
             $dokter->sip_path = $path;
+        }
+
+        if ($request->hasFile('foto')) {
+            if ($dokter->foto_path && Storage::disk('public')->exists($dokter->foto_path)) {
+                Storage::disk('public')->delete($dokter->foto_path);
+            }
+
+            $fotoPath = $request->file('foto')->store(
+                'foto_dokter/' . $dokter->id,
+                'public'
+            );
+
+            $dokter->foto_path = $fotoPath;
         }
 
         $dokter->save();

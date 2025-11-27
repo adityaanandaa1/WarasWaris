@@ -143,6 +143,7 @@ private function get_nomor_antrian_sekarang(Carbon $tanggal): int
             'no_telepon' => 'required|string|max:15',
             'pekerjaan' => 'nullable|string|max:255',
             'catatan_pasien' => 'nullable|string',
+            'foto' => 'nullable|image|mimes:jpeg,jpg,png|max:2048',
         ], [
             'nama_pasien.required' => 'Nama lengkap wajib diisi',
             'tanggal_lahir_pasien.required' => 'Tanggal lahir wajib diisi',
@@ -152,12 +153,33 @@ private function get_nomor_antrian_sekarang(Carbon $tanggal): int
             'golongan_darah.in' => 'Golongan darah tidak valid',
             'alamat.required' => 'Alamat wajib diisi',
             'no_telepon.required' => 'Nomor telepon wajib diisi',
+            'foto.max' => 'Ukuran foto maksimal 2MB',
         ]);
 
         $user = Auth::user();
             
         // Cek apakah ini pasien pertama
         $isPrimary = $user->pasiens()->count() === 0;
+
+        $foto_path = null;
+        if ($request->hasFile('foto')) {
+            $file = $request->file('foto');
+            
+            // Generate nama file unik
+            $filename = 'pasien-' . $user->id . '-' . time() . '.' . $file->getClientOriginalExtension();
+            
+            // Buat folder jika belum ada
+            $upload_path = public_path('uploads/pasien');
+            if (!file_exists($upload_path)) {
+                mkdir($upload_path, 0755, true);
+            }
+            
+            // Pindahkan file
+            $file->move($upload_path, $filename);
+            
+            // Simpan relative path
+            $foto_path = 'uploads/pasien/' . $filename;
+        }
 
         // Buat data pasien baru
         $pasien = data_pasien::create([
@@ -171,6 +193,7 @@ private function get_nomor_antrian_sekarang(Carbon $tanggal): int
             'pekerjaan' => $validated['pekerjaan'],
             'catatan_pasien' => $validated['catatan_pasien'],
             'is_primary' => $isPrimary, // True jika pasien pertama
+            'foto_path' => $foto_path,
         ]);
 
         // Set sebagai pasien aktif di session
@@ -217,7 +240,29 @@ private function get_nomor_antrian_sekarang(Carbon $tanggal): int
             'no_telepon' => 'required|string|max:15',
             'pekerjaan' => 'nullable|string|max:255',
             'catatan_pasien' => 'nullable|string',
+            'foto' => 'nullable|image|mimes:jpeg,jpg,png|max:2048',
         ]);
+
+        if ($request->hasFile('foto')) {
+            // Hapus foto lama jika ada
+            if ($pasien->foto_path) {
+                $old_path = public_path($pasien->foto_path);
+                if (file_exists($old_path)) {
+                    unlink($old_path);
+                }
+            }
+
+            $file = $request->file('foto');
+            $filename = 'pasien-' . $user->id . '-' . time() . '.' . $file->getClientOriginalExtension();
+            
+            $upload_path = public_path('uploads/pasien');
+            if (!file_exists($upload_path)) {
+                mkdir($upload_path, 0755, true);
+            }
+            
+            $file->move($upload_path, $filename);
+            $validated['foto_path'] = 'uploads/pasien/' . $filename;
+        }
 
         // Update data
         $pasien->update($validated);

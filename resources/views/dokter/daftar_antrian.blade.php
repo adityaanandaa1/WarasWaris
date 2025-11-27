@@ -129,7 +129,7 @@
         <div id="reservasi-content" class="reservasi-content" hidden>
             <div class="reservasi-content-header">
                 <div class="reservasi-field">
-                    <div class="reservasi-avatar">B</div>
+                    <div id="m-avatar" class="w-12 h-12 rounded-full overflow-hidden" style="width:100px;height:100px;border-radius:10000px;overflow:hidden;"></div>
                 </div>
 
                 <div class="reservasi-field-keluhan">
@@ -202,6 +202,8 @@
 </div>
 
 <script>
+const assetBase = "{{ asset('') }}";
+
 document.getElementById('searchInput').addEventListener('keyup', function() {
     const searchValue = this.value.toLowerCase();
     const patientItems = document.querySelectorAll('.patient-item');
@@ -229,6 +231,7 @@ function openReservasiModal(reservasiId) {
     errEl.style.display = 'none';
     loadEl.hidden = false;
     cntEl.hidden  = true;
+    renderModalAvatar(null, '');
 
     // Show overlay
     overlay.hidden = false;
@@ -273,6 +276,7 @@ function openReservasiModal(reservasiId) {
         document.getElementById('m-no-telepon').textContent = data.no_telepon || '-';
         document.getElementById('m-keluhan').textContent = data.keluhan || '-';
         document.getElementById('m-catatan').textContent = data.catatan_pasien || 'Tidak ada catatan';
+        renderModalAvatar(data.foto_path ?? null, data.nama_pasien ?? '-');
 
         // Show content
         loadEl.hidden = true;
@@ -292,6 +296,30 @@ function openReservasiModal(reservasiId) {
 
     // Close with ESC key
     document.addEventListener('keydown', escCloser);
+}
+
+function renderModalAvatar(fotoPath, namaPasien) {
+    const avatarEl = document.getElementById('m-avatar');
+    if (!avatarEl) return;
+
+    const initial = (namaPasien || '?').toString().trim().charAt(0).toUpperCase() || '?';
+    if (fotoPath) {
+        const fotoUrl = fotoPath.startsWith('http') ? fotoPath : assetBase + fotoPath;
+        avatarEl.innerHTML = `
+            <img 
+                src="${fotoUrl}" 
+                alt="${namaPasien || 'Pasien'}"
+                class="w-full h-full object-cover"
+                onerror="this.onerror=null; this.parentElement.innerHTML='<div class=&quot;w-full h-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white font-bold&quot;>${initial}</div>';"
+            >
+        `;
+    } else {
+        avatarEl.innerHTML = `
+            <div class="w-full h-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white font-bold">
+                ${initial}
+            </div>
+        `;
+    }
 }
 
 function escCloser(ev) {

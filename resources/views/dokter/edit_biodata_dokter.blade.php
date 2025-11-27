@@ -35,16 +35,25 @@
                     <label class="editprofile-label">
                         Tanggal Lahir
                     </label>
-                    <input type="date" name="tanggal_lahir" value="{{ old('tanggal_lahir_dokter', optional($dokter->tanggal_lahir_dokter)->format('Y-m-d')) }}" max="{{ date('Y-m-d') }}" class="editprofile-input">
+                    <input type="date" name="tanggal_lahir_dokter" value="{{ old('tanggal_lahir_dokter', optional($dokter->tanggal_lahir_dokter)->format('Y-m-d')) }}" max="{{ date('Y-m-d') }}" class="editprofile-input">
                 </div>
             </div>
         
             <div class="editprofile-photo">
-                <svg class="editprofile-photo-icon" width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="60" cy="60" r="60" fill="#5A81FA"/>
-                    <path d="M42 42H48.75L53.25 37.5H66.75L71.25 42H78C79.1935 42 80.3381 42.4741 81.182 43.318C82.0259 44.1619 82.5 45.3065 82.5 46.5V73.5C82.5 74.6935 82.0259 75.8381 81.182 76.682C80.3381 77.5259 79.1935 78 78 78H42C40.8065 78 39.6619 77.5259 38.818 76.682C37.9741 75.8381 37.5 74.6935 37.5 73.5V46.5C37.5 45.3065 37.9741 44.1619 38.818 43.318C39.6619 42.4741 40.8065 42 42 42ZM60 48.75C57.0163 48.75 54.1548 49.9353 52.045 52.045C49.9353 54.1548 48.75 57.0163 48.75 60C48.75 62.9837 49.9353 65.8452 52.045 67.955C54.1548 70.0647 57.0163 71.25 60 71.25C62.9837 71.25 65.8452 70.0647 67.955 67.955C70.0647 65.8452 71.25 62.9837 71.25 60C71.25 57.0163 70.0647 54.1548 67.955 52.045C65.8452 49.9353 62.9837 48.75 60 48.75ZM60 53.25C61.7902 53.25 63.5071 53.9612 64.773 55.227C66.0388 56.4929 66.75 58.2098 66.75 60C66.75 61.7902 66.0388 63.5071 64.773 64.773C63.5071 66.0388 61.7902 66.75 60 66.75C58.2098 66.75 56.4929 66.0388 55.227 64.773C53.9612 63.5071 53.25 61.7902 53.25 60C53.25 58.2098 53.9612 56.4929 55.227 55.227C56.4929 53.9612 58.2098 53.25 60 53.25Z" fill="white"/>
-                </svg>
+                @php
+                    $fotoUrl = $dokter->foto_path ? asset('storage/'.$dokter->foto_path) : null;
+                    $initial = strtoupper(mb_substr($dokter->nama_dokter ?? 'D', 0, 1));
+                @endphp
+                <div class="editprofile-photo-preview">
+                    @if($fotoUrl)
+                        <img src="{{ $fotoUrl }}" alt="{{ $dokter->nama_dokter }}" class="w-full h-full object-cover rounded-full" onerror="this.style.display='none'; document.getElementById('fotoFallback').style.display='flex';">
+                    @endif
+                    <div id="fotoFallback" class="w-full h-full rounded-full bg-gradient-to-br from-blue-400 to-blue-600 text-white font-bold flex items-center justify-center" style="{{ $fotoUrl ? 'display:none;' : '' }}">
+                        {{ $initial }}
+                    </div>
+                </div>
                 <p class="editprofile-photo-text">Tambahkan Foto</p>
+                <input type="file" name="foto" accept="image/jpeg,image/png" class="editprofile-photo-input">
             </div>
         </div>
 

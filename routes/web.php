@@ -108,7 +108,7 @@ Route::middleware(['auth', 'role:resepsionis'])
     Route::get('/dashboard', [resepsionis_controller::class, 'dashboard'])
         ->name('dashboard');
 
-    Route::get('/dashboard', [resepsionis_controller::class, 'dashboard'])
+    Route::get('/dashbogitard', [resepsionis_controller::class, 'dashboard'])
         ->name('dashboard');
     Route::put('/jadwal', [resepsionis_controller::class, 'update_jadwal'])
         ->name('update.jadwal');

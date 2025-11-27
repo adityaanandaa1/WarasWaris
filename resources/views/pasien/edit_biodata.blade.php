@@ -220,47 +220,62 @@
 
                 </div>
 
-                <!-- RIGHT SIDE - Photo Display/Upload -->
+                <!-- RIGHT SIDE - Photo Display/Upload (GANTI BAGIAN INI) -->
                 <div class="lg:col-span-1 flex flex-col items-center justify-start pt-4">
                     
                     <!-- Photo Circle -->
                     <div class="relative mb-4">
-                        @if($pasien->foto)
-                            <div class="w-40 h-40 rounded-full overflow-hidden shadow-lg">
-                                <img src="{{ asset('storage/' . $pasien->foto) }}" alt="Foto Pasien" class="w-full h-full object-cover">
-                            </div>
-                        @else
-                            <div class="w-40 h-40 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center shadow-lg">
-                                <svg class="w-16 h-16 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                </svg>
-                            </div>
-                        @endif
+                        <div id="photoPreview" class="w-40 h-40 rounded-full overflow-hidden shadow-lg">
+                            @if($pasien->foto_path && file_exists(public_path($pasien->foto_path)))
+                                <!-- Foto existing -->
+                                <img id="previewImage" src="{{ asset($pasien->foto_path) }}" alt="Foto Pasien" class="w-full h-full object-cover">
+                            @else
+                                <!-- Placeholder gradient dengan inisial -->
+                                <div class="w-full h-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center">
+                                    <span id="placeholderInitial" class="text-white text-5xl font-bold">
+                                        {{ strtoupper(substr($pasien->nama_pasien, 0, 1)) }}
+                                    </span>
+                                    <img id="previewImage" src="" alt="Preview" class="w-full h-full object-cover hidden">
+                                </div>
+                            @endif
+                        </div>
                         
                         <!-- Camera Icon (Bottom Right) -->
-                        <div class="absolute bottom-2 right-2 w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center">
+                        <label for="foto-input" class="absolute bottom-2 right-2 w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center cursor-pointer hover:bg-gray-50 transition">
                             <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/>
                             </svg>
-                        </div>
+                        </label>
                     </div>
 
                     <!-- Upload Text -->
                     <p class="text-sm font-medium text-gray-700 mb-1">Ubah Foto</p>
                     <p class="text-xs text-gray-500 text-center px-4 mb-4">
-                        Pilih file untuk mengganti foto saat ini
+                        Klik ikon kamera untuk mengganti foto (JPG/PNG, max 2MB)
                     </p>
 
                     <!-- File Input -->
                     <input 
                         type="file" 
                         name="foto" 
-                        accept="image/*"
-                        class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                        accept="image/jpeg,image/jpg,image/png"
+                        class="hidden"
                         id="foto-input"
+                        onchange="previewPhoto(event)"
                     >
+
+                    <!-- Remove Button (if has photo) -->
+                    @if($pasien->foto_path)
+                    <button 
+                        type="button" 
+                        id="removePhotoBtn"
+                        onclick="removePhoto()"
+                        class="text-sm text-red-600 hover:text-red-700 font-medium"
+                    >
+                        Hapus Foto
+                    </button>
+                    @endif
 
                 </div>
 
@@ -303,27 +318,54 @@
 
 <!-- Script for image preview -->
 <script>
-    document.getElementById('foto-input').addEventListener('change', function(e) {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                // Replace the current image with the new one
-                const photoContainer = document.querySelector('.relative.mb-4');
-                photoContainer.innerHTML = `
-                    <div class="w-40 h-40 rounded-full overflow-hidden shadow-lg">
-                        <img src="${e.target.result}" alt="Preview Foto" class="w-full h-full object-cover">
-                    </div>
-                    <div class="absolute bottom-2 right-2 w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center">
-                        <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/>
-                        </svg>
-                    </div>
-                `;
-            }
-            reader.readAsDataURL(file);
+    function previewPhoto(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        // Validasi ukuran
+        if (file.size > 2048 * 1024) {
+            alert('Ukuran foto maksimal 2MB!');
+            event.target.value = '';
+            return;
         }
-    });
+
+        // Validasi tipe
+        if (!['image/jpeg', 'image/jpg', 'image/png'].includes(file.type)) {
+            alert('Format foto harus JPG, JPEG, atau PNG!');
+            event.target.value = '';
+            return;
+        }
+
+        // Preview
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const container = document.getElementById('photoPreview');
+            container.innerHTML = `
+                <img id="previewImage" src="${e.target.result}" alt="Preview" class="w-full h-full object-cover">
+            `;
+            
+            // Show remove button
+            const removeBtn = document.getElementById('removePhotoBtn');
+            if (removeBtn) removeBtn.classList.remove('hidden');
+        }
+        reader.readAsDataURL(file);
+    }
+
+    function removePhoto() {
+        const input = document.getElementById('foto-input');
+        input.value = '';
+        
+        // Reset ke inisial placeholder
+        const container = document.getElementById('photoPreview');
+        container.innerHTML = `
+            <div class="w-full h-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center">
+                <span class="text-white text-5xl font-bold">{{ strtoupper(substr($pasien->nama_pasien, 0, 1)) }}</span>
+            </div>
+        `;
+        
+        // Hide remove button
+        const removeBtn = document.getElementById('removePhotoBtn');
+        if (removeBtn) removeBtn.classList.add('hidden');
+    }
 </script>
 @endsection

@@ -5,6 +5,9 @@
 @php($hari_ini = $hari_ini ?? \Carbon\Carbon::today()->locale('id'))
 @php($nama_hari = $nama_hari ?? $hari_ini->translatedFormat('l'))
 @php($isLibur = $jadwal && !$jadwal->is_active)
+@php($dokterData = $dokter ?? Auth::user()->dokter)
+@php($fotoDokter = $dokterData?->foto_path ? asset('storage/'.$dokterData->foto_path) : null)
+@php($initialDokter = strtoupper(mb_substr($dokterData->nama_dokter ?? 'D', 0, 1)))
 
 <div class="dashboard-doctor">
     <div class="dashboard-welcome-section">
@@ -41,7 +44,12 @@
 
         <div class="dashboard-profile-body">
             <div class="dashboard-profile-photo">
-
+                @if($fotoDokter)
+                    <img src="{{ $fotoDokter }}" alt="{{ $dokterData->nama_dokter }}" class="w-24 h-24 rounded-full object-cover" onerror="this.style.display='none'; document.getElementById('dokterInitial').style.display='flex';">
+                @endif
+                <div id="dokterInitial" class="w-24 h-24 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 text-white font-bold flex items-center justify-center" style="{{ $fotoDokter ? 'display:none;' : '' }}">
+                    {{ $initialDokter }}
+                </div>
             </div>
             <div class="dashboard-profile-info">
                 <div class="dashboard-profile-identity">

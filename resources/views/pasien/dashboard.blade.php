@@ -261,7 +261,7 @@
             </div>
 
             <div class="profile-content">
-                <div class="profile-image" id="profileInitial"></div>
+                <x-avatar-pasien :pasien="$pasien_aktif" size="xl" class="profile-image" />
                 <div class="profile-info">
                     <h4 id="patientName">Loading...</h4>
                     <div class="phone" id="patientPhone">Loading...</div>
@@ -331,18 +331,37 @@
 
     // Load Patient Profile
     function loadPatientProfile() {
-        const initial = pasienAktif.nama_pasien ? pasienAktif.nama_pasien.charAt(0).toUpperCase() : '?';
-        document.getElementById('profileInitial').textContent = initial;
-        document.getElementById('patientName').textContent = pasienAktif.nama_pasien || '-';
-        document.getElementById('patientPhone').textContent = pasienAktif.no_telepon || '-';
+        const pasien = pasienAktif;
         
-        // Jenis Kelamin
-        const gender = pasienAktif.jenis_kelamin === 'Laki-laki' ? 'Laki-laki' : (pasienAktif.jenis_kelamin === 'Perempuan' ? 'Perempuan' : '-');
+        // Update foto/inisial
+        const profileImage = document.getElementById('profileInitial');
+        if (profileImage) {
+            if (pasien.foto_path) {
+                // Jika ada foto, tampilkan foto
+                const fotoUrl = "{{ asset('') }}" + pasien.foto_path;
+                profileImage.innerHTML = `
+                    <img src="${fotoUrl}" 
+                        alt="${pasien.nama_pasien}"
+                        class="w-full h-full object-cover"
+                        onerror="this.onerror=null; this.parentElement.innerHTML='${pasien.nama_pasien.charAt(0).toUpperCase()}';">
+                `;
+            } else {
+                // Fallback ke inisial
+                const initial = pasien.nama_pasien ? pasien.nama_pasien.charAt(0).toUpperCase() : '?';
+                profileImage.textContent = initial;
+            }
+        }
+        
+        // Update data lainnya (tetap sama)
+        document.getElementById('patientName').textContent = pasien.nama_pasien || '-';
+        document.getElementById('patientPhone').textContent = pasien.no_telepon || '-';
+        
+        const gender = pasien.jenis_kelamin === 'Laki-laki' ? 'Laki-laki' : 
+                    (pasien.jenis_kelamin === 'Perempuan' ? 'Perempuan' : '-');
         document.getElementById('gender').textContent = gender;
         
-        // Hitung umur
-        if (pasienAktif.tanggal_lahir_pasien) {
-            const birthDate = new Date(pasienAktif.tanggal_lahir_pasien);
+        if (pasien.tanggal_lahir_pasien) {
+            const birthDate = new Date(pasien.tanggal_lahir_pasien);
             const age = new Date().getFullYear() - birthDate.getFullYear();
             document.getElementById('age').textContent = age + ' Tahun';
         } else {
@@ -369,10 +388,21 @@
             const isActive = pasien.id === pasienAktif.id ? 'active' : '';
             const badge = pasien.is_primary ? '<span class="badge">Utama</span>' : '';
             
+            // Avatar untuk list
+            let avatar = '';
+            if (pasien.foto_path) {
+                const fotoUrl = "{{ asset('') }}" + pasien.foto_path;
+                avatar = `<img src="${fotoUrl}" class="w-8 h-8 rounded-full object-cover" alt="${pasien.nama_pasien}">`;
+            } else {
+                const initial = pasien.nama_pasien.charAt(0).toUpperCase();
+                avatar = `<div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white text-sm font-bold">${initial}</div>`;
+            }
+            
             html += `
                 <form action="{{ route('pasien.ganti_profil', '') }}/${pasien.id}" method="POST" style="margin: 0;">
                     @csrf
                     <button type="submit" class="profile-item ${isActive}">
+                        ${avatar}
                         <span>${pasien.nama_pasien}</span>
                         ${badge}
                     </button>

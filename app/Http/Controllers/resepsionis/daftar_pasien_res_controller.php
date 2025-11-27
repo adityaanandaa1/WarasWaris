@@ -31,6 +31,7 @@ class daftar_pasien_res_controller extends Controller
             'data_pasiens.id',
             'data_pasiens.id_akun',
             'data_pasiens.nama_pasien',
+            'data_pasiens.foto_path',
             'data_pasiens.no_telepon',
             'data_pasiens.jenis_kelamin',
             'data_pasiens.tanggal_lahir_pasien',
@@ -66,7 +67,7 @@ class daftar_pasien_res_controller extends Controller
             Log::info("Mengakses detail pasien ID: {$id}");
 
             $pasien = data_pasien::select(
-                    'id','id_akun','nama_pasien','jenis_kelamin','tanggal_lahir_pasien',
+                    'id','id_akun','nama_pasien','foto_path','jenis_kelamin','tanggal_lahir_pasien',
                     'golongan_darah','pekerjaan','alamat','no_telepon','catatan_pasien','is_primary'
                 )->findOrFail($id);
 
@@ -108,6 +109,7 @@ class daftar_pasien_res_controller extends Controller
                 'pekerjaan'      => $pasien->pekerjaan ?? 'Tidak bekerja',
                 'alamat'         => $pasien->alamat ?? '-',
                 'no_telepon'     => $pasien->no_telepon ?? '-',
+                'foto_path'      => $pasien->foto_path ?? null,
                 'catatan_pasien' => $pasien->catatan_pasien ?? '-',
             ];
 

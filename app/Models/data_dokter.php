@@ -18,6 +18,7 @@ class data_dokter extends Model
         'alamat',
         'nomor_str',
         'nomor_sip',
+        'foto_path',
     ];
 
     // ========== RELASI ==========

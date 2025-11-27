@@ -29,6 +29,7 @@ class data_pasien extends Model
         'pekerjaan',
         'catatan_pasien',
         'is_primary',
+        'foto_path',
     ];
 
     /**
@@ -39,7 +40,13 @@ class data_pasien extends Model
         'is_primary' => 'boolean', // Otomatis jadi true/false
     ];
 
-
+     public function getFotoUrlAttribute()
+    {
+        if ($this->foto_path && file_exists(public_path($this->foto_path))) {
+            return asset($this->foto_path);
+        }
+        return null; // Return null jika tidak ada foto
+    }
 
     public function user()
     {

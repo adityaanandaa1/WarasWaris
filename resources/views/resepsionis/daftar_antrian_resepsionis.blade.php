@@ -129,7 +129,7 @@
         <div id="reservasi-content" class="reservasi-content" hidden>
             <div class="reservasi-content-header">
                 <div class="reservasi-field">
-                    <div class="reservasi-avatar">B</div>
+                    <div id="m-avatar" class="reservasi-avatar" style="width:48px;height:48px;border-radius:9999px;overflow:hidden;"></div>
                 </div>
 
                 <div class="reservasi-field-keluhan">
@@ -202,6 +202,8 @@
 </div>
 
 <script>
+const assetBase = "{{ asset('') }}";
+
 document.getElementById('searchInput').addEventListener('keyup', function() {
     const searchValue = this.value.toLowerCase();
     const patientItems = document.querySelectorAll('.patient-item');
@@ -229,13 +231,14 @@ function openReservasiModal(reservasiId) {
     errEl.style.display = 'none';
     loadEl.hidden = false;
     cntEl.hidden  = true;
+    renderModalAvatar(null, '');
 
     // Show overlay
     overlay.hidden = false;
     document.body.style.overflow = 'hidden';
 
     // Build URL dengan route helper Laravel
-    const url = `{{ route('dokter.reservasi.detail', ':id') }}`.replace(':id', reservasiId);
+    const url = `{{ route('resepsionis.reservasi.detail', ':id') }}`.replace(':id', reservasiId);
     
     console.log('Fetching URL:', url); // Debug
 
@@ -273,6 +276,7 @@ function openReservasiModal(reservasiId) {
         document.getElementById('m-no-telepon').textContent = data.no_telepon || '-';
         document.getElementById('m-keluhan').textContent = data.keluhan || '-';
         document.getElementById('m-catatan').textContent = data.catatan_pasien || 'Tidak ada catatan';
+        renderModalAvatar(data.foto_path ?? null, data.nama_pasien ?? '-');
 
         // Show content
         loadEl.hidden = true;
@@ -292,6 +296,30 @@ function openReservasiModal(reservasiId) {
 
     // Close with ESC key
     document.addEventListener('keydown', escCloser);
+}
+
+function renderModalAvatar(fotoPath, namaPasien) {
+    const avatarEl = document.getElementById('m-avatar');
+    if (!avatarEl) return;
+
+    const initial = (namaPasien || '?').toString().trim().charAt(0).toUpperCase() || '?';
+    if (fotoPath) {
+        const fotoUrl = fotoPath.startsWith('http') ? fotoPath : assetBase + fotoPath;
+        avatarEl.innerHTML = `
+            <img 
+                src="${fotoUrl}" 
+                alt="${namaPasien || 'Pasien'}"
+                style="width:100%;height:100%;object-fit:cover;"
+                onerror="this.onerror=null; this.parentElement.innerHTML='<div style=&quot;width:100%;height:100%;background:linear-gradient(135deg,#60a5fa,#2563eb);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;&quot;>${initial}</div>';"
+            >
+        `;
+    } else {
+        avatarEl.innerHTML = `
+            <div style="width:100%;height:100%;background:linear-gradient(135deg,#60a5fa,#2563eb);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;">
+                ${initial}
+            </div>
+        `;
+    }
 }
 
 function escCloser(ev) {

@@ -70,7 +70,7 @@ class daftar_antrian_controller extends Controller
 
             // Eager load relasi yang dibutuhkan
             $reservasi = reservasi::with([
-                'data_pasien:id,id_akun,nama_pasien,jenis_kelamin,tanggal_lahir_pasien,golongan_darah,pekerjaan,alamat,no_telepon,catatan_pasien'
+                'data_pasien:id,id_akun,nama_pasien,foto_path,jenis_kelamin,tanggal_lahir_pasien,golongan_darah,pekerjaan,alamat,no_telepon,catatan_pasien'
             ])->findOrFail($id);
 
             // Validasi data pasien ada
@@ -138,6 +138,7 @@ class daftar_antrian_controller extends Controller
                 'alamat' => $reservasi->data_pasien->alamat ?? '-',
                 'no_telepon' => $reservasi->data_pasien->no_telepon ?? '-',
                 'catatan_pasien' => $reservasi->data_pasien->catatan_pasien ?? 'Tidak ada catatan',
+                'foto_path' => $reservasi->data_pasien->foto_path ?? null,
             ];
 
             Log::info("Data berhasil disiapkan untuk reservasi ID: {$id}");

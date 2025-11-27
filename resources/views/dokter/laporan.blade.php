@@ -140,7 +140,7 @@
         <div id="pasien-content" hidden class="pasien-content">
             <div class="pasien-biodata">
                 <div class="col-foto">
-                    <div class="avatar-biodata"></div>
+                    <div id="lap-avatar" style="width:72px;height:72px;border-radius:9999px;overflow:hidden;"></div>
                 </div>
 
                 <div class="col-data">
@@ -202,6 +202,7 @@
 </div>
 
 <script>
+const assetBase = "{{ asset('') }}";
 // ========================================
 // AJAX SEARCH (TANPA RELOAD HALAMAN)
 // ========================================
@@ -362,6 +363,7 @@ function openPasienModal(pasienId) {
     errEl.style.display = 'none';
     loadEl.hidden = false;
     cntEl.hidden  = true;
+    renderLapAvatar(null, '');
 
     // Show overlay
     overlay.hidden = false;
@@ -398,6 +400,7 @@ function openPasienModal(pasienId) {
         document.getElementById('p-alamat').textContent = data.alamat ?? '-';
         document.getElementById('p-no-telepon').textContent = data.no_telepon ?? '-';
         document.getElementById('p-catatan-pasien').textContent = data.catatan_pasien ?? '-';
+        renderLapAvatar(data.foto_path ?? null, data.nama_pasien ?? '-');
 
         loadEl.hidden = true;
         cntEl.hidden  = false;
@@ -429,6 +432,30 @@ function closePasienModal() {
     overlay.hidden = true;
     document.body.style.overflow = '';
     document.removeEventListener('keydown', escCloserPasien);
+}
+
+function renderLapAvatar(fotoPath, namaPasien) {
+    const avatarEl = document.getElementById('lap-avatar');
+    if (!avatarEl) return;
+
+    const initial = (namaPasien || '?').toString().trim().charAt(0).toUpperCase() || '?';
+    if (fotoPath) {
+        const fotoUrl = fotoPath.startsWith('http') ? fotoPath : assetBase + fotoPath;
+        avatarEl.innerHTML = `
+            <img 
+                src="${fotoUrl}" 
+                alt="${namaPasien || 'Pasien'}"
+                style="width:100%;height:100%;object-fit:cover;"
+                onerror="this.onerror=null; this.parentElement.innerHTML='<div style=&quot;width:100%;height:100%;background:linear-gradient(135deg,#60a5fa,#2563eb);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;&quot;>${initial}</div>';"
+            >
+        `;
+    } else {
+        avatarEl.innerHTML = `
+            <div style="width:100%;height:100%;background:linear-gradient(135deg,#60a5fa,#2563eb);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;">
+                ${initial}
+            </div>
+        `;
+    }
 }
 </script>
 @endsection

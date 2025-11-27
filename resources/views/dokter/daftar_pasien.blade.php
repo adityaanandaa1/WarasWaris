@@ -82,7 +82,7 @@
             <div class="patientlist-table-row">
                 {{-- foto --}}
                 <div class="patientlist-col-photo">
-                    <div class="patientlist-avatar">{{ $initial }}</div>
+                    <x-avatar-pasien :pasien="$pasien" size="lg" />
                 </div>
 
                 <!-- Nama + avatar -->
@@ -133,7 +133,7 @@
         <div id="pasien-content" hidden class="patientlist-modal-content">
             <div class="patientlist-modal-biodata">
                 <div class="patientlist-col-photo">
-                    <div class="patientlist-modal-avatar">{{ $initial }}</div>
+                    <div id="p-avatar" class="patientlist-avatar" style="width:96px;height:96px;border-radius:9999px;overflow:hidden;"></div>
                 </div>
 
                 <div class="patientlist-modal-data-col">
@@ -199,6 +199,7 @@
 </div>
 
 <script>
+    const assetBase = "{{ asset('') }}";
     const input = document.getElementById('searchInput');
     const riwayatRekamMedisBaseURL = "{{ route('dokter.riwayat_rekam_medis') }}";
 
@@ -231,6 +232,7 @@
     errEl.style.display = 'none';
     loadEl.hidden = false;
     cntEl.hidden  = true;
+    renderPasienModalAvatar(null, '');
 
     // Show overlay
     overlay.hidden = false;
@@ -273,6 +275,7 @@
       document.getElementById('p-no-telepon').textContent     = data.no_telepon ?? '-';
       document.getElementById('p-catatan-pasien').textContent        = data.catatan_pasien ?? '-';
       updateRekamMedisLink(data.id ?? null);
+      renderPasienModalAvatar(data.foto_path ?? null, data.nama_pasien ?? '-');
 
       loadEl.hidden = true;
       cntEl.hidden  = false;
@@ -315,6 +318,30 @@
       target = `${target}${separator}pasien_id=${encodeURIComponent(pasienId)}`;
     }
     btn.href = target;
+  }
+
+  function renderPasienModalAvatar(fotoPath, namaPasien) {
+    const avatarEl = document.getElementById('p-avatar');
+    if (!avatarEl) return;
+
+    const initial = (namaPasien || '?').toString().trim().charAt(0).toUpperCase() || '?';
+    if (fotoPath) {
+      const fotoUrl = fotoPath.startsWith('http') ? fotoPath : assetBase + fotoPath;
+      avatarEl.innerHTML = `
+        <img 
+          src="${fotoUrl}" 
+          alt="${namaPasien || 'Pasien'}"
+          style="width:100%;height:100%;object-fit:cover;"
+          onerror="this.onerror=null; this.parentElement.innerHTML='<div style=&quot;width:100%;height:100%;background:linear-gradient(135deg,#60a5fa,#2563eb);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;&quot;>${initial}</div>';"
+        >
+      `;
+    } else {
+      avatarEl.innerHTML = `
+        <div style="width:100%;height:100%;background:linear-gradient(135deg,#60a5fa,#2563eb);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;">
+          ${initial}
+        </div>
+      `;
+    }
   }
 
 document.getElementById('searchInput').addEventListener('keyup', function() {
