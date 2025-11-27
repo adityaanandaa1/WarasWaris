@@ -1,5 +1,7 @@
 @extends('layouts.dokter')
 
+@section('title', 'Daftar Antrian - WarasWaris')
+
 @section('content')
 <div class="queue-doctor">
     <div class="queue-header">

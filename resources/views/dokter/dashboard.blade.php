@@ -1,5 +1,7 @@
 @extends('layouts.dokter')
 
+@section('title', 'Dashboard - WarasWaris')
+
 @section('content')
 
 @php($hari_ini = $hari_ini ?? \Carbon\Carbon::today()->locale('id'))

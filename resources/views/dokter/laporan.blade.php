@@ -1,5 +1,7 @@
 @extends('layouts.dokter')
 
+@section('title', 'Laporan - WarasWaris')
+
 @section('content')
 <div class="main">
     <div class="report-title-section">

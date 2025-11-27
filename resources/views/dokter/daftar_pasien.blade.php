@@ -1,6 +1,6 @@
 @extends('layouts.dokter')
 
-@section('title','Daftar Pasien')
+@section('title', 'Daftar Pasien - WarasWaris')
 
 @section('content')
 <div class="patientlist-container">

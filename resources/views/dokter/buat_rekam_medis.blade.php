@@ -1,6 +1,6 @@
 @extends('layouts.dokter_modal')
 
-@section('title', 'Rekam Medis')
+@section('title', 'Rekam Medis - WarasWaris')
 
 @section('content')
 @if(session('success'))
