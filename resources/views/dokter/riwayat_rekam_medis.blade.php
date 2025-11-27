@@ -196,8 +196,9 @@
     }
 
     function loadRekamMedis(id) {
-        const currentUrl = window.location.href.split('?')[0];
-        window.location.href = currentUrl + '?id=' + id;
+        const url = new URL(window.location.href);
+        url.searchParams.set('id', id); // pasien_id tetap ikut kalau sudah ada
+        window.location.href = url.toString();
     }
 
     document.addEventListener('keydown', function(e) {
