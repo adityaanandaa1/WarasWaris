@@ -2,19 +2,85 @@
 
 namespace App\Http\Controllers\Dokter;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
-use App\Models\reservasi;
-use App\Models\rekam_medis;
-use App\Models\data_pasien;
-use App\Models\data_dokter;
-use Illuminate\Http\Request;
 use Carbon\Carbon;
+use App\Models\reservasi;
+use App\Models\data_dokter;
+use App\Models\data_pasien;
+use App\Models\rekam_medis;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 
 class rekam_medis_controller extends Controller
 {
+
+    public function getReservasiDetail($id)
+    {
+        try {
+            // Ambil data reservasi
+            $reservasi = Reservasi::with(['data_pasien', 'data_dokter'])->findOrFail($id);
+        
+            // Format tanggal lahir pasien
+            $tanggal_lahir_pasien = $reservasi->data_pasien->tanggal_lahir
+                ? \Carbon\Carbon::parse($reservasi->data_pasien->tanggal_lahir)
+                : null;
+        
+            // Hitung umur
+            $umur = $tanggal_lahir_pasien
+                ? $tanggal_lahir_pasien->age
+                : null;
+        
+            // Format jenis kelamin
+            $jenis_kelamin = $reservasi->data_pasien->jenis_kelamin;
+        
+            if ($jenis_kelamin === 'L' || strtolower($jenis_kelamin) === 'laki-laki') {
+                $jenis_kelamin = 'Laki-laki';
+            } elseif ($jenis_kelamin === 'P' || strtolower($jenis_kelamin) === 'perempuan') {
+                $jenis_kelamin = 'Perempuan';
+            } else {
+                $jenis_kelamin = '-';
+            }
+        
+            // Nama wali
+            $nama_wali = $reservasi->data_pasien->nama_wali ?? '-';
+        
+            // Siapkan data response (disesuaikan dengan JS yang kamu pakai!!)
+            $data = [
+                'keluhan'               => $reservasi->keluhan ?? '-',
+                'nama_pasien'           => $reservasi->data_pasien->nama_pasien ?? '-',
+                'nama_wali'             => $nama_wali,
+            
+                // WAJIB sama seperti JS-mu
+                'jenis_kelamin_pasien'  => $jenis_kelamin,
+                'tanggal_lahir_pasien'  => $tanggal_lahir_pasien
+                                            ? $tanggal_lahir_pasien->translatedFormat('d F Y')
+                                            : '-',
+            
+                'golongan_darah'        => $reservasi->data_pasien->golongan_darah ?? 'Tidak diketahui',
+                'umur'                  => $umur,
+                'pekerjaan'             => $reservasi->data_pasien->pekerjaan ?? 'Tidak bekerja',
+                'alamat'                => $reservasi->data_pasien->alamat ?? '-',
+                'no_telepon'            => $reservasi->data_pasien->no_telepon ?? '-',
+                'catatan_pasien'        => $reservasi->data_pasien->catatan_pasien ?? 'Tidak ada catatan',
+            
+                // Jika ada dokter
+                'nama_dokter'           => $reservasi->data_dokter->nama ?? '-',
+                'alamat_dokter'         => $reservasi->data_dokter->alamat ?? '-',
+            ];
+        
+            Log::info("Data berhasil disiapkan untuk reservasi ID: {$id}");
+        
+            return response()->json($data);
+        
+        } catch (\Exception $e) {
+            Log::error("Gagal mengambil detail reservasi ID: {$id} - " . $e->getMessage());
+            return response()->json(['error' => 'Gagal memuat data'], 500);
+        }
+    }
+
     public function buat_rekam_medis(Reservasi $reservasi)
     {
         // (Opsional) cek jika sudah ada rekam medis → bisa redirect ke edit

@@ -81,6 +81,26 @@ body {
 
 
 /* MAIN CONTENT TENGAH */
+.ri-settings-5-fill {
+    font-size: 20px; 
+    margin: 0;
+    color: #FFFFFF;
+}
+
+.btn-edit-dashboard {
+    background-color: #5A81FA;
+    display: flex;
+    padding: 10px 15px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 100%;
+    transition: background-color 0.5s ease;
+}
+
+.btn-edit-dashboard:hover {
+    background-color: #3B41AE;
+}
+
 .main-content {
     flex: 1;
     background: #FFFFFF;
@@ -90,7 +110,7 @@ body {
     margin-right: 42px;
     max-width: calc(100vw - 600px);
     overflow: hidden;
-    transition: background 0.3s ease;
+    transition: background-color 0.3s ease;
     height: 100vh;
     overflow-y: auto; 
     overflow-x: hidden; 
