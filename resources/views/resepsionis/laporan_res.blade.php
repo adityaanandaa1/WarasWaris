@@ -1,5 +1,7 @@
 @extends('layouts.laporan_resepsionis')
 
+@section('title', 'Laporan -  WarasWaris')
+
 @section('content')
 <div class="main">
     <div class="judul">

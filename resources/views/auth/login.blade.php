@@ -512,9 +512,9 @@
                         <label for="remember">Ingat saya</label>
                         
                     </div>
-                    <a href="{{ route('password.request') }}" class="text-sm text-blue-600">
+                    {{--   <a href="{{ route('password.request') }}" class="text-sm text-blue-600">
                             Lupa kata sandi?
-                        </a>
+                        </a> --}}
 
                     <button type="submit" class="btn-submit">MASUK</button>
                 </form>

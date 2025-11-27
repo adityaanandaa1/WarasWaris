@@ -1,5 +1,7 @@
 @extends('layouts.resepsionis')
 
+@section('title', 'Dashboard -  WarasWaris')
+
 @section('content')
 
 @php($hari_ini = $hari_ini ?? \Carbon\Carbon::today()->locale('id'))
@@ -20,7 +22,7 @@
         <div class="dashboard-welcome-greeting">
             <div class="dashboard-greeting-text">
                 <div class="dashboard-greeting-title">
-                    <h1 class="dashboard-greeting-title-subtitle">Selamat Datang,</h1>
+                    <h1 class="dashboard-greeting-title-subtitle">Selamat Datang</h1>
                     <h1 class="dashboard-greeting-title-subtitle"></h1>
                 </div>
                 <p class="dashboard-greeting-subtitle">Semoga harimu indah!</p>
