@@ -95,8 +95,15 @@
     color: #FFFFFF;
 }
 
-.ri-edit-box-line:hover {
+.dashboard-profile-edit {
     text-decoration: none;
+    padding: 2px 5px;
+}
+
+.dashboard-profile-edit:hover {
+    background-color: #FFFFFF25;
+    border-radius: 100%;
+    padding: 2px 5px;
 }
 
 .dashboard-profile-body {

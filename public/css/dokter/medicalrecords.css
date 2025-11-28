@@ -4,9 +4,9 @@
     justify-content: center;
     align-items: center;
     position: fixed;
-    z-index: 1000;
-    width: 100%;
     top: 20px;
+    right: 20px;
+    z-index: 9999;
 }
 
 .medicalrecord-btn-print {
@@ -19,6 +19,7 @@
     border: none;
     background-color: green;
     color: #FFFFFF;
+    box-shadow: 0px 0px 20px 5px rgba(0, 0, 0, 0.15);
 }
 
 .medicalrecord-page {
@@ -32,6 +33,7 @@
     background-color: #587EF4;
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
+    box-shadow: 0px 0px 20px 5px rgba(0, 0, 0, 0.15);
 }
 
 .medicalrecord-sidebar-header {
@@ -45,7 +47,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #CEDEFF;
+    background-color: #CEDEFF50;
     color: #000000;
     font-size: 20px;
     width: 40px;
@@ -56,6 +58,7 @@
     cursor: pointer;
     position: relative;
     z-index: 9999;
+    transition: background-color 0.5s ease;
 }
 
 .medicalrecord-sidebar-back:hover {
@@ -76,7 +79,8 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
+    color: #FFFFFF;
 }
 
 .medicalrecord-sidebar-item {
@@ -88,6 +92,7 @@
     cursor: pointer;
     display: flex;
     flex-direction: row;
+    transition: background-color 0.5s ease;
 }
 
 .medicalrecord-sidebar-item:hover {
@@ -101,9 +106,13 @@
 }
 
 .ri-arrow-right-s-line {
-    font-size: 20px;
+    font-size: 30px;
     color: #1647E0;
     font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-left: 5px;
 }
 
 .medicalrecord-sidebar-item-date {
@@ -111,16 +120,207 @@
     justify-content: center;
     align-items: center;
     gap: 5px;
-    background-color: #5A81FA50;
-    padding: 5px;
+    background-color: #5A81FA;
+    padding: 5px 10px;
     border-radius: 10px;
+    font-size: 12px;
 }
 
 .medicalrecord-sidebar-item-subtitle {
-    font-size: 14px;
+    font-size: 13px;
     color: #464646;
     font-weight: normal;
     margin-bottom: 0;
+    text-align: left;
+}
+
+.medicalrecord-content {
+    width: 75%;
+}
+
+.medicalrecord-document {
+    background-color: #FFFFFF;
+    margin: 30px;
+    box-shadow: 0px 0px 20px 5px rgba(0, 0, 0, 0.15);
+    border-radius: 15px;
+    padding: 20px 40px;
+}
+
+.medicalrecord-header-number {
+    font-size: 12px;
+    font-weight: normal;
+}
+
+.medicalrecord-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.medicalrecord-row {
+    display: flex;
+}
+
+.medicalrecord-patient-info {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    width: 100%;
+}
+
+.medicalrecord-info-left {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.medicalrecord-info-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.medicalrecord-info-item {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    align-items: start;
+    margin-bottom: 10px;
+}
+
+.medicalrecord-info-item strong {
+    font-size: 13px;
+    color: #464646;
+    font-weight: bold;
+    width: 150px;
+}
+
+.medicalrecord-info-item span {
+    font-size: 13px;
+    color: #464646;
+    font-weight: normal;
+}
+
+.medicalrecord-keluhan-wrapper {
+    display: grid;
+    grid-template-columns: 160px 10px 1fr;
+    margin-top: 20px;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.medicalrecord-keluhan-wrapper .colon {
+    font-size: 13px;
+    font-weight: normal;
+    color: #464646;
+}
+
+.medicalrecord-keluhan-wrapper strong {
+    font-size: 13px;
+    font-weight: bold;
+    color: #464646;
+}
+
+.medicalrecord-keluhan-wrapper span {
+    font-size: 13px;
+    color: #464646;
+    font-weight: normal;
+}
+
+#rf-keluhan {
+    display: block;
+    border-radius: 6px;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.section-divider {
+    border: 0;
+    border-top: 1px solid #aaa;
+    width: 100%;; 
+    margin: 20px auto;
+}
+
+.medicalrecord-section-title {
+    font-size: 21px;
+    color: #5A81FA;
+    font-weight: 500;
+    margin: 0;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.medicalrecord-input-unit {
+    display: flex;
+    align-items: center;
+    width: 150px;
+}
+
+.medicalrecord-physical-input p {
+    font-size: 14px;
+    color: #464646;
+    font-weight: normal;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0px 5px;
+    margin-bottom: 10px;
+}
+
+.medicalrecord-physical-input {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    font-size: 16px;
+    color: #464646;
+    font-weight: normal;
+    width: 100%;
+}
+
+.medicalrecord-physical-input label{
+    font-size: 13px;
+    font-weight: 500;
+    color: #464646;
+    margin-bottom: 10px;
+}
+
+.medicalrecord-physical-input span{
+    font-size: 13px;
+    font-weight: normal;
+    color: #464646;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid #000;
+    padding: 5px;
+}
+
+.medicalrecord-physical-grid {
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+    width: fit-content;
+    margin: 0 auto;
+    margin-bottom: 20px;
+    margin-top: 50px;
+}
+
+.medicalrecord-diagnosis-section {
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+    margin: 25px 0px;
+}
+
+.medicalrecord-plan-section {
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+    margin: 25px 0px;
+}
+
+.medicalrecord-notes-section {
+    margin: 25px 0px;
 }
 
 @media print {

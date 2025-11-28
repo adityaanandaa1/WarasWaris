@@ -22,6 +22,7 @@
     {{-- CSS Custom Component --}}
     <link rel="stylesheet" href="{{ asset('css/datepicker.css') }}">
     <link rel="stylesheet" href="{{ asset('css/resepsionis/sidebar_res.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/monthpicker.css') }}">
 </head>
 <body>
     <div class="layout">
@@ -37,6 +38,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('js/todaydate.js') }}"></script>
     <script src="{{ asset('js/datepicker.js') }}"></script>
-    <script src="{{ asset('js/windowscroll.js') }}"></script>
+    <script src="{{ asset('js/monthpicker.js') }}"></script>
 </body>
 </html>
