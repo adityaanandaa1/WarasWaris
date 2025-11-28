@@ -22,10 +22,15 @@ class rekam_medis_controller extends Controller
         try {
             // Ambil data reservasi
             $reservasi = Reservasi::with(['data_pasien', 'data_dokter'])->findOrFail($id);
+
+            if (!$reservasi->data_pasien) {
+                return response()->json(['error' => 'Data pasien tidak ditemukan'], 404);
+            }
         
             // Format tanggal lahir pasien
-            $tanggal_lahir_pasien = $reservasi->data_pasien->tanggal_lahir
-                ? \Carbon\Carbon::parse($reservasi->data_pasien->tanggal_lahir)
+            $pasien = $reservasi->data_pasien;
+            $tanggal_lahir_pasien = $pasien->tanggal_lahir_pasien
+                ? Carbon::parse($reservasi->data_pasien->tanggal_lahir_pasien)
                 : null;
         
             // Hitung umur
@@ -34,7 +39,7 @@ class rekam_medis_controller extends Controller
                 : null;
         
             // Format jenis kelamin
-            $jenis_kelamin = $reservasi->data_pasien->jenis_kelamin;
+            $jenis_kelamin = $pasien->jenis_kelamin;
         
             if ($jenis_kelamin === 'L' || strtolower($jenis_kelamin) === 'laki-laki') {
                 $jenis_kelamin = 'Laki-laki';
@@ -44,13 +49,28 @@ class rekam_medis_controller extends Controller
                 $jenis_kelamin = '-';
             }
         
-            // Nama wali
-            $nama_wali = $reservasi->data_pasien->nama_wali ?? '-';
+            // Nama wali (pakai pasien utama pada akun yang sama jika ada)
+            $nama_wali = '-';
+            if ($pasien && $pasien->id_akun) {
+                $wali = \App\Models\data_pasien::where('id_akun', $pasien->id_akun)
+                    ->where('is_primary', true)
+                    ->first('nama_pasien');
+                if (!$wali) {
+                    $wali = \App\Models\data_pasien::where('id_akun', $pasien->id_akun)
+                        ->orderBy('id', 'asc')
+                        ->first('nama_pasien');
+                }
+                $nama_wali = $wali->nama_pasien ?? '-';
+            }
+
+            // Data dokter
+            $nama_dokter   = $reservasi->data_dokter->nama_dokter ?? '-';
+            $alamat_dokter = $reservasi->data_dokter->alamat ?? '-';
         
             // Siapkan data response (disesuaikan dengan JS yang kamu pakai!!)
             $data = [
                 'keluhan'               => $reservasi->keluhan ?? '-',
-                'nama_pasien'           => $reservasi->data_pasien->nama_pasien ?? '-',
+                'nama_pasien'           => $pasien->nama_pasien ?? '-',
                 'nama_wali'             => $nama_wali,
             
                 // WAJIB sama seperti JS-mu
@@ -59,16 +79,16 @@ class rekam_medis_controller extends Controller
                                             ? $tanggal_lahir_pasien->translatedFormat('d F Y')
                                             : '-',
             
-                'golongan_darah'        => $reservasi->data_pasien->golongan_darah ?? 'Tidak diketahui',
+                'golongan_darah'        => $pasien->golongan_darah ?? 'Tidak diketahui',
                 'umur'                  => $umur,
-                'pekerjaan'             => $reservasi->data_pasien->pekerjaan ?? 'Tidak bekerja',
-                'alamat'                => $reservasi->data_pasien->alamat ?? '-',
-                'no_telepon'            => $reservasi->data_pasien->no_telepon ?? '-',
-                'catatan_pasien'        => $reservasi->data_pasien->catatan_pasien ?? 'Tidak ada catatan',
+                'pekerjaan'             => $pasien->pekerjaan ?? 'Tidak bekerja',
+                'alamat'                => $pasien->alamat ?? '-',
+                'no_telepon'            => $pasien->no_telepon ?? '-',
+                'catatan_pasien'        => $pasien->catatan_pasien ?? 'Tidak ada catatan',
             
                 // Jika ada dokter
-                'nama_dokter'           => $reservasi->data_dokter->nama ?? '-',
-                'alamat_dokter'         => $reservasi->data_dokter->alamat ?? '-',
+                'nama_dokter'           => $nama_dokter,
+                'alamat_dokter'         => $alamat_dokter,
             ];
         
             Log::info("Data berhasil disiapkan untuk reservasi ID: {$id}");
@@ -87,7 +107,7 @@ class rekam_medis_controller extends Controller
         return view('dokter.buat_rekam_medis', compact('reservasi'));
     }
 
-        public function simpan_rekam_medis(Request $request, Reservasi $reservasi)
+    public function simpan_rekam_medis(Request $request, Reservasi $reservasi)
     {
         $data = $request->validate([
             'tinggi_badan'           => 'required|integer|min:30|max:250',

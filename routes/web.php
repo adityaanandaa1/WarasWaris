@@ -86,7 +86,8 @@ Route::middleware(['auth', 'role:dokter'])
         ->name('buat_rekam_medis'); 
     Route::post('/reservasi/{reservasi}/rekam-medis', [rekam_medis_controller::class, 'simpan_rekam_medis'])
         ->name('simpan_rekam_medis');
-    Route::get('/dokter/reservasi/{id}/detail', [rekam_medis_controller::class, 'getReservasiDetail']);
+    Route::get('/reservasi/{id}/detail-lengkap', [rekam_medis_controller::class, 'getReservasiDetail'])
+        ->name('reservasi.detail_lengkap');
     
     
     Route::get('/daftar-pasien', [daftar_pasien_controller::class, 'daftar_pasien'])

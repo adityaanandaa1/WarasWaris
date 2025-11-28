@@ -1,29 +1,36 @@
 @props(['pasien', 'size' => 'md'])
 
 @php
-$sizeClasses = [
-    'sm' => 'w-8 h-8 text-sm',
-    'md' => 'w-12 h-12 text-lg',
-    'lg' => 'w-16 h-16 text-2xl',
-    'xl' => 'w-24 h-24 text-4xl',
+$sizeMap = [
+    'sm' => ['dim' => 32, 'font' => 12],
+    'md' => ['dim' => 48, 'font' => 16],
+    'lg' => ['dim' => 64, 'font' => 20],
+    'xl' => ['dim' => 96, 'font' => 32],
 ];
 
-$sizeClass = $sizeClasses[$size] ?? $sizeClasses['md'];
-$hasFoto = $pasien && $pasien->foto_path && file_exists(public_path($pasien->foto_path));
-$inisial = $pasien ? strtoupper(mb_substr($pasien->nama_pasien, 0, 1)) : '?';
+$sizeConf = $sizeMap[$size] ?? $sizeMap['md'];
+$dim      = $sizeConf['dim'];
+$fontSize = $sizeConf['font'];
+
+$fotoPath   = $pasien->foto_path ?? null;
+$isUrl      = $fotoPath && filter_var($fotoPath, FILTER_VALIDATE_URL);
+$fileExists = $fotoPath && !$isUrl && file_exists(public_path($fotoPath));
+$hasFoto    = (bool) ($isUrl || $fileExists);
+$inisial    = $pasien ? strtoupper(mb_substr($pasien->nama_pasien, 0, 1)) : '?';
+
+$fallbackHtml = "<div style=\"width:100%;height:100%;background:linear-gradient(135deg,#60a5fa,#2563eb);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:{$fontSize}px;\">{$inisial}</div>";
+$fallbackHtmlAttr = str_replace('"', '&quot;', $fallbackHtml);
 @endphp
 
-<div class="{{ $sizeClass }} rounded-full overflow-hidden {{ $attributes->get('class') }}">
+<div style="width:{{ $dim }}px;height:{{ $dim }}px;border-radius:9999px;overflow:hidden;" class="{{ $attributes->get('class') }}">
     @if($hasFoto)
         <img 
-            src="{{ asset($pasien->foto_path) }}" 
+            src="{{ $isUrl ? $fotoPath : asset($fotoPath) }}" 
             alt="{{ $pasien->nama_pasien }}"
-            class="w-full h-full object-cover"
-            onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'w-full h-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white font-bold\'>{{ $inisial }}</div>';"
+            style="width:100%;height:100%;object-fit:cover;"
+            onerror="this.onerror=null; this.parentElement.innerHTML='{!! $fallbackHtmlAttr !!}';"
         >
     @else
-        <div class="w-full h-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white font-bold">
-            {{ $inisial }}
-        </div>
+        {!! $fallbackHtml !!}
     @endif
 </div>

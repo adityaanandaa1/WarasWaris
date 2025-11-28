@@ -312,14 +312,22 @@ function renderModalAvatar(fotoPath, namaPasien) {
                 src="${fotoUrl}" 
                 alt="${namaPasien || 'Pasien'}"
                 class="w-full h-full object-cover"
-                onerror="this.onerror=null; this.parentElement.innerHTML='<div class=&quot;w-full h-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white font-bold&quot;>${initial}</div>';"
+                onerror="this.onerror=null; this.parentElement.innerHTML='<div style=&quot;width:100%;height:100%;background:linear-gradient(135deg,#60a5fa,#2563eb);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:42px;&quot;>${initial}</div>';"
             >
         `;
     } else {
         avatarEl.innerHTML = `
-            <div class="w-full h-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white font-bold">
-                ${initial}
-            </div>
+            <div style="
+                width:100%;
+                height:100%;
+                background:linear-gradient(135deg,#60a5fa,#2563eb);
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                color:white;
+                font-weight:700;
+                font-size:42px;
+            ">${initial}</div>
         `;
     }
 }

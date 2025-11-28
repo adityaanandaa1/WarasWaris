@@ -41,6 +41,14 @@ class reservasi extends Model
     }
 
     /**
+     * Relasi: Reservasi milik 1 Dokter (belongsTo)
+     */
+    public function data_dokter()
+    {
+        return $this->belongsTo(data_dokter::class, 'id_dokter', 'id');
+    }
+
+    /**
      * Relasi: Reservasi punya 1 Rekam Medis (hasOne)
      * 
      * 1 reservasi = 1 kunjungan = 1 rekam medis
