@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use App\Models\akun_user;
 
 class auth_controller extends Controller
@@ -48,22 +49,11 @@ class auth_controller extends Controller
         ])->withInput($request->only('email'));
     }
     
-    //tampilkan form register
-    public function tampilkan_register()
-    {
-        // Jika sudah login, redirect ke dashboard
-        if (Auth::check()) {
-            return $this->redirectToDashboard();
-        }
-        
-        return view('auth.register');
-    }
-    
     //mengecek register
     public function register(Request $request)
     {
         // Validasi input
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'email' => 'required|email|unique:akun_users,email',
             'password' => 'required|min:6|confirmed',
         ], [
@@ -74,6 +64,14 @@ class auth_controller extends Controller
             'password.min' => 'Password minimal 6 karakter',
             'password.confirmed' => 'Konfirmasi password tidak cocok',
         ]);
+
+        if ($validator->fails()) {
+            // Kembalikan ke mode register saat validasi gagal
+            return back()
+                ->withErrors($validator)
+                ->withInput()
+                ->with('auth_mode', 'register');
+        }
 
         // Buat user baru dengan role pasien
         $user = akun_user::firstOrCreate(

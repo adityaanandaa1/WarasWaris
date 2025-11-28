@@ -418,7 +418,10 @@
 @endpush
 
 @section('content')
-<div class="login-container" id="container">
+@php
+    $authMode = session('auth_mode') === 'register' || request('mode') === 'register' ? 'register' : 'login';
+@endphp
+<div class="login-container" id="container" data-mode="{{ $authMode }}">
     <div class="login-card">
         {{-- tombol close --}}
         <a href="{{ route('homepage') }}" class="btn-close" title="Kembali ke Beranda">
@@ -434,7 +437,7 @@
                     <h2>Masuk</h2>
                 </div>
 
-                @if($errors->any())
+                @if($errors->any() && $authMode !== 'register')
                     <div class="alert alert-error" id="error-alert">
                         <ul>
                             @foreach($errors->all() as $error)
@@ -538,6 +541,16 @@
                     <h2>Buat Akun</h2>
                 </div>
 
+                @if($errors->any() && $authMode === 'register')
+                    <div class="alert alert-error" id="error-alert">
+                        <ul>
+                            @foreach($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
                 <form action="{{ route('register.post') }}" method="POST" class="register-form">
                     @csrf
             
@@ -637,11 +650,9 @@
     const container = document.getElementById('container');
     const registerBtn = document.getElementById('registerBtn');
     const loginBtn = document.getElementById('loginBtn');
+    const initialMode = container.dataset.mode || 'login';
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const mode = urlParams.get('mode');
-    
-    if (mode === 'register') {
+    if (initialMode === 'register') {
         container.classList.add('register-mode');
     }
 
