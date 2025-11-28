@@ -31,6 +31,6 @@ body {
 .dashboard-doctor {
     display: grid;
     grid-template-columns: repeat(10, 1fr);
-    grid-template-rows: repeat(6, 1fr);
+    grid-template-rows: repeat(5, 1fr) 50px;
     gap: 20px;
 }
