@@ -1,15 +1,27 @@
-/* ========================================
-   LAPORAN SECTION
-   ======================================== */
+.report-title-section {
+    display: flex;
+    margin-bottom: 15px;
+}
+
+.report-title-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
 .judul {
     color: #5A81FA;
     font-size: 20px;
-    margin-bottom: 16px;
+    font-weight: bold;
+    margin: 0px 10px;
 }
 
-/* ========================================
-   HEADER & FILTERS
-   ======================================== */
+.subjudul {
+    font-size: 13px;
+    color: #5A81FA;
+    font-weight: lighter;
+    margin: 0px 10px;
+}
+
 .header {
     display: flex;
     justify-content: space-between;
@@ -241,17 +253,20 @@
 
 .btn-detail {
     padding: 10px 20px;
-    color: #2D2175;
+    color: rgb(45, 33, 117);
     border: none;
     border-radius: 8px;
     font-size: 13px;
     font-weight: 600;
     cursor: pointer;
-    background: transparent;
+    transition: all 0.3s ease;
     display: flex;
     align-items: center;
     gap: 6px;
-    transition: all 0.3s ease;
+}
+
+.btn-detail2 {
+    display: none;
 }
 
 .btn-detail:hover:not(:disabled) {
@@ -260,10 +275,6 @@
 
 .btn-detail:disabled {
     cursor: not-allowed;
-}
-
-.btn-detail2 {
-    display: none;
 }
 
 .btn-cancel {

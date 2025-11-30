@@ -16,7 +16,7 @@
                     </clipPath>
                 </defs>
             </svg>
-            <span>{{ $hari_ini->format('d F Y') }}</span>
+            <span class="queue-date-header">{{ $hari_ini->format('d F Y') }}</span>
         </div>         
             
         <div class="queue-search">

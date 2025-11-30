@@ -1,12 +1,13 @@
 /* Dashboard Welcome Section */
 .dashboard-welcome-section {
     grid-column: span 6 / span 6;
-    grid-row: span 2 / span 2;
+    grid-row: span 3 / span 3;
 
     background-color: #5A81FA;
     padding-left: 15px;
     padding-top: 15px;
     border-radius: 20px;
+    margin: 10px 0px;
     box-shadow: 0px 0px 20px 5px rgba(0, 0, 0, 0.15);
 }
 
@@ -60,7 +61,7 @@
 /* Dashboard Profile Section */
 .dashboard-profile {
     grid-column: span 4 / span 4;
-    grid-row: span 2 / span 2;
+    grid-row: span 3 / span 3;
     grid-column-start: 7;
 
     display: flex;
@@ -196,7 +197,7 @@
     grid-column: span 3 / span 3;
     grid-row: span 2 / span 2;
     grid-column-start: 4;
-    grid-row-start: 3;
+    grid-row-start: 4;
 
     background-color: #FFFFFF;
     border-radius: 20px;
@@ -277,7 +278,8 @@
 .dashboard-queue {
     grid-column: span 3 / span 3;
     grid-row: span 2 / span 2;
-    grid-row-start: 3;
+    grid-column-start: 1;
+    grid-row-start: 4;
 
     background-color: #FFFFFF;
     border-radius: 20px;
@@ -305,7 +307,7 @@
 .dashboard-report {
     grid-column: span 6 / span 6;
     grid-row: span 2 / span 2;
-    grid-row-start: 5;
+    grid-row-start: 6;
 
     background-color: #FFFFFF;
     border-radius: 20px;
@@ -370,7 +372,7 @@
     grid-column: span 4 / span 4;
     grid-row: span 4 / span 4;
     grid-column-start: 7;
-    grid-row-start: 3;
+    grid-row-start: 4;
 
     display: flex;
     flex-direction: column;
@@ -420,8 +422,7 @@
 
 .dashboard-calendar-month {
     text-align: center;
-    margin-top: 30px;
-    margin-bottom: 50px;
+    margin-bottom: 10px;
     font-size: 24px;
     font-weight: bold;
     color: #FFFFFF;

@@ -203,7 +203,7 @@
                             </div>
                         </div>
                         @else
-                            <p class="medicalrecord-empty">Tidak ada rekam medis yang dipilih.</p>
+                            <p class="medicalrecord-empty">Belum Memiliki Rekam Medis</p>
                         @endif
                     </div>
                 </div>

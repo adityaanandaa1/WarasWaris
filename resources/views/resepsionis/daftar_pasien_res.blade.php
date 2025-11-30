@@ -1,4 +1,4 @@
-@extends('layouts.daftarpasien_resepsionis')
+@extends('layouts.resepsionis')
 
 @section('title','Daftar Pasien - WarasWaris')
 
