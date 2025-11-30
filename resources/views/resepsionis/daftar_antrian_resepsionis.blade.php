@@ -55,12 +55,14 @@
                           
                         @if ($reservasi->status === 'selesai')
                             <span>Selesai</span>
+                        @elseif ($reservasi->status === 'batal')
+                            <span class="queue-btn-skipped">Dilewati</span>
                         @else
-                            <form action="{{ route('dokter.reservasi.periksa', $reservasi->id) }}" method="POST">
+                            <form action="{{ route('resepsionis.reservasi.lewati', $reservasi->id) }}" method="POST">
                                 @csrf
                                 @method('PATCH')
                                 <button type="submit" class="queue-btn-check">
-                                    Periksa
+                                    Lewati
                                 </button>
                             </form>
                         @endif
