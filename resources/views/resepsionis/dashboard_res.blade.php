@@ -1,5 +1,7 @@
 @extends('layouts.resepsionis')
 
+@section('title', 'Dashboard -  WarasWaris')
+
 @section('content')
 
 @php($hari_ini = $hari_ini ?? \Carbon\Carbon::today()->locale('id'))
@@ -20,7 +22,7 @@
         <div class="dashboard-welcome-greeting">
             <div class="dashboard-greeting-text">
                 <div class="dashboard-greeting-title">
-                    <h1 class="dashboard-greeting-title-subtitle">Selamat Datang,</h1>
+                    <h1 class="dashboard-greeting-title-subtitle">Selamat Datang</h1>
                     <h1 class="dashboard-greeting-title-subtitle"></h1>
                 </div>
                 <p class="dashboard-greeting-subtitle">Semoga harimu indah!</p>
@@ -131,31 +133,34 @@
 
     <div class="dashboard-report">
         <h1 class="dashboard-report-title">Statistik Laporan</h1>
-        <div class="dashboard-report-item">
-            <h1 class="dashboard-report-number-1">{{ $total_reservasi }}</h1>
-            <h2 class="dashboard-report-label">Total Reservasi</h2>
-        </div> 
+        <div class="dashboard-report-row">
+            <div class="dashboard-report-item">
+                <h1 class="dashboard-report-number-1">{{ $total_reservasi }}</h1>
+                <h2 class="dashboard-report-label">Total Reservasi</h2>
+            </div> 
 
-        <div class="dashboard-report-item">
-            <h1 class="dashboard-report-number-2">{{ $pasien_terlayani }}</h1>
-            <h2 class="dashboard-report-label">Pasien Terlayani</h2>
-        </div>
+            <div class="dashboard-report-item">
+                <h1 class="dashboard-report-number-2">{{ $pasien_terlayani }}</h1>
+                <h2 class="dashboard-report-label">Pasien Terlayani</h2>
+            </div>
 
-        <div class="dashboard-report-item">
-            <h1 class="dashboard-report-number-3">{{ $pasien_batal }}</h1>
-            <h2 class="dashboard-report-label">Pasien Tidak Hadir</h2>
+            <div class="dashboard-report-item">
+                <h1 class="dashboard-report-number-3">{{ $pasien_batal }}</h1>
+                <h2 class="dashboard-report-label">Pasien Tidak Hadir</h2>
+            </div>
         </div>
     </div>
 
     <div class="dashboard-calendar">
         <div class="dashboard-calendar-header">
             <h1 class="dashboard-calendar-title">Kalender Saya</h1>
-            <div class="dashboard-dropdown-calendar">
-                <button class="btn dropdown-toggle" id="monthBtn" type="button" data-bs-toggle="dropdown">
-                    November
-                </button>
-                <ul class="dropdown-menu" id="monthList"></ul>
-            </div>
+            <x-monthpicker>
+                <x-slot:icon>
+                    <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7.66699 0.999979L0.333659 0.999979L4.00033 7.33331" fill="white"/>
+                    </svg>
+                </x-slot:icon>
+            </x-monthpicker>
         </div>
 
         <div class="dashboard-calendar-body">

@@ -1,9 +1,3 @@
-.report-header {
-    display: flex;
-    justify-content: space-between;
-    height: 100px;
-}
-
 .report-title-section {
     display: flex;
     margin-bottom: 15px;

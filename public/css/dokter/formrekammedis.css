@@ -3,7 +3,7 @@
 }
 
 .recordform-header {
-    margin: 15px 35px;
+    margin-bottom: 20px;
 }
 
 .recordform-header-inner {
@@ -16,6 +16,14 @@
     font-size: 30px;
     color: #5A81FA;
     margin-right: auto; 
+    text-decoration: none;
+    padding: 5px 8px;
+}
+
+.recordform-back-icon:hover {
+    background-color: #FFFFFF;
+    border-radius: 100%;
+    padding: 5px 8px;
 }
 
 .recordform-title {
@@ -31,15 +39,21 @@
 .recordform-wrapper {
     background-color: #FFFFFF;
     border-radius: 15px;
-    padding: 20px;
-    width: 93%;
+    width: 100%;
     margin: 0 auto;
+}
+
+.recordform-document {
+    padding: 30px 70px;
 }
 
 .recordform-rm-section {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 30px;
+    margin-bottom: 5px;
+    margin-left: 0;
+    padding: 20px 30px;
+    padding-bottom: 0;
 }
 
 .recordform-rm-label {
@@ -50,14 +64,17 @@
 
 .recordform-patient-info {
     display: flex;
-    align-items: center;
-    width: 90%;
+    align-items: flex-start;
+    justify-content: flex-start;
+    width: 100%;
 }
 
 .recordform-info-left {
     flex: 1;
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
 }
 
 .recordform-info-right {
@@ -67,8 +84,10 @@
 }
 
 .recordform-info-item {
-    display: flex;
-    padding: 10px 50px;
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    align-items: start;
+    margin-bottom: 10px;
 }
 
 .recordform-info-item strong {
@@ -84,10 +103,43 @@
     font-weight: normal;
 }
 
+.recordform-keluhan-wrapper {
+    display: grid;
+    grid-template-columns: 160px 10px 1fr;
+    margin-top: 20px;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.recordform-keluhan-wrapper .colon {
+    font-size: 16px;
+    font-weight: normal;
+    color: #464646;
+}
+
+.recordform-keluhan-wrapper strong {
+    font-size: 16px;
+    font-weight: bold;
+    color: #464646;
+}
+
+.recordform-keluhan-wrapper span {
+    font-size: 16px;
+    color: #464646;
+    font-weight: normal;
+}
+
+#rf-keluhan {
+    display: block;
+    border-radius: 6px;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
 .section-divider {
     border: 0;
     border-top: 1px solid #aaa;
-    width: 91%; 
+    width: 100%;; 
     margin: 20px auto;
 }
 

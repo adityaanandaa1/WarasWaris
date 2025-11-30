@@ -27,6 +27,10 @@
     margin-left: 5px;
 }
 
+.queue-date-header {
+    font-size: 13px;
+}
+
 .queue-search input {
     width: 100%; 
     border: none;        
@@ -401,7 +405,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    font-size: 50px;
+    font-weight: bold;
+    color: #ffffff;
 }
 
 .reservasi-field-keluhan {
