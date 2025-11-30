@@ -4,6 +4,20 @@
 
 @section('content')
 
+@php
+    $tanggalLahirValue = old('tanggal_lahir_dokter');
+    if ($tanggalLahirValue === null && $dokter->tanggal_lahir_dokter) {
+        try {
+            $tanggalLahirValue = \Carbon\Carbon::parse($dokter->tanggal_lahir_dokter)->format('Y-m-d');
+        } catch (\Exception $e) {
+            $tanggalLahirValue = $dokter->tanggal_lahir_dokter; // fallback tampilkan apa adanya
+        }
+    }
+
+    $sipPath     = $dokter->sip_path ?? null;
+    $sipFileName = $sipPath ? basename($sipPath) : null;
+@endphp
+
 <form action="{{ route('dokter.profil.update') }}" 
       method="POST" 
       enctype="multipart/form-data"
@@ -35,7 +49,12 @@
                     <label class="editprofile-label">
                         Tanggal Lahir
                     </label>
-                    <input type="date" name="tanggal_lahir_dokter" value="{{ old('tanggal_lahir_dokter', optional($dokter->tanggal_lahir_dokter)->format('Y-m-d')) }}" max="{{ date('Y-m-d') }}" class="editprofile-input">
+                    <input 
+                        type="date" 
+                        name="tanggal_lahir_dokter" 
+                        value="{{ $tanggalLahirValue }}" 
+                        max="{{ date('Y-m-d') }}" 
+                        class="editprofile-input">
                 </div>
             </div>
         
@@ -64,9 +83,19 @@
             <div id="drop-area" class="editprofile-drop-area">
                 <i class="ri-upload-2-line"></i>
                 <input type="file" id="fileInput" name="sip_file" accept=".pdf,.jpg,.jpeg,.png" hidden>
-                <p id="dropText" class="editprofile-drop-text">Drop file here</p>
+                <p id="dropText" class="editprofile-drop-text">
+                    {{ $sipFileName ?? 'Drop file here' }}
+                </p>
                 <p class="editprofile-drop-description"> pdf/jpg/png, maks 2MB</p>
             </div>
+            @if($sipPath)
+                <p class="mt-2 text-sm text-gray-600">
+                    File saat ini: 
+                    <a href="{{ route('dokter.sip.download') }}" class="text-blue-600 underline" target="_blank" rel="noopener">
+                        {{ $sipFileName }}
+                    </a>
+                </p>
+            @endif
         </div>
         
         <div class="editprofile-submit">

@@ -35,7 +35,7 @@
 
     <div class="dashboard-profile">
         <div class="dashboard-profile-header">
-            <h1 class="dashboard-profile-title">Profil Saya</h1>
+            <h1 class="dashboard-profile-title">Profil Dokter</h1>
         </div>
 
         <div class="dashboard-profile-body">

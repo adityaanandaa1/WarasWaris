@@ -96,7 +96,7 @@
                             </button>
                         @elseif($reservasi->status == 'batal')
                             <button class="btn-cancel" disabled>
-                                Dibatalkan
+                                Dilewati
                             </button>
                         @else
                             <button class="btn-detail2" disabled>
@@ -117,7 +117,7 @@
                                 <span class="status-badge status-complete">Selesai</span>
                                 @break
                             @case('batal')
-                                <span class="status-badge status-cancel">Dibatalkan</span>
+                                <span class="status-badge status-cancel">Dilewati</span>
                                 @break
                         @endswitch
                     </div>
@@ -301,7 +301,7 @@ const assetBase = "{{ asset('') }}";
             case 'selesai':
                 return '<span class="status-badge status-complete">Selesai</span>';
             case 'batal':
-                return '<span class="status-badge status-cancel">Dibatalkan</span>';
+                return '<span class="status-badge status-cancel">Dilewati</span>';
             default:
                 return '';
         }
@@ -313,7 +313,7 @@ const assetBase = "{{ asset('') }}";
                         <i class="fas fa-eye"></i> Lebih Detail
                     </button>`;
         } else if (reservasi.status === 'batal') {
-            return '<button class="btn-cancel" disabled>Dibatalkan</button>';
+            return '<button class="btn-cancel" disabled>Dilewati</button>';
         } else {
             return '<button class="btn-detail2" disabled>Belum Selesai</button>';
         }

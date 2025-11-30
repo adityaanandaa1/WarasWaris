@@ -164,8 +164,8 @@ class resepsionis_controller extends Controller
 
     public function download_sip()
     {
-        $user   = Auth::user();
-        $dokter = $user->dokter;
+        // Resepsionis tidak punya relasi langsung ke dokter; ambil dokter aktif pertama
+        $dokter = data_dokter::first();
 
         if (!$dokter || !$dokter->sip_path || !Storage::disk('public')->exists($dokter->sip_path)) {
             return back()->withErrors(['error' => 'File SIP belum diupload.']);
