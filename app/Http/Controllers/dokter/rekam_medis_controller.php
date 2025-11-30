@@ -63,9 +63,10 @@ class rekam_medis_controller extends Controller
                 $nama_wali = $wali->nama_pasien ?? '-';
             }
 
-            // Data dokter
-            $nama_dokter   = $reservasi->data_dokter->nama_dokter ?? '-';
-            $alamat_dokter = $reservasi->data_dokter->alamat ?? '-';
+            // Data dokter (pakai relasi di reservasi, fallback ke dokter yang login)
+            $dokter        = $reservasi->data_dokter ?: Auth::user()->dokter;
+            $nama_dokter   = $dokter->nama_dokter ?? '-';
+            $alamat_dokter = $dokter->alamat ?? '-';
         
             // Siapkan data response (disesuaikan dengan JS yang kamu pakai!!)
             $data = [

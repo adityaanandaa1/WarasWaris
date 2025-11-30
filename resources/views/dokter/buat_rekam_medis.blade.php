@@ -181,22 +181,21 @@
 @endsection
 
 <script>
-    const reservasiId = {{ $reservasi->id }};
-    fetch(`/dokter/reservasi/{{ $reservasi->id }}/detail`)
-    .then(response => response.json())
-    .then(data => {
-        document.getElementById('rf-nama-pasien').textContent       = ': ' + (data.nama_pasien ?? '-');
-        document.getElementById('rf-tanggal-lahir').textContent     = ': ' + (data.tanggal_lahir_pasien ?? '-');
-        document.getElementById('rf-jenis-kelamin').textContent     = ': ' + (data.jenis_kelamin_pasien ?? '-');
-        document.getElementById('rf-no-telepon').textContent        = ': ' + (data.no_telepon ?? '-');
-    
-        document.getElementById('rf-golongan-darah').textContent    = ': ' + (data.golongan_darah ?? '-');
-        document.getElementById('rf-pekerjaan').textContent         = ': ' + (data.pekerjaan ?? '-');
-        document.getElementById('rf-alamat').textContent            = ': ' + (data.alamat ?? '-');
-        document.getElementById('rf-keluhan').textContent           = ': ' + (data.keluhan ?? '-');
-    
-        document.getElementById('rf-nama-dokter').textContent       = ': ' + (data.nama_dokter ?? '-');
-        document.getElementById('rf-alamat-dokter').textContent     = ': ' + (data.alamat_dokter ?? '-');
-    })
-    .catch(err => console.error("Gagal load data:", err));
+    const detailUrl = "{{ route('dokter.reservasi.detail_lengkap', $reservasi->id) }}";
+
+    fetch(detailUrl)
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById('rf-nama-pasien').textContent   = ': ' + (data.nama_pasien ?? '-');
+            document.getElementById('rf-tanggal-lahir').textContent = ': ' + (data.tanggal_lahir_pasien ?? '-');
+            document.getElementById('rf-jenis-kelamin').textContent = ': ' + (data.jenis_kelamin_pasien ?? '-');
+            document.getElementById('rf-no-telepon').textContent    = ': ' + (data.no_telepon ?? '-');
+            document.getElementById('rf-golongan-darah').textContent= ': ' + (data.golongan_darah ?? '-');
+            document.getElementById('rf-pekerjaan').textContent     = ': ' + (data.pekerjaan ?? '-');
+            document.getElementById('rf-alamat').textContent        = ': ' + (data.alamat ?? '-');
+            document.getElementById('rf-keluhan').textContent       = ': ' + (data.keluhan ?? '-');
+            document.getElementById('rf-nama-dokter').textContent   = ': ' + (data.nama_dokter ?? '-');
+            document.getElementById('rf-alamat-dokter').textContent = ': ' + (data.alamat_dokter ?? '-');
+        })
+        .catch(err => console.error('Gagal load data:', err));
 </script>
