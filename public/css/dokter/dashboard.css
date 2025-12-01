@@ -1,13 +1,18 @@
-/* Dashboard Welcome Section */
 .dashboard-welcome-section {
     grid-column: span 5 / span 5;
     grid-row: span 4 / span 4;
-
     background-color: #5A81FA;
     padding-left: 15px;
     padding-top: 15px;
     border-radius: 20px;
     box-shadow: 0px 0px 20px 5px rgba(0, 0, 0, 0.15);
+    animation: fadeInUp 0.6s ease-out;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dashboard-welcome-section:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 5px 30px 8px rgba(0, 0, 0, 0.2);
 }
 
 .dashboard-welcome-date {
@@ -21,6 +26,11 @@
     align-items: center;
     gap: 10px;
     position: relative;
+    animation: slideInLeft 0.8s ease-out;
+}
+
+.dashboard-welcome-date svg {
+    animation: pulse 2s ease-in-out infinite;
 }
 
 .dashboard-welcome-today {
@@ -38,6 +48,7 @@
 
 .dashboard-greeting-text {
     padding-bottom: 30px;
+    animation: fadeInRight 1s ease-out;
 }
 
 .dashboard-greeting-title {
@@ -49,12 +60,27 @@
     color: #FFFFFF;
     font-weight: bolder;
     line-height: 2;
+    opacity: 0;
+    animation: fadeInRight 1s ease-out forwards;
+}
+
+.dashboard-greeting-title-subtitle:first-child {
+    animation-delay: 0.3s;
+}
+
+.dashboard-greeting-title-subtitle:last-child {
+    animation-delay: 0.5s;
 }
 
 .dashboard-greeting-subtitle {
     font-size: 15px;
     color: #FFFFFF;
     font-weight: lighter;
+    animation: fadeInRight 1s ease-out 0.7s backwards;
+}
+
+.dashboard-greeting-illustration img {
+    animation: float 3s ease-in-out infinite;
 }
 
 /* Dashboard Profile Section */
@@ -62,11 +88,11 @@
     grid-column: span 3 / span 3;
     grid-row: span 4 / span 4;
     grid-column-start: 6;
-
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    animation: fadeInUp 0.6s ease-out 0.2s backwards;
 }
 
 .dashboard-profile-header {
@@ -81,6 +107,11 @@
     box-shadow: 0px 0px 27px 7px rgba(0, 0, 0, 0.15);
     position: relative;
     z-index: 2;
+    transition: transform 0.3s ease;
+}
+
+.dashboard-profile-header:hover {
+    transform: translateY(-3px);
 }
 
 .dashboard-profile-title {
@@ -93,17 +124,23 @@
 .ri-edit-box-line {
     font-size: 18px;
     color: #FFFFFF;
+    transition: transform 0.3s ease;
 }
 
 .dashboard-profile-edit {
     text-decoration: none;
     padding: 2px 5px;
+    transition: all 0.3s ease;
 }
 
 .dashboard-profile-edit:hover {
     background-color: #FFFFFF25;
     border-radius: 100%;
     padding: 2px 5px;
+}
+
+.dashboard-profile-edit:hover .ri-edit-box-line {
+    transform: rotate(15deg) scale(1.1);
 }
 
 .dashboard-profile-body {
@@ -116,6 +153,7 @@
     margin-top: -15px;
     position: relative;
     z-index: 1;
+    animation: scaleIn 0.5s ease-out 0.3s backwards;
 }
 
 .dashboard-profile-name {
@@ -158,6 +196,16 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    opacity: 0;
+    animation: fadeInUp 0.5s ease-out forwards;
+}
+
+.dashboard-detail-item:first-child {
+    animation-delay: 0.5s;
+}
+
+.dashboard-detail-item:last-child {
+    animation-delay: 0.7s;
 }
 
 .dashboard-profile-separator {
@@ -189,13 +237,14 @@
     color: #FFFFFF;
     font-size: 10px;
     padding: 5px 10px;
-    transition: background-color 1s ease;
+    transition: all 0.3s ease;
     text-decoration: none;
 }
 
 .dashboard-download-sip:hover {
     background: #87A3FB;
-    box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.25);
+    box-shadow: 0px 0px 15px 3px rgba(0, 0, 0, 0.3);
+    transform: translateY(-2px);
 }
 
 /* Dashboard Schedule Section */
@@ -203,7 +252,6 @@
     grid-column: span 2 / span 2;
     grid-row: span 3 / span 3;
     grid-row-start: 5;
-
     background-color: #FFFFFF;
     border-radius: 20px;
     display: flex;
@@ -211,6 +259,13 @@
     justify-content: center;
     align-items: center;
     gap: 10px;
+    animation: scaleIn 0.6s ease-out 0.4s backwards;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dashboard-schedule:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 5px 25px 5px rgba(0, 0, 0, 0.2);
 }
 
 .dashboard-schedule-title {
@@ -227,6 +282,11 @@
     font-weight: lighter;
     color: #5A81FA;
     border-radius: 10px;
+    transition: transform 0.2s ease;
+}
+
+.dashboard-dropdown-schedule:hover {
+    transform: scale(1.05);
 }
 
 .dashboard-schedule-time {
@@ -255,6 +315,7 @@
     font-weight: bolder;
     color: #5A81FA;
     margin: 0;
+    animation: pulse 2s ease-in-out infinite;
 }
 
 .dashboard-time-separator {
@@ -271,12 +332,18 @@
     font-size: 12px;
     font-weight: bolder;
     color: #ffffff;
-    transition: background-color 0.5s ease;
+    transition: all 0.3s ease;
     box-shadow: 0px 0px 20px 5px rgba(0, 0, 0, 0.15);
 }
 
 .dashboard-btn-schedule:hover {
     background-color: #87A3FB;
+    transform: translateY(-2px);
+    box-shadow: 0px 4px 25px 7px rgba(0, 0, 0, 0.2);
+}
+
+.dashboard-btn-schedule:active {
+    transform: translateY(0px);
 }
 
 /* Dashboard Queue Section */
@@ -285,7 +352,6 @@
     grid-row: span 3 / span 3;
     grid-column-start: 1;
     grid-row-start: 8;
-
     background-color: #FFFFFF;
     border-radius: 20px;
     display: flex;
@@ -293,6 +359,12 @@
     justify-content: center;
     align-items: center;
     gap: 10px;
+    animation: bounceIn 0.8s ease-out 0.6s backwards;
+    transition: transform 0.3s ease;
+}
+
+.dashboard-queue:hover {
+    transform: scale(1.05);
 }
 
 .dashboard-queue-title {
@@ -306,15 +378,14 @@
     font-size: 96px;
     font-weight: bold;
     color: #5A81FA;
+    animation: pulse 2s ease-in-out infinite;
 }
 
-/* Dashboard Report Section */
 .dashboard-report {
     grid-column: span 3 / span 3;
     grid-row: span 6 / span 6;
     grid-column-start: 3;
     grid-row-start: 5;
-
     background-color: #FFFFFF;
     border-radius: 20px;
     display: flex;
@@ -323,6 +394,7 @@
     align-items: center;
     padding: 25px;
     gap: 30px;
+    animation: fadeInUp 0.6s ease-out 0.5s backwards;
 }
 
 .dashboard-report-title {
@@ -337,6 +409,25 @@
     justify-content: center;
     align-items: center;
     gap: 5px;
+    opacity: 0;
+    animation: scaleIn 0.5s ease-out forwards;
+    transition: transform 0.3s ease;
+}
+
+.dashboard-report-item:hover {
+    transform: scale(1.1);
+}
+
+.dashboard-report-item:nth-child(2) {
+    animation-delay: 0.7s;
+}
+
+.dashboard-report-item:nth-child(3) {
+    animation-delay: 0.9s;
+}
+
+.dashboard-report-item:nth-child(4) {
+    animation-delay: 1.1s;
 }
 
 .dashboard-report-number-1 {
@@ -363,16 +454,15 @@
     color: #464646;
 }
 
-/* Dashboard Calendar Section */
 .dashboard-calendar {
     grid-column: span 3 / span 3;
     grid-row: span 6 / span 6;
     grid-column-start: 6;
     grid-row-start: 5;
-
     display: flex;
     flex-direction: column;
     align-items: center;
+    animation: fadeInUp 0.6s ease-out 0.7s backwards;
 }
 
 .dashboard-calendar-header {
@@ -387,6 +477,11 @@
     box-shadow: 0px 0px 27px 7px rgba(0, 0, 0, 0.15);
     position: relative;
     z-index: 2;
+    transition: transform 0.3s ease;
+}
+
+.dashboard-calendar-header:hover {
+    transform: translateY(-3px);
 }
 
 .dashboard-calendar-title {
@@ -444,7 +539,6 @@
     grid-template-columns: repeat(7, 1fr);
     gap: 6px;
     text-align: center;
-
     font-weight: normal;
     color: #1F4DD9;
 }
@@ -453,9 +547,19 @@
     font-size: 16px;
     padding: 9px;
     cursor: pointer;
-    transition: all 0.3s;
+    transition: all 0.3s ease;
     border-radius: 30px;
+    opacity: 0;
+    animation: fadeInUp 0.3s ease-out forwards;
 }
+
+.date-cell:nth-child(1) { animation-delay: 0.05s; }
+.date-cell:nth-child(2) { animation-delay: 0.1s; }
+.date-cell:nth-child(3) { animation-delay: 0.15s; }
+.date-cell:nth-child(4) { animation-delay: 0.2s; }
+.date-cell:nth-child(5) { animation-delay: 0.25s; }
+.date-cell:nth-child(6) { animation-delay: 0.3s; }
+.date-cell:nth-child(7) { animation-delay: 0.35s; }
 
 .date-cell:nth-child(n+36) {
     display: none;
@@ -464,6 +568,7 @@
 .date-cell:hover:not(.prev-month):not(.next-month):not(.current) {
     background: rgba(90, 129, 250, 0.2);
     border-radius: 10px;
+    transform: scale(1.15);
 }
 
 .date-cell.current {
@@ -471,6 +576,7 @@
     color: #FFFFFF;
     font-weight: 600;
     border-radius: 10px;
+    animation: pulse 2s ease-in-out infinite;
 }
 
 .date-cell.prev-month,
@@ -480,34 +586,46 @@
     color: #1F4DD970;
 }
 
-/* Modal Atur Jadwal */
 .dashboard-modal-overlay {
-    position: fixed; 
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    
-    background-color: rgba(0, 0, 0, 0.5); 
+    background-color: rgba(0, 0, 0, 0.5);
     z-index: 999;
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
     padding: 16px;
+    opacity: 0;
     transition: opacity 0.3s ease-in-out;
+    pointer-events: none;
+}
+
+.dashboard-modal-overlay:not(.hidden) {
+    opacity: 1;
+    pointer-events: all;
 }
 
 .dashboard-modal-container {
-    background-color: #ffffff; 
-    border-radius: 16px; 
+    background-color: #ffffff;
+    border-radius: 16px;
     box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-    width: 60%; 
-    padding: 24px; 
+    width: 60%;
+    padding: 24px;
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+}
+
+.dashboard-modal-overlay:not(.hidden) .dashboard-modal-container {
+    transform: scale(1);
+    animation: bounceIn 0.5s ease-out;
 }
 
 .dashboard-modal-close-btn {
     color: #9ca3af;
-    transition: color 0.15s ease-in-out;
+    transition: all 0.3s ease;
     border: none;
     cursor: pointer;
     background-color: #CEDEFF;
@@ -518,6 +636,8 @@
 
 .dashboard-modal-close-btn:hover {
     color: #4b5563;
+    transform: rotate(90deg);
+    background-color: #b8d4ff;
 }
 
 .dashboard-icon-close {
@@ -532,7 +652,7 @@
 }
 
 .dashboard-datepickercomponent {
-    position: fixed; 
+    position: fixed;
     top: 10;
     left: 10;
     z-index: 9999;
@@ -605,6 +725,7 @@
     width: 60%;
     margin: 5px;
     box-shadow: 0px 0px 20px 5px rgba(0, 0, 0, 0.15);
+    animation: fadeInUp 0.5s ease-out;
 }
 
 .dashboard-jam-title {
@@ -633,10 +754,13 @@
     padding: 25px 15px;
     border-radius: 10px;
     border: none;
+    transition: all 0.3s ease;
 }
 
 .dashboard-form-input-jam:focus {
     outline: none;
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(90, 129, 250, 0.4);
 }
 
 .dashboard-time-item-schedule {
@@ -654,13 +778,19 @@
     padding: 5px 25px;
     border-radius: 100px;
     margin-top: 40px;
-    transition: background-color 0.5s ease;
+    transition: all 0.3s ease;
     box-shadow: 0px 0px 20px 5px rgba(0, 0, 0, 0.15);
     border: none;
 }
 
 .dashboard-btn-submit-schedule:hover {
     background-color: #6D8BE9;
+    transform: translateY(-3px);
+    box-shadow: 0px 5px 25px 7px rgba(0, 0, 0, 0.25);
+}
+
+.dashboard-btn-submit-schedule:active {
+    transform: translateY(-1px);
 }
 
 .dashboard-form-textarea {
@@ -671,13 +801,112 @@
     font-size: 12px;
     font-weight: normal;
     color: #464646;
+    transition: all 0.3s ease;
 }
 
 .dashboard-form-textarea:focus {
     outline: none;
+    transform: scale(1.02);
+    box-shadow: 0 0 15px rgba(90, 129, 250, 0.4);
 }
 
-/* --- UTILITY CSS --- */
 .hidden {
     display: none !important;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInRight {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -1000px 0;
+    }
+    100% {
+        background-position: 1000px 0;
+    }
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes bounceIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.3);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    70% {
+        transform: scale(0.9);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
 }

@@ -18,9 +18,6 @@
                         <a href="{{ route('login') }}?mode=register" class="btn-home">
                             Daftar Akun
                         </a>
-                        <a href="#schedule" class="btn-home" data-aos="zoom-in">
-                            Lihat Jadwal Dokter
-                        </a>
                     </div>
                 </div>
             </div>
