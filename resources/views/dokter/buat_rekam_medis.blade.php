@@ -43,7 +43,7 @@
                     </div>
                     <div class="recordform-info-item">
                         <strong>Tanggal Lahir</strong>
-                        <span id="rf-tanggal-lahir">: -</span>
+                        <span id="rf-tanggal-lahir">: - tahun </span>
                     </div>
                     <div class="recordform-info-item">
                         <strong>Jenis Kelamin</strong>
@@ -54,7 +54,7 @@
                         <span id="rf-no-telepon">: -</span>
                     </div>
                 </div>
-            
+                    
                 <div class="recordform-info-right">
                     <div class="recordform-info-item">
                         <strong>Golongan Darah</strong>
@@ -68,11 +68,14 @@
                         <strong>Alamat</strong>
                         <span id="rf-alamat">: -</span>
                     </div>
-                    <div class="recordform-info-item">
-                        <strong>Keluhan Pasien :</strong>
-                        <span id="rf-keluhan">-</span>
-                    </div>
                 </div>
+            </div>
+
+            <div class="recordform-keluhan-wrapper">
+                <strong>Keluhan Pasien</strong>
+                <span class="colon">:</span>
+                <span id="rf-keluhan">-</span>
+            </div>
 
             <div class="recordform-doctor-info">
                 <div class="recordform-info-item">
@@ -85,98 +88,98 @@
                 </div>
             </div>
 
-                <div class="recordform-physical-section">
-                    <h1 class="recordform-section-title">Pemeriksaan Fisik</h1>
+            <p class="recordform-section-divider">
 
-                    <div class="recordform-physical-grid">
+            <div class="recordform-physical-section">
+                <h1 class="recordform-section-title">Pemeriksaan Fisik</h1>
 
-                        {{-- Input Tekanan Darah --}}
-                        <div class="recordform-physical-input">
-                            <label>Tekanan Darah</label>
-                            <div class="input-unit">
-                                <input type="text" name="tekanan_darah" value="{{ old('tekanan_darah') }}" placeholder="120/80" class="recordform-input">
-                                <span>mmHg</span>
-                            </div>
-                            @error('tekanan_darah')<div>{{ $message }}</div>@enderror
+                <div class="recordform-physical-grid">
+
+                    {{-- Input Tekanan Darah --}}
+                    <div class="recordform-physical-input">
+                        <label>Tekanan Darah</label>
+                        <div class="input-unit">
+                            <input type="text" name="tekanan_darah" value="{{ old('tekanan_darah') }}" placeholder="120/80" class="recordform-input">
+                            <span>mmHg</span>
                         </div>
-
-                        {{-- Input Suhu Tubuh --}}
-                        <div class="recordform-physical-input">
-                            <label>Suhu</label>
-                            <div class="input-unit">
-                                <input type="number" step="0.1" name="suhu" value="{{ old('suhu') }}" class="recordform-input">
-                                <span>°C</span>
-                            </div>
-                            @error('suhu')<div>{{ $message }}</div>@enderror
-                        </div>
-
-                        {{-- Input Tinggi Badan --}}
-                        <div class="recordform-physical-input">
-                            <label>Tinggi Badan</label>
-                            <div class="input-unit">
-                                <input type="number" name="tinggi_badan" value="{{ old('tinggi_badan') }}" class="recordform-input">
-                                <span>cm</span>
-                            </div>
-                            @error('tinggi_badan')<div>{{ $message }}</div>@enderror
-                        </div>
-
-                        {{-- Input Berat Badan --}}
-                        <div class="recordform-physical-input">
-                            <label>Berat Badan</label>
-                            <div class="input-unit">
-                                <input type="number" step="0.01" name="berat_badan" value="{{ old('berat_badan') }}" class="recordform-input">
-                                <span>kg</span>
-                            </div>
-                            @error('berat_badan')<div>{{ $message }}</div>@enderror
-                        </div>
+                        @error('tekanan_darah')<div>{{ $message }}</div>@enderror
                     </div>
 
-                    <div class="recordform-diagnosis-section">
-                        {{-- Input Diagnosa --}}
-                        <div class="recordform-physical-input">
-                            <label>Diagnosa</label>
-                            <textarea name="diagnosa" class="recordform-textarea">{{ old('diagnosa') }}</textarea>
-                            @error('diagnosa')<div>{{ $message }}</div>@enderror
+                    {{-- Input Suhu Tubuh --}}
+                    <div class="recordform-physical-input">
+                        <label>Suhu</label>
+                        <div class="input-unit">
+                            <input type="number" step="0.1" name="suhu" value="{{ old('suhu') }}" class="recordform-input">
+                            <span>°C</span>
                         </div>
-
-                        {{-- Input Saran --}}
-                        <div class="recordform-physical-input">
-                            <label>Saran</label>
-                            <textarea name="saran" class="recordform-textarea">{{ old('saran') }}</textarea>
-                            @error('saran')<div>{{ $message }}</div>@enderror
-                        </div>
+                        @error('suhu')<div>{{ $message }}</div>@enderror
                     </div>
 
-                    <div class="recordform-plan-section">
-                        {{-- Input Rencana Tindak Lanjut --}}
-                        <div class="recordform-physical-input">
-                            <label>Rencana Tindak Lanjut</label>
-                            <textarea name="rencana_tindak_lanjut" class="recordform-textarea">{{ old('rencana_tindak_lanjut') }}</textarea>
-                            @error('rencana_tindak_lanjut')<div>{{ $message }}</div>@enderror
+                    {{-- Input Tinggi Badan --}}
+                    <div class="recordform-physical-input">
+                        <label>Tinggi Badan</label>
+                        <div class="input-unit">
+                            <input type="number" name="tinggi_badan" value="{{ old('tinggi_badan') }}" class="recordform-input">
+                            <span>cm</span>
                         </div>
-                    
-                        {{-- Input Riwayat Alergi --}}
-                        <div class="recordform-physical-input">
-                            <label>Riwayat Alergi</label>
-                            <textarea name="riwayat_alergi" class="recordform-textarea">{{ old('riwayat_alergi') }}</textarea>
-                            @error('riwayat_alergi')<div>{{ $message }}</div>@enderror
-                        </div>
+                        @error('tinggi_badan')<div>{{ $message }}</div>@enderror
                     </div>
 
-                    <div class="recordform-notes-section">
-                        {{-- Input Catatan Tambahan --}}
-                        <div class="recordform-physical-input">
-                            <label>Catatan Tambahan</label>
-                            <textarea name="catatan_tambahan" class="recordform-textarea">{{ old('catatan_tambahan') }}</textarea>
-                            @error('catatan_tambahan')<div>{{ $message }}</div>@enderror
+                    {{-- Input Berat Badan --}}
+                    <div class="recordform-physical-input">
+                        <label>Berat Badan</label>
+                        <div class="input-unit">
+                            <input type="number" step="0.01" name="berat_badan" value="{{ old('berat_badan') }}" class="recordform-input">
+                            <span>kg</span>
                         </div>
+                        @error('berat_badan')<div>{{ $message }}</div>@enderror
                     </div>
-                
-                    <button type="submit" class="recordform-btn-save">Simpan</button>
                 </div>
-            </div>  
-        </form>
-    </div>
+
+                <div class="recordform-diagnosis-section">
+                    {{-- Input Diagnosa --}}
+                    <div class="recordform-physical-input">
+                        <label>Diagnosa</label>
+                        <textarea name="diagnosa" class="recordform-textarea">{{ old('diagnosa') }}</textarea>
+                        @error('diagnosa')<div>{{ $message }}</div>@enderror
+                    </div>
+
+                    {{-- Input Saran --}}
+                    <div class="recordform-physical-input">
+                        <label>Saran</label>
+                        <textarea name="saran" class="recordform-textarea">{{ old('saran') }}</textarea>
+                        @error('saran')<div>{{ $message }}</div>@enderror
+                    </div>
+                </div>
+
+                <div class="recordform-plan-section">
+                    {{-- Input Rencana Tindak Lanjut --}}
+                    <div class="recordform-physical-input">
+                        <label>Rencana Tindak Lanjut</label>
+                        <textarea name="rencana_tindak_lanjut" class="recordform-textarea">{{ old('rencana_tindak_lanjut') }}</textarea>
+                        @error('rencana_tindak_lanjut')<div>{{ $message }}</div>@enderror
+                    </div>
+                    
+                    {{-- Input Riwayat Alergi --}}
+                    <div class="recordform-physical-input">
+                        <label>Riwayat Alergi</label>
+                        <textarea name="riwayat_alergi" class="recordform-textarea">{{ old('riwayat_alergi') }}</textarea>
+                        @error('riwayat_alergi')<div>{{ $message }}</div>@enderror
+                    </div>
+                </div>
+
+                <div class="recordform-notes-section">
+                    {{-- Input Catatan Tambahan --}}
+                    <div class="recordform-physical-input">
+                        <label>Catatan Tambahan</label>
+                        <textarea name="catatan_tambahan" class="recordform-textarea">{{ old('catatan_tambahan') }}</textarea>
+                        @error('catatan_tambahan')<div>{{ $message }}</div>@enderror
+                    </div>
+                </div>
+                <button type="submit" class="recordform-btn-save">Simpan</button>
+            </div>
+        </div>  
+    </form>
 </div>
 @endsection
 
@@ -193,7 +196,7 @@
             document.getElementById('rf-golongan-darah').textContent= ': ' + (data.golongan_darah ?? '-');
             document.getElementById('rf-pekerjaan').textContent     = ': ' + (data.pekerjaan ?? '-');
             document.getElementById('rf-alamat').textContent        = ': ' + (data.alamat ?? '-');
-            document.getElementById('rf-keluhan').textContent       = ': ' + (data.keluhan ?? '-');
+            document.getElementById('rf-keluhan').textContent       = '' + (data.keluhan ?? '-');
             document.getElementById('rf-nama-dokter').textContent   = ': ' + (data.nama_dokter ?? '-');
             document.getElementById('rf-alamat-dokter').textContent = ': ' + (data.alamat_dokter ?? '-');
         })

@@ -197,9 +197,10 @@
                         </div>
 
                         <div class="medicalrecord-notes-section">
-                            <div class="medicalrecord-physical-input">
+                            {{-- Input Catatan Tambahan --}}
+                            <div class="medicalrecord-notes-input">
                                 <label>Catatan Tambahan</label>
-                                <span>{{ $rekamMedisAktif->catatan_tambahan ?? '-' }}</span>
+                                <span class="medicalrecord-textarea">{{ $rekamMedisAktif->catatan_tambahan ?? '-' }}</span>
                             </div>
                         </div>
                         @else
