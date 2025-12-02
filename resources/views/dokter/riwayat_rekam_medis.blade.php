@@ -1,6 +1,9 @@
 @extends('layouts.dokter_modal')
 
-@section('title', 'Rekam Medis - {{ $rekamMedisAktif->nomor_rekam_medis }}')
+@section('title')
+    Rekam Medis{{ $rekamMedisAktif ? ' - '.$rekamMedisAktif->nomor_rekam_medis : '' }}
+@endsection
+
 
 <div class="medicalrecord-wrapper">
     <!-- Tombol Aksi -->
@@ -182,6 +185,11 @@
                                 <label>Saran</label>
                                 <span>{{ $rekamMedisAktif->saran }}</span>
                             </div>
+
+                            <div class="medicalrecord-physical-input">
+                                <label>Resep Obat</label>
+                                <span>{{ $rekamMedisAktif->resep_obat ?? '-' }}</span>
+                            </div>
                         </div>
 
                         <div class="medicalrecord-plan-section">
@@ -192,7 +200,7 @@
                         
                             <div class="medicalrecord-physical-input">
                                 <label>Riwayat Alergi</label>
-                                <span>{{ $rekamMedisAktif->alergi ?? '-' }}</span>
+                                <span>{{ $rekamMedisAktif->riwayat_alergi ?? '-' }}</span>
                             </div>
                         </div>
 

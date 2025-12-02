@@ -21,11 +21,14 @@ class rekam_medis_controller extends Controller
     {
         try {
             // Ambil data reservasi
-            $reservasi = Reservasi::with(['data_pasien', 'data_dokter'])->findOrFail($id);
+            $reservasi = Reservasi::with(['data_pasien', 'data_dokter', 'rekam_medis'])->findOrFail($id);
 
             if (!$reservasi->data_pasien) {
                 return response()->json(['error' => 'Data pasien tidak ditemukan'], 404);
             }
+
+            // Pastikan nomor rekam medis tersedia saat form diisi
+            $nomorRekamMedis = $this->ensureNomorRekamMedis($reservasi);
         
             // Format tanggal lahir pasien
             $pasien = $reservasi->data_pasien;
@@ -68,8 +71,9 @@ class rekam_medis_controller extends Controller
             $nama_dokter   = $dokter->nama_dokter ?? '-';
             $alamat_dokter = $dokter->alamat ?? '-';
         
-            // Siapkan data response (disesuaikan dengan JS yang kamu pakai!!)
+            // Siapkan data response 
             $data = [
+                'nomor_rekam_medis'    => $nomorRekamMedis ?? '-',
                 'keluhan'               => $reservasi->keluhan ?? '-',
                 'nama_pasien'           => $pasien->nama_pasien ?? '-',
                 'nama_wali'             => $nama_wali,
@@ -120,6 +124,7 @@ class rekam_medis_controller extends Controller
             'rencana_tindak_lanjut'  => 'required|string',
             'catatan_tambahan'       => 'nullable|string',
             'riwayat_alergi'         => 'nullable|string',
+            'resep_obat'             => 'nullable|string',
         ]);
 
         // Ambil pasien_id dari reservasi (support dua nama kolom)
@@ -247,6 +252,53 @@ class rekam_medis_controller extends Controller
             'dokterData',
             'pasienAktif'
         ));
+    }
+
+    /**
+     * Pastikan rekam medis memiliki nomor sebelum form diisi.
+     * Menghasilkan nomor baru jika belum ada.
+     */
+    private function ensureNomorRekamMedis(Reservasi $reservasi): ?string
+    {
+        $pasienId = $reservasi->id_pasien;
+
+        if (!$pasienId) {
+            return null;
+        }
+
+        $rekam = rekam_medis::firstOrNew(['id_reservasi' => $reservasi->id]);
+
+        if (!$rekam->exists) {
+            $rekam->id_pasien            = $pasienId;
+            $rekam->tanggal_pemeriksaan  = $reservasi->tanggal_reservasi
+                ? Carbon::parse($reservasi->tanggal_reservasi)->toDateString()
+                : now()->toDateString();
+        }
+
+        if (!empty($rekam->nomor_rekam_medis)) {
+            return $rekam->nomor_rekam_medis;
+        }
+
+        DB::transaction(function () use (&$rekam, $reservasi, $pasienId) {
+            $tglObj = $reservasi->tanggal_reservasi
+                ? Carbon::parse($reservasi->tanggal_reservasi)
+                : now();
+
+            $existingCount = rekam_medis::where('id_pasien', $pasienId)
+                ->whereNotNull('nomor_rekam_medis')
+                ->lockForUpdate()
+                ->count();
+
+            $seqKe = $existingCount + 1;
+            $SS    = str_pad($seqKe, 2, '0', STR_PAD_LEFT);
+            $PPPP  = str_pad($pasienId, 4, '0', STR_PAD_LEFT);
+            $tglCompact = $tglObj->format('Ymd');
+
+            $rekam->nomor_rekam_medis = "RM-{$tglCompact}-{$SS}-{$PPPP}";
+            $rekam->save();
+        });
+
+        return $rekam->nomor_rekam_medis;
     }
 
     /**
