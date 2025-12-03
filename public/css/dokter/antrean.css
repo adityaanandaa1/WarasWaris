@@ -149,6 +149,10 @@
     text-decoration: underline;
 }
 
+.queue-item-status a:hover {
+    font-weight: 600;
+}
+
 .queue-item-status span {
     color: #4CAF50;
     font-size: 13px;
