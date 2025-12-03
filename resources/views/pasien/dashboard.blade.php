@@ -95,7 +95,7 @@
                                     <p>Ketuk untuk melihat lebih detail tentang catatan riwayat pemeriksaan</p>
                                 </div>
                             </div>
-                            <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg width="24" height="24" fill="none" stroke="gray" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                             </svg>
                         </div>

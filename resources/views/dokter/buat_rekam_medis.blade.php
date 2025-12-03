@@ -119,7 +119,7 @@
                             <input type="text" name="tekanan_darah" value="{{ old('tekanan_darah') }}" placeholder="120/80" class="recordform-input">
                             <span>mmHg</span>
                         </div>
-                        @error('tekanan_darah')<div>{{ $message }}</div>@enderror
+                        @error('tekanan_darah')<div class="alert-error">{{ $message }}</div>@enderror
                     </div>
 
                     {{-- Input Suhu Tubuh --}}
@@ -129,7 +129,7 @@
                             <input type="number" step="0.1" name="suhu" value="{{ old('suhu') }}" class="recordform-input">
                             <span>°C</span>
                         </div>
-                        @error('suhu')<div>{{ $message }}</div>@enderror
+                        @error('suhu')<div class="alert-error">{{ $message }}</div>@enderror
                     </div>
 
                     {{-- Input Tinggi Badan --}}
@@ -139,7 +139,7 @@
                             <input type="number" name="tinggi_badan" value="{{ old('tinggi_badan') }}" class="recordform-input">
                             <span>cm</span>
                         </div>
-                        @error('tinggi_badan')<div>{{ $message }}</div>@enderror
+                        @error('tinggi_badan')<div class="alert-error">{{ $message }}</div>@enderror
                     </div>
 
                     {{-- Input Berat Badan --}}
@@ -149,7 +149,7 @@
                             <input type="number" step="0.01" name="berat_badan" value="{{ old('berat_badan') }}" class="recordform-input">
                             <span>kg</span>
                         </div>
-                        @error('berat_badan')<div>{{ $message }}</div>@enderror
+                        @error('berat_badan')<div class="alert-error">{{ $message }}</div>@enderror
                     </div>
                 </div>
 
@@ -158,21 +158,21 @@
                     <div class="recordform-physical-input">
                         <label>Diagnosa</label>
                         <textarea name="diagnosa" class="recordform-textarea">{{ old('diagnosa') }}</textarea>
-                        @error('diagnosa')<div>{{ $message }}</div>@enderror
+                        @error('diagnosa')<div class="alert-error">{{ $message }}</div>@enderror
                     </div>
 
                     {{-- Input Saran --}}
                     <div class="recordform-physical-input">
                         <label>Saran</label>
                         <textarea name="saran" class="recordform-textarea">{{ old('saran') }}</textarea>
-                        @error('saran')<div>{{ $message }}</div>@enderror
+                        @error('saran')<div class="alert-error">{{ $message }}</div>@enderror
                     </div>
 
                     {{-- Input Resep Obat (hanya dokter yang melihat) --}}
                     <div class="recordform-physical-input">
                         <label>Resep Obat</label>
                         <textarea name="resep_obat" class="recordform-textarea">{{ old('resep_obat') }}</textarea>
-                        @error('resep_obat')<div>{{ $message }}</div>@enderror
+                        @error('resep_obat')<div class="alert-error">{{ $message }}</div>@enderror
                     </div>
                 </div>
 
@@ -181,14 +181,14 @@
                     <div class="recordform-physical-input">
                         <label>Rencana Tindak Lanjut</label>
                         <textarea name="rencana_tindak_lanjut" class="recordform-textarea">{{ old('rencana_tindak_lanjut') }}</textarea>
-                        @error('rencana_tindak_lanjut')<div>{{ $message }}</div>@enderror
+                        @error('rencana_tindak_lanjut')<div class="alert-error">{{ $message }}</div>@enderror
                     </div>
                     
                     {{-- Input Riwayat Alergi --}}
                     <div class="recordform-physical-input">
                         <label>Riwayat Alergi</label>
                         <textarea name="riwayat_alergi" class="recordform-textarea">{{ old('riwayat_alergi') }}</textarea>
-                        @error('riwayat_alergi')<div>{{ $message }}</div>@enderror
+                        @error('riwayat_alergi')<div class="alert-error">{{ $message }}</div>@enderror
                     </div>
                 </div>
 
@@ -197,7 +197,7 @@
                     <div class="recordform-physical-input">
                         <label>Catatan Tambahan</label>
                         <textarea name="catatan_tambahan" class="recordform-textarea">{{ old('catatan_tambahan') }}</textarea>
-                        @error('catatan_tambahan')<div>{{ $message }}</div>@enderror
+                        @error('catatan_tambahan')<div class="alert-error">{{ $message }}</div>@enderror
                     </div>
                 </div>
                 <button type="submit" class="recordform-btn-save">Simpan</button>

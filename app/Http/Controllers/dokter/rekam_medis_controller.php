@@ -115,9 +115,9 @@ class rekam_medis_controller extends Controller
     public function simpan_rekam_medis(Request $request, Reservasi $reservasi)
     {
         $data = $request->validate([
-            'tinggi_badan'           => 'required|integer|min:30|max:250',
-            'berat_badan'            => 'required|numeric|min:1|max:500',
-            'tekanan_darah'          => 'required|string|max:15',
+            'tinggi_badan'           => 'required|integer|max:250',
+            'berat_badan'            => 'required|numeric|max:500',
+            'tekanan_darah'          => 'required|string',
             'suhu'                   => 'required|numeric|min:30|max:45',
             'diagnosa'               => 'required|string',
             'saran'                  => 'required|string',
@@ -125,6 +125,41 @@ class rekam_medis_controller extends Controller
             'catatan_tambahan'       => 'nullable|string',
             'riwayat_alergi'         => 'nullable|string',
             'resep_obat'             => 'nullable|string',
+        ], [
+            
+        'tinggi_badan.required' => 'Tinggi badan wajib diisi.',
+        'tinggi_badan.integer'  => 'Tinggi badan harus berupa angka.',
+        'tinggi_badan.min'      => 'Tinggi badan minimal 30 cm.',
+        'tinggi_badan.max'      => 'Tinggi badan maksimal 250 cm.',
+        
+        // Pesan custom untuk berat_badan
+        'berat_badan.required' => 'Berat badan wajib diisi.',
+        'berat_badan.numeric'  => 'Berat badan harus berupa angka.',
+        'berat_badan.min'      => 'Berat badan minimal 1 kg.',
+        'berat_badan.max'      => 'Berat badan maksimal 500 kg.',
+        
+        // Pesan custom untuk tekanan_darah
+        'tekanan_darah.required' => 'Tekanan darah wajib diisi.',
+        'tekanan_darah.string'   => 'Tekanan darah harus berupa teks.',
+        'tekanan_darah.max'      => 'Tekanan darah maksimal 15 karakter.',
+        
+        // Pesan custom untuk suhu
+        'suhu.required' => 'Suhu tubuh wajib diisi.',
+        'suhu.numeric'  => 'Suhu tubuh harus berupa angka.',
+        'suhu.min'      => 'Suhu tubuh minimal 30°C.',
+        'suhu.max'      => 'Suhu tubuh maksimal 45°C.',
+        
+        // Pesan custom untuk diagnosa
+        'diagnosa.required' => 'Diagnosa wajib diisi.',
+        'diagnosa.string'   => 'Diagnosa harus berupa teks.',
+        
+        // Pesan custom untuk saran
+        'saran.required' => 'Saran wajib diisi.',
+        'saran.string'   => 'Saran harus berupa teks.',
+        
+        // Pesan custom untuk rencana_tindak_lanjut
+        'rencana_tindak_lanjut.required' => 'Rencana tindak lanjut wajib diisi.',
+        'rencana_tindak_lanjut.string'   => 'Rencana tindak lanjut harus berupa teks.',
         ]);
 
         // Ambil pasien_id dari reservasi (support dua nama kolom)

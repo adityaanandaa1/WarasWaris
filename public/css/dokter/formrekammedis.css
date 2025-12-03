@@ -256,3 +256,8 @@
 .recordform-btn-save:hover {
     background-color: #B6C7FC;
 }
+
+.alert-error {
+    color:red;
+    font-size: 12px;
+}
