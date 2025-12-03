@@ -4,15 +4,8 @@
 
 @section('content')
 <div class="min-h-screen bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center p-4">
-    
-    <!-- Modal Container -->
     <div class="bg-white rounded-3xl shadow-2xl w-full max-w-4xl relative">
-        
-        <!-- Close Button (X) -->
-        <a 
-            href="{{ route('pasien.dashboard') }}"
-            class="absolute top-6 left-6 w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center text-gray-600 transition"
-        >
+        <a href="{{ route('pasien.dashboard') }}" class="absolute top-6 left-6 w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center text-gray-600 transition">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
             </svg>
@@ -217,7 +210,6 @@
                             class="w-full px-4 py-3 bg-gray-50 border-0 rounded-xl focus:ring-2 focus:ring-blue-500 focus:bg-white transition resize-none"
                         >{{ old('catatan', $pasien->catatan) }}</textarea>
                     </div>
-
                 </div>
 
                 <!-- RIGHT SIDE - Photo Display/Upload (GANTI BAGIAN INI) -->
@@ -276,44 +268,41 @@
                         Hapus Foto
                     </button>
                     @endif
-
                 </div>
-
             </div>
 
             <!-- Action Buttons -->
-            <div class="mt-8 flex justify-between items-center">
-               
-
+            <div class="flex justify-between items-center mt-8 w-full">
                 <!-- Update Button -->
-                <button 
-                    type="submit"
-                    class="px-12 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition duration-200 text-lg"
-                >
-                    Perbarui
-                </button>
-            </div>
-
-        </form>
-         <!-- Delete Button (only for non-primary profiles) -->
-                @if(!$pasien->is_primary)
-                <form action="{{ route('pasien.hapus_biodata', $pasien->id) }}" method="POST" class="inline">
+                <form action="{{ route('pasien.update_biodata', $pasien->id) }}" method="POST">
                     @csrf
-                    @method('DELETE')
                     <button 
                         type="submit"
-                        onclick="return confirm('Apakah Anda yakin ingin menghapus biodata ini?')"
-                        class="px-6 py-3 bg-red-500 hover:bg-red-600 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition duration-200 text-sm"
+                        class="px-12 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition duration-200 text-lg"
                     >
-                        Hapus
+                        Perbarui
                     </button>
                 </form>
+
+                <!-- Delete Button (only for non-primary profiles) -->
+                @if(!$pasien->is_primary)
+                    <form action="{{ route('pasien.hapus_biodata', $pasien->id) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button 
+                            type="submit"
+                            onclick="return confirm('Apakah Anda yakin ingin menghapus biodata ini?')"
+                            class="px-12 py-3.5 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition duration-200 text-lg"
+                        >
+                            Hapus
+                        </button>
+                    </form>
                 @else
                 <div></div> <!-- Empty div to maintain flex spacing -->
                 @endif
-
+            </div>
+        </form>
     </div>
-
 </div>
 
 <!-- Script for image preview -->
