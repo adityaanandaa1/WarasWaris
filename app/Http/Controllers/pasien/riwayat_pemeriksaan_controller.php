@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\reservasi;
 use App\Models\rekam_medis;
 use App\Models\data_pasien;
+use App\Models\data_dokter;
 
 class riwayat_pemeriksaan_controller extends Controller
 {
@@ -62,7 +63,7 @@ class riwayat_pemeriksaan_controller extends Controller
         // Ambil data publik rekam medis (tanpa alergi & resep)
         $rekam_medis = $reservasi->rekam_medis;
         $dataPublik = $rekam_medis->data_publik;
-        $dokter = $reservasi->data_dokter;
+        $dokter = $reservasi->data_dokter ?: data_dokter::first();
 
         return view('pasien.riwayat_pemeriksaan', compact('reservasi', 'rekam_medis', 'dataPublik', 'pasien_aktif', 'dokter'));
     }
