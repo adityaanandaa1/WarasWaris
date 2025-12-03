@@ -2,6 +2,7 @@
     display: flex;
     justify-content: space-between;
     height: 100px;
+    animation: fadeInUp 0.6s ease-out 0.5s backwards;
 }
 
 .patientlist-title-section {
@@ -18,12 +19,16 @@
     font-size: 20px;
     font-weight: bold;
     margin: 3px 0px;
+    animation: scaleIn 0.6s ease-out 0.4s backwards;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .patientlist-subtitle {
     font-size: 13px;
     color: #5A81FA;
     font-weight: lighter;
+    animation: scaleIn 0.6s ease-out 0.4s backwards;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .patientlist-search {
@@ -32,6 +37,7 @@
     padding: 10px 10px 10px 20px;
     box-shadow: 0px 0px 20px 5px rgba(0, 0, 0, 0.15);
     height: 45px;
+    animation: slideInLeft 0.8s ease-out;
 }
 
 .patientlist-search-input {
@@ -71,6 +77,8 @@
     padding: 15px 12px;
     border-radius: 15px;
     font-size: 14px;
+    animation: fadeInUp 0.6s ease-out 0.2s backwards;
+    
 }
 
 .patientlist-table-body {
@@ -86,6 +94,7 @@
     padding: 10px 12px;
     margin-bottom: 10px;
     box-shadow: 0px 0px 20px 5px rgba(0, 0, 0, 0.15);
+    animation: fadeInUp 0.6s ease-out 0.2s backwards;
 }
 
 .patientlist-col-name-value {
@@ -108,6 +117,8 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+     animation: scaleIn 0.6s ease-out 0.4s backwards;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .patientlist-avatar-initial {
@@ -372,4 +383,47 @@
 
 .patientlist-modal-button-area {
     padding: 0px 50px;
+}
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInRight {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
