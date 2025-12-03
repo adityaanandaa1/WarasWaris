@@ -87,7 +87,6 @@
                 <h1 class="medicalrecord-section-title">Pemeriksaan Fisik</h1>
 
                 <div class="medicalrecord-physical-grid">
-
                     <div class="medicalrecord-physical-input">
                         <label>Tekanan Darah</label>
                         <div class="medicalrecord-input-unit">
@@ -134,7 +133,7 @@
                 </div>
 
                 <div class="medicalrecord-plan-section">
-                    <div class="medicalrecord-physical-input">
+                    <div class="medicalrecord-plan-input">
                         <label>Rencana Tindak Lanjut</label>
                         <span>{{ $dataPublik['rencana_tindak_lanjut'] ?? 'Tidak ada rencana tindak lanjut' }}</span>
                     </div>
@@ -149,15 +148,18 @@
             </div>
 
             <!-- Info Privacy -->
-            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-lg mt-6">
-                <div class="flex items-start gap-3">
-                    <svg class="w-6 h-6 text-blue-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+            <div class="medicalrecord-info-box">
+                <div class="medicalrecord-info-flex">
+
+                    <svg class="medicalrecord-info-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
                     </svg>
-                    <div>
-                        <p class="text-sm text-blue-800 font-medium">Informasi Privasi</p>
-                        <p class="text-sm text-blue-700 mt-1">
-                            Data alergi, riwayat penyakit, dan resep obat tidak ditampilkan untuk menjaga privasi Anda. 
+                
+                    <div class="medicalrecord-info-text">
+                        <p class="medicalrecord-info-title">Informasi Privasi</p>
+                        <p class="medicalrecord-info-desc">
+                            Data alergi, riwayat penyakit, dan resep obat tidak ditampilkan untuk menjaga privasi Anda.
                             Silakan berkonsultasi langsung dengan dokter untuk informasi lengkap.
                         </p>
                     </div>
