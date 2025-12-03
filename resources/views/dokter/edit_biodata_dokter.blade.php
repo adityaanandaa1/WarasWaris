@@ -69,7 +69,6 @@
                              onerror="this.classList.add('hidden'); document.getElementById('fotoFallback').classList.remove('hidden');">
                         <div id="fotoFallback" class="fallback {{ $fotoUrl ? 'hidden' : 'flex' }}">
                             {{ $initial }}
-                            <p class="editprofile-photo-text">Tambahkan Foto</p>
                         </div>
                         
                         <i class="icon-kamera fa-solid fa-camera"></i>
@@ -180,6 +179,7 @@ if (doctorFotoInput) {
             doctorPreviewImage.src = e.target.result;
             doctorPreviewImage.classList.remove('hidden');
             doctorFallback.classList.add('hidden');
+            doctorFallback.classList.remove('flex');
             if (doctorRemoveInput) doctorRemoveInput.value = '0';
             if (removeDoctorPhotoBtn) removeDoctorPhotoBtn.classList.remove('hidden');
         };
@@ -193,6 +193,7 @@ if (removeDoctorPhotoBtn) {
         doctorPreviewImage.src = '';
         doctorPreviewImage.classList.add('hidden');
         doctorFallback.classList.remove('hidden');
+        doctorFallback.classList.add('flex');
         if (doctorRemoveInput) doctorRemoveInput.value = '1';
         removeDoctorPhotoBtn.classList.add('hidden');
     });
