@@ -327,6 +327,11 @@ class dokter_controller extends Controller
             );
 
             $dokter->foto_path = $fotoPath;
+        } elseif ($request->boolean('remove_foto')) {
+            if ($dokter->foto_path && Storage::disk('public')->exists($dokter->foto_path)) {
+                Storage::disk('public')->delete($dokter->foto_path);
+            }
+            $dokter->foto_path = null;
         }
 
         $dokter->save();

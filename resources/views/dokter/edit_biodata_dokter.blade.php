@@ -62,23 +62,27 @@
                 @endphp
                 <label class="editprofile-photo-wrapper">
                     <div class="editprofile-photo-preview">
-                        @if($fotoUrl)
-                            <img src="{{ $fotoUrl }}" 
-                                 alt="{{ $dokter->nama_dokter }}" 
-                                 class="profile-img"
-                                 onerror="this.style.display='none'; document.getElementById('fotoFallback').style.display='flex';">
-                        @else
-                            <div id="fotoFallback" class="fallback">
-                                {{ $initial }}
-                                <p class="editprofile-photo-text">Tambahkan Foto</p>
-                            </div>
-                        @endif
+                        <img id="doctorPreviewImage"
+                             src="{{ $fotoUrl ?: '' }}" 
+                             alt="{{ $dokter->nama_dokter }}" 
+                             class="profile-img {{ $fotoUrl ? '' : 'hidden' }}"
+                             onerror="this.classList.add('hidden'); document.getElementById('fotoFallback').classList.remove('hidden');">
+                        <div id="fotoFallback" class="fallback {{ $fotoUrl ? 'hidden' : 'flex' }}">
+                            {{ $initial }}
+                            <p class="editprofile-photo-text">Tambahkan Foto</p>
+                        </div>
                         
                         <i class="icon-kamera fa-solid fa-camera"></i>
                     </div>
                 
-                    <input type="file" name="foto" accept="image/*" class="editprofile-photo-input">
+                    <input type="file" name="foto" accept="image/jpeg,image/jpg,image/png" class="editprofile-photo-input" id="doctorFotoInput">
+                    <input type="hidden" name="remove_foto" id="remove_foto" value="0">
                 </label>
+                @if($fotoUrl)
+                <button type="button" id="removeDoctorPhotoBtn" class="text-sm text-red-600 hover:text-red-700 font-medium mt-2">
+                    Hapus Foto
+                </button>
+                @endif
             </div>
         </div>
 
@@ -146,4 +150,51 @@ fileInput.addEventListener("change", function () {
         dropText.textContent = this.files[0].name;
     }
 });
+
+// Preview foto dokter (mirip edit biodata pasien)
+const doctorFotoInput = document.getElementById('doctorFotoInput');
+const doctorPreviewImage = document.getElementById('doctorPreviewImage');
+const doctorFallback = document.getElementById('fotoFallback');
+const doctorRemoveInput = document.getElementById('remove_foto');
+const removeDoctorPhotoBtn = document.getElementById('removeDoctorPhotoBtn');
+
+if (doctorFotoInput) {
+    doctorFotoInput.addEventListener('change', function (event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        if (file.size > 2 * 1024 * 1024) {
+            alert('Ukuran foto maksimal 2MB!');
+            event.target.value = '';
+            return;
+        }
+
+        if (!['image/jpeg', 'image/jpg', 'image/png'].includes(file.type)) {
+            alert('Format foto harus JPG, JPEG, atau PNG!');
+            event.target.value = '';
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            doctorPreviewImage.src = e.target.result;
+            doctorPreviewImage.classList.remove('hidden');
+            doctorFallback.classList.add('hidden');
+            if (doctorRemoveInput) doctorRemoveInput.value = '0';
+            if (removeDoctorPhotoBtn) removeDoctorPhotoBtn.classList.remove('hidden');
+        };
+        reader.readAsDataURL(file);
+    });
+}
+
+if (removeDoctorPhotoBtn) {
+    removeDoctorPhotoBtn.addEventListener('click', function () {
+        if (doctorFotoInput) doctorFotoInput.value = '';
+        doctorPreviewImage.src = '';
+        doctorPreviewImage.classList.add('hidden');
+        doctorFallback.classList.remove('hidden');
+        if (doctorRemoveInput) doctorRemoveInput.value = '1';
+        removeDoctorPhotoBtn.classList.add('hidden');
+    });
+}
 </script>

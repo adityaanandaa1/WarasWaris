@@ -262,6 +262,15 @@ private function get_nomor_antrian_sekarang(Carbon $tanggal): int
             
             $file->move($upload_path, $filename);
             $validated['foto_path'] = 'uploads/pasien/' . $filename;
+        } elseif ($request->boolean('remove_foto')) {
+            // Hapus foto jika user memilih hapus tanpa upload baru
+            if ($pasien->foto_path) {
+                $old_path = public_path($pasien->foto_path);
+                if (file_exists($old_path)) {
+                    unlink($old_path);
+                }
+            }
+            $validated['foto_path'] = null;
         }
 
         // Update data

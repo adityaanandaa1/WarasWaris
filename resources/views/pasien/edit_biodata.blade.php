@@ -211,11 +211,11 @@
                             Catatan
                         </label>
                         <textarea 
-                            name="catatan" 
+                            name="catatan_pasien" 
                             rows="4"
                             placeholder="Catatan tambahan (opsional)"
                             class="w-full px-4 py-3 bg-gray-50 border-0 rounded-xl focus:ring-2 focus:ring-blue-500 focus:bg-white transition resize-none"
-                        >{{ old('catatan', $pasien->catatan) }}</textarea>
+                        >{{ old('catatan_pasien', $pasien->catatan_pasien) }}</textarea>
                     </div>
 
                 </div>
@@ -264,7 +264,8 @@
                         id="foto-input"
                         onchange="previewPhoto(event)"
                     >
-
+                    <input type="hidden" name="remove_foto" id="remove_foto" value="0">
+  
                     <!-- Remove Button (if has photo) -->
                     @if($pasien->foto_path)
                     <button 
@@ -336,6 +337,7 @@
             return;
         }
 
+        document.getElementById('remove_foto'). value = '0';
         // Preview
         const reader = new FileReader();
         reader.onload = function(e) {
@@ -362,6 +364,7 @@
                 <span class="text-white text-5xl font-bold">{{ strtoupper(substr($pasien->nama_pasien, 0, 1)) }}</span>
             </div>
         `;
+        document.getElementById('remove_foto').value = '1';
         
         // Hide remove button
         const removeBtn = document.getElementById('removePhotoBtn');
