@@ -45,15 +45,15 @@
         </div>
 
         <div class="dashboard-profile-body">
-            <div class="dashboard-profile-photo">
-                @if($fotoDokter)
-                    <img src="{{ $fotoDokter }}" alt="{{ $dokterData->nama_dokter }}" class="w-24 h-24 rounded-full object-cover" onerror="this.style.display='none'; document.getElementById('dokterInitial').style.display='flex';">
-                @endif
-                <div id="dokterInitial" class="w-24 h-24 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 text-white font-bold flex items-center justify-center" style="{{ $fotoDokter ? 'display:none;' : '' }}">
-                    {{ $initialDokter }}
-                </div>
-            </div>
             <div class="dashboard-profile-info">
+                <div class="dashboard-profile-photo">
+                    @if($fotoDokter)
+                        <img src="{{ $fotoDokter }}" alt="{{ $dokterData->nama_dokter }}" onerror="this.style.display='none'; document.getElementById('dokterInitial').style.display='flex';">
+                    @endif
+                    <div id="dokterInitial" style="{{ $fotoDokter ? 'display:none;' : '' }}">
+                        {{ $initialDokter }}
+                    </div>
+                </div>
                 <div class="dashboard-profile-identity">
                     <p class="dashboard-profile-name">
                         {{ Auth::user()->dokter->nama_dokter }}
@@ -64,8 +64,8 @@
                         <p class="dashboard-location-text">Kalisat,  Jember</p>
                     </div>
                 </div>
-
-                <div class="dashboard-profile-details">
+            </div>
+            <div class="dashboard-profile-details">
                     <div class="dashboard-detail-item">
                         <p class="dashboard-detail-label">Tanggal Lahir</p>
                         <p class="dashboard-detail-value">
@@ -80,7 +80,6 @@
                         </a>
                     </div>
                 </div>
-            </div>
         </div>
     </div>
 

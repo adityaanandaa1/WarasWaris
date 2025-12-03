@@ -19,6 +19,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     
     <link rel="stylesheet" href="{{ asset('css/dashboardpasien.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/riwayatpemeriksaan.css') }}">
     
     @stack('styles')
 </head>

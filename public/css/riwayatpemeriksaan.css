@@ -1,164 +1,70 @@
-.medicalrecord-action-buttons {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-    align-items: center;
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 9999;
-}
-
-.medicalrecord-btn-print {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 10px 15px;
-    border-radius: 20px;
-    gap: 10px;
-    border: none;
-    background-color: green;
-    color: #FFFFFF;
-    box-shadow: 0px 0px 20px 5px rgba(0, 0, 0, 0.15);
-}
-
 .medicalrecord-page {
-    display: flex;
-}
-
-.medicalrecord-sidebar {
-    display: flex;
-    flex-direction: column;
-    width: 25%;
-    background-color: #587EF4;
-    border-top-right-radius: 20px;
-    border-bottom-right-radius: 20px;
-    box-shadow: 0px 0px 20px 5px rgba(0, 0, 0, 0.15);
-}
-
-.medicalrecord-sidebar-header {
-    display: flex;
-    align-items: center;
-    padding: 10px 10px 0px 10px;
-    gap: 10px;
-}
-
-.medicalrecord-sidebar-back {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #CEDEFF50;
-    color: #000000;
-    font-size: 20px;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    text-decoration: none;
-    margin: 20px 0;
-    cursor: pointer;
-    position: relative;
-    z-index: 9999;
-    transition: background-color 0.5s ease;
-}
-
-.medicalrecord-sidebar-back:hover {
-    background-color: #FFFFFF;
-}
-
-.medicalrecord-sidebar-back i {
-    pointer-events: none;
-}
-
-.medicalrecord-sidebar-title {
-    font-size: 18px;
-    color: #FFFFFF;
-    font-weight: bold;
-}
-
-.medicalrecord-sidebar-item-wrapper {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    color: #FFFFFF;
-}
-
-.medicalrecord-sidebar-item {
-    background-color: #CEDEFF;
-    border-radius: 20px;
-    margin: 5px 20px;
-    border: none;
-    padding: 15px;
-    cursor: pointer;
-    display: flex;
-    flex-direction: row;
-    transition: background-color 0.5s ease;
-}
-
-.medicalrecord-sidebar-item:hover {
-    background-color: #FFFFFF;
-}
-
-.medicalrecord-sidebar-item-content {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.ri-arrow-right-s-line {
-    font-size: 30px;
-    color: #1647E0;
-    font-weight: bold;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding-left: 5px;
-}
-
-.medicalrecord-sidebar-item-date {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 5px;
-    background-color: #5A81FA;
-    padding: 5px 10px;
-    border-radius: 10px;
-    font-size: 12px;
-}
-
-.medicalrecord-sidebar-item-subtitle {
-    font-size: 13px;
-    color: #464646;
-    font-weight: normal;
-    margin-bottom: 0;
-    text-align: left;
-}
-
-.medicalrecord-content {
-    width: 75%;
-}
-
-.medicalrecord-document {
-    background-color: #FFFFFF;
     margin: 30px;
-    box-shadow: 0px 0px 20px 5px rgba(0, 0, 0, 0.15);
-    border-radius: 15px;
-    padding: 20px 40px;
 }
 
-.medicalrecord-header-number {
-    font-size: 12px;
-    font-weight: normal;
+.medicalrecord-header-inner {
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
 }
 
 .medicalrecord-header {
-    display: flex;
-    justify-content: space-between;
+    position: relative;
     margin-bottom: 20px;
+    height: 40px;
+    display: flex;
+    align-items: center;
 }
 
-.medicalrecord-row {
+.ri-arrow-left-line {
+    font-size: 30px;
+    color: #5A81FA;
+    text-decoration: none;
+    padding: 5px 5px;
+    border-radius: 100%;
+    transition: background-color 0.5s ease;
+}
+
+.ri-arrow-left-line:hover {
+    background-color: #FFFFFF;
+    border-radius: 100%;
+    padding: 5px 5px;
+}
+
+.medicalrecord-title {
+    flex-grow: 1;
+    text-align: center;
+    margin-right: 40px;
+    font-size: 25px;
+    color: #5A81FA;
+    font-weight: bold;
+}
+
+.medicalrecord-wrapper {
+    background-color: #FFFFFF;
+    border-radius: 15px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.medicalrecord-document {
+    padding: 30px 70px;
+}
+
+.medicalrecord-rm-section {
     display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    margin-left: 0;
+    padding: 20px 30px;
+    padding-bottom: 0;
+}
+
+.medicalrecord-rm-label {
+    margin: 0;
+    font-size: 16px;
+    color: #464646;
 }
 
 .medicalrecord-patient-info {
@@ -166,6 +72,8 @@
     align-items: flex-start;
     justify-content: flex-start;
     width: 100%;
+    padding: 0px 70px;
+    padding-top: 20px;
 }
 
 .medicalrecord-info-left {
@@ -190,14 +98,14 @@
 }
 
 .medicalrecord-info-item strong {
-    font-size: 13px;
+    font-size: 16px;
     color: #464646;
     font-weight: bold;
     width: 150px;
 }
 
 .medicalrecord-info-item span {
-    font-size: 13px;
+    font-size: 16px;
     color: #464646;
     font-weight: normal;
 }
@@ -208,22 +116,23 @@
     margin-top: 20px;
     width: 100%;
     margin-bottom: 20px;
+    padding: 0px 70px;
 }
 
 .medicalrecord-keluhan-wrapper .colon {
-    font-size: 13px;
+    font-size: 16px;
     font-weight: normal;
     color: #464646;
 }
 
 .medicalrecord-keluhan-wrapper strong {
-    font-size: 13px;
+    font-size: 16px;
     font-weight: bold;
     color: #464646;
 }
 
 .medicalrecord-keluhan-wrapper span {
-    font-size: 13px;
+    font-size: 16px;
     color: #464646;
     font-weight: normal;
 }
@@ -233,6 +142,10 @@
     border-radius: 6px;
     white-space: pre-wrap;
     word-break: break-word;
+}
+
+.medicalrecord-doctor-info {
+    padding: 0px 70px;
 }
 
 .section-divider {
@@ -275,7 +188,7 @@
     font-size: 16px;
     color: #464646;
     font-weight: normal;
-    width: 45%;
+    width: 86%;
 }
 
 .medicalrecord-physical-input label{
@@ -330,7 +243,7 @@
 }
 
 .medicalrecord-textarea {       
-    width: 100%;
+    width: 86%;
     font-size: 13px;
     font-weight: normal;
     color: #464646;
@@ -382,22 +295,4 @@
 
 .medicalrecord-empty {
     text-align: center;
-}
-
-@media print {
-    .medicalrecord-wrapper {
-        visibility: hidden;
-    }
-
-    .medicalrecord-content, 
-    .medicalrecord-content * {
-        visibility: visible;
-    }
-
-    .medicalrecord-content {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-    }
 }

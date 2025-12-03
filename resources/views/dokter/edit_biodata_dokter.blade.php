@@ -28,10 +28,7 @@
     <div class="editprofile-container">
         <div class="editprofile-header">
             <a href="{{ route('dokter.dashboard') }}">
-                <svg width="30" height="30" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <ellipse cx="10.5" cy="10.2375" rx="10.5" ry="10.2375" fill="#CEDEFF"/>
-                    <path d="M13.6948 13.539C13.5294 13.7044 13.3051 13.7974 13.0711 13.7974C12.8372 13.7974 12.6129 13.7044 12.4475 13.539L10.499 11.312L8.55052 13.5383C8.46887 13.6213 8.37159 13.6873 8.2643 13.7325C8.157 13.7777 8.04182 13.8013 7.92539 13.8017C7.80896 13.8022 7.69359 13.7796 7.58593 13.7353C7.47827 13.691 7.38046 13.6257 7.29813 13.5434C7.2158 13.4611 7.15059 13.3633 7.10625 13.2556C7.06191 13.1479 7.03933 13.0326 7.0398 12.9161C7.04028 12.7997 7.0638 12.6845 7.10901 12.5772C7.15422 12.4699 7.22023 12.3727 7.30323 12.291L9.33036 9.97576L7.30249 7.65904C7.2195 7.57739 7.15349 7.48011 7.10828 7.37281C7.06307 7.26552 7.03954 7.15034 7.03907 7.03391C7.0386 6.91748 7.06118 6.80211 7.10552 6.69445C7.14985 6.58679 7.21507 6.48898 7.29739 6.40665C7.37972 6.32432 7.47754 6.25911 7.5852 6.21477C7.69285 6.17043 7.80822 6.14785 7.92465 6.14832C8.04108 6.1488 8.15627 6.17232 8.26356 6.21753C8.37085 6.26274 8.46813 6.32875 8.54979 6.41175L10.499 8.63953L12.4475 6.41175C12.5292 6.32875 12.6264 6.26274 12.7337 6.21753C12.841 6.17232 12.9562 6.1488 13.0726 6.14832C13.1891 6.14785 13.3044 6.17043 13.4121 6.21477C13.5197 6.25911 13.6176 6.32432 13.6999 6.40665C13.7822 6.48898 13.8474 6.58679 13.8918 6.69445C13.9361 6.80211 13.9587 6.91748 13.9582 7.03391C13.9577 7.15034 13.9342 7.26552 13.889 7.37281C13.8438 7.48011 13.7778 7.57739 13.6948 7.65904L11.6677 9.97576L13.6948 12.291C13.7768 12.3729 13.8419 12.4702 13.8862 12.5773C13.9306 12.6843 13.9535 12.7991 13.9535 12.915C13.9535 13.0309 13.9306 13.1457 13.8862 13.2528C13.8419 13.3599 13.7768 13.4571 13.6948 13.539Z" fill="#464646"/>
-                </svg>
+                <i class="icon-back fa-solid fa-x"></i>
             </a>
             <h1 class="editprofile-title">Biodata Dokter</h1>
         </div>
@@ -63,16 +60,25 @@
                     $fotoUrl = $dokter->foto_path ? asset('storage/'.$dokter->foto_path) : null;
                     $initial = strtoupper(mb_substr($dokter->nama_dokter ?? 'D', 0, 1));
                 @endphp
-                <div class="editprofile-photo-preview">
-                    @if($fotoUrl)
-                        <img src="{{ $fotoUrl }}" alt="{{ $dokter->nama_dokter }}" class="w-full h-full object-cover rounded-full" onerror="this.style.display='none'; document.getElementById('fotoFallback').style.display='flex';">
-                    @endif
-                    <div id="fotoFallback" class="w-full h-full rounded-full bg-gradient-to-br from-blue-400 to-blue-600 text-white font-bold flex items-center justify-center" style="{{ $fotoUrl ? 'display:none;' : '' }}">
-                        {{ $initial }}
+                <label class="editprofile-photo-wrapper">
+                    <div class="editprofile-photo-preview">
+                        @if($fotoUrl)
+                            <img src="{{ $fotoUrl }}" 
+                                 alt="{{ $dokter->nama_dokter }}" 
+                                 class="profile-img"
+                                 onerror="this.style.display='none'; document.getElementById('fotoFallback').style.display='flex';">
+                        @else
+                            <div id="fotoFallback" class="fallback">
+                                {{ $initial }}
+                                <p class="editprofile-photo-text">Tambahkan Foto</p>
+                            </div>
+                        @endif
+                        
+                        <i class="icon-kamera fa-solid fa-camera"></i>
                     </div>
-                </div>
-                <p class="editprofile-photo-text">Tambahkan Foto</p>
-                <input type="file" name="foto" accept="image/jpeg,image/png" class="editprofile-photo-input">
+                
+                    <input type="file" name="foto" accept="image/*" class="editprofile-photo-input">
+                </label>
             </div>
         </div>
 

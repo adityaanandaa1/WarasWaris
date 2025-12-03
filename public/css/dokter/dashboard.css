@@ -154,6 +154,19 @@
     position: relative;
     z-index: 1;
     animation: scaleIn 0.5s ease-out 0.3s backwards;
+    display: flex;
+    flex-direction: column;
+}
+
+.dashboard-profile-info {
+    display: flex;
+    gap: 20px;
+}
+
+.dashboard-profile-photo img {
+    width: 70px;
+    height: 70px;
+    border-radius: 100px;
 }
 
 .dashboard-profile-name {
@@ -568,7 +581,6 @@
 .date-cell:hover:not(.prev-month):not(.next-month):not(.current) {
     background: rgba(90, 129, 250, 0.2);
     border-radius: 10px;
-    transform: scale(1.15);
 }
 
 .date-cell.current {
@@ -576,7 +588,6 @@
     color: #FFFFFF;
     font-weight: 600;
     border-radius: 10px;
-    animation: pulse 2s ease-in-out infinite;
 }
 
 .date-cell.prev-month,

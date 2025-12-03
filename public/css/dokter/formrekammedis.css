@@ -18,6 +18,8 @@
     margin-right: auto; 
     text-decoration: none;
     padding: 5px 8px;
+    border-radius: 100%;
+    transition: background-color 0.5s ease;
 }
 
 .recordform-back-icon:hover {

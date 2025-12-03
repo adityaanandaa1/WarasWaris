@@ -176,17 +176,17 @@
                         </div>
 
                         <div class="medicalrecord-diagnosis-section">
-                            <div class="medicalrecord-physical-input">
+                            <div class="medicalrecord-diagnosis-input">
                                 <label>Diagnosa</label>
                                 <span>{{ $rekamMedisAktif->diagnosa }}</span>
                             </div>
 
-                            <div class="medicalrecord-physical-input">
+                            <div class="medicalrecord-diagnosis-input">
                                 <label>Saran</label>
                                 <span>{{ $rekamMedisAktif->saran }}</span>
                             </div>
 
-                            <div class="medicalrecord-physical-input">
+                            <div class="medicalrecord-diagnosis-input">
                                 <label>Resep Obat</label>
                                 <span>{{ $rekamMedisAktif->resep_obat ?? '-' }}</span>
                             </div>

@@ -142,7 +142,7 @@
         <div id="pasien-content" hidden class="pasien-content">
             <div class="pasien-biodata">
                 <div class="col-foto">
-                    <div id="lap-avatar" style="width:72px;height:72px;border-radius:9999px;overflow:hidden;"></div>
+                    <div id="lap-avatar"></div>
                 </div>
 
                 <div class="col-data">
@@ -447,13 +447,13 @@ function renderLapAvatar(fotoPath, namaPasien) {
             <img 
                 src="${fotoUrl}" 
                 alt="${namaPasien || 'Pasien'}"
-                style="width:100%;height:100%;object-fit:cover;"
+                class="patientlist-avatar"
                 onerror="this.onerror=null; this.parentElement.innerHTML='<div style=&quot;width:100%;height:100%;background:linear-gradient(135deg,#60a5fa,#2563eb);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;&quot;>${initial}</div>';"
             >
         `;
     } else {
         avatarEl.innerHTML = `
-            <div style="width:100%;height:100%;background:linear-gradient(135deg,#60a5fa,#2563eb);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;">
+            <div class="patientlist-avatar-initial">
                 ${initial}
             </div>
         `;

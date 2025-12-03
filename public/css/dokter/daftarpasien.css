@@ -95,16 +95,36 @@
 }
 
 .patientlist-avatar {
-    width: 36px;
-    height: 36px;
+    max-width: 150px;
+    max-height: 200px;
     background: #5A81FA;
-    border-radius: 50%;
+    border-radius: 10px;
     color: #FFFFFF;
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: bold;
-    margin-left: 10px
+    margin-left: 10px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.patientlist-avatar-initial {
+    width: 150px;
+    height: 150px;
+    background: #5A81FA;
+    border-radius: 10px;
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 75px;
+    margin-left: 10px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .patientlist-col-guardian-value {

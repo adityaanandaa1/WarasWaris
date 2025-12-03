@@ -131,7 +131,7 @@
         <div id="reservasi-content" class="reservasi-content" hidden>
             <div class="reservasi-content-header">
                 <div class="reservasi-field">
-                    <div id="m-avatar" class="w-12 h-12 rounded-full overflow-hidden" style="width:100px;height:100px;border-radius:10000px;overflow:hidden;"></div>
+                    <div id="m-avatar"></div>
                 </div>
 
                 <div class="reservasi-field-keluhan">
@@ -311,23 +311,15 @@ function renderModalAvatar(fotoPath, namaPasien) {
             <img 
                 src="${fotoUrl}" 
                 alt="${namaPasien || 'Pasien'}"
-                class="w-full h-full object-cover"
+                class="queue-avatar"
                 onerror="this.onerror=null; this.parentElement.innerHTML='<div style=&quot;width:100%;height:100%;background:linear-gradient(135deg,#60a5fa,#2563eb);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:42px;&quot;>${initial}</div>';"
             >
         `;
     } else {
         avatarEl.innerHTML = `
-            <div style="
-                width:100%;
-                height:100%;
-                background:linear-gradient(135deg,#60a5fa,#2563eb);
-                display:flex;
-                align-items:center;
-                justify-content:center;
-                color:white;
-                font-weight:700;
-                font-size:42px;
-            ">${initial}</div>
+            <div class="queue-avatar-initial">
+            ${initial}
+            </div>
         `;
     }
 }

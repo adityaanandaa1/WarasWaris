@@ -702,19 +702,8 @@ display: none;
 }
 
 .profile-image {
-    width: 60px;
-    height: 60px;
-    margin-left: 20px;
-    margin-top: 0px;
-    border-radius: 50%;
-    background: #5A81FA;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 24px;
-    font-weight: bold;
+    margin-top: 10px;
+    margin-left: 10px;
 }
 
 .profile-info h4 {

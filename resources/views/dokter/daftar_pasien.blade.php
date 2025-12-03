@@ -133,7 +133,7 @@
         <div id="pasien-content" hidden class="patientlist-modal-content">
             <div class="patientlist-modal-biodata">
                 <div class="patientlist-col-photo">
-                    <div id="p-avatar" class="patientlist-avatar" style="width:96px;height:96px;border-radius:9999px;overflow:hidden;"></div>
+                    <div id="p-avatar"></div>
                 </div>
 
                 <div class="patientlist-modal-data-col">
@@ -331,13 +331,13 @@
         <img 
           src="${fotoUrl}" 
           alt="${namaPasien || 'Pasien'}"
-          style="width:100%;height:100%;object-fit:cover;"
+          class= "patientlist-avatar"
           onerror="this.onerror=null; this.parentElement.innerHTML='<div style=&quot;width:100%;height:100%;background:linear-gradient(135deg,#60a5fa,#2563eb);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;&quot;>${initial}</div>';"
         >
       `;
     } else {
       avatarEl.innerHTML = `
-        <div style="width:100%;height:100%;background:linear-gradient(135deg,#60a5fa,#2563eb);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;">
+        <div class="patientlist-avatar-initial">
           ${initial}
         </div>
       `;

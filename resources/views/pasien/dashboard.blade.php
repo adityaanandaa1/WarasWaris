@@ -261,7 +261,7 @@
             </div>
 
             <div class="profile-content">
-                <x-avatar-pasien :pasien="$pasien_aktif" size="xl" class="profile-image" />
+                <x-avatar-pasien :pasien="$pasien_aktif" class="profile-image" />
                 <div class="profile-info">
                     <h4 id="patientName">Loading...</h4>
                     <div class="phone" id="patientPhone">Loading...</div>
