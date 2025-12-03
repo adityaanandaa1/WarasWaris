@@ -52,7 +52,7 @@ class riwayat_pemeriksaan_controller extends Controller
         }
 
         // Validasi kepemilikan reservasi
-        $reservasi = reservasi::with(['rekam_medis', 'data_pasien'])
+        $reservasi = reservasi::with(['rekam_medis', 'data_pasien', 'data_dokter'])
             ->where('id', $reservasiId)
             ->where('id_pasien', $pasien_aktif->id)
             ->where('status', 'selesai')
@@ -62,8 +62,9 @@ class riwayat_pemeriksaan_controller extends Controller
         // Ambil data publik rekam medis (tanpa alergi & resep)
         $rekam_medis = $reservasi->rekam_medis;
         $dataPublik = $rekam_medis->data_publik;
+        $dokter = $reservasi->data_dokter;
 
-        return view('pasien.riwayat_pemeriksaan', compact('reservasi', 'rekam_medis', 'dataPublik', 'pasien_aktif'));
+        return view('pasien.riwayat_pemeriksaan', compact('reservasi', 'rekam_medis', 'dataPublik', 'pasien_aktif', 'dokter'));
     }
 
     /**

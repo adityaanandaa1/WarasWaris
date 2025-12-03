@@ -36,30 +36,38 @@
                     </div>
                     <div class="medicalrecord-info-item">
                         <strong>Tanggal Lahir</strong>
-                        <span id="rf-tanggal-lahir">: - </span>
+                        <span id="rf-tanggal-lahir">: {{ $pasien_aktif->tanggal_lahir_pasien ? $pasien_aktif->tanggal_lahir_pasien->translatedFormat('d F Y') : '-' }} </span>
                     </div>
                     <div class="medicalrecord-info-item">
                         <strong>Jenis Kelamin</strong>
-                        <span id="rf-jenis-kelamin">: -</span>
+                        @php
+                            $jenisKelamin = $pasien_aktif->jenis_kelamin;
+                            if ($jenisKelamin === 'L') {
+                                $jenisKelamin = 'Laki-laki';
+                            } elseif ($jenisKelamin === 'P') {
+                                $jenisKelamin = 'Perempuan';
+                            }
+                        @endphp
+                        <span id="rf-jenis-kelamin">: {{ $jenisKelamin ?? '-' }}</span>
                     </div>
                     <div class="medicalrecord-info-item">
                         <strong>Nomor Telepon</strong>
-                        <span id="rf-no-telepon">: -</span>
+                        <span id="rf-no-telepon">: {{ $pasien_aktif->no_telepon ?? '-' }}</span>
                     </div>
                 </div>
 
                 <div class="medicalrecord-info-right">
                     <div class="medicalrecord-info-item">
                         <strong>Golongan Darah</strong>
-                        <span id="rf-golongan-darah">: -</span>
+                        <span id="rf-golongan-darah">: {{ $pasien_aktif->golongan_darah ?? '-' }}</span>
                     </div>
                     <div class="medicalrecord-info-item">
                         <strong>Pekerjaan</strong>
-                        <span id="rf-pekerjaan">: -</span>
+                        <span id="rf-pekerjaan">: {{ $pasien_aktif->pekerjaan ?? '-' }}</span>
                     </div>
                     <div class="medicalrecord-info-item">
                         <strong>Alamat</strong>
-                        <span id="rf-alamat">: -</span>
+                        <span id="rf-alamat">: {{ $pasien_aktif->alamat ?? '-' }}</span>
                     </div>
                 </div>
             </div>
@@ -67,17 +75,17 @@
             <div class="medicalrecord-keluhan-wrapper">
                 <strong>Keluhan Pasien</strong>
                 <span class="colon">:</span>
-                <span id="rf-keluhan">-</span>
+                <span id="rf-keluhan">{{ $reservasi->keluhan ?? '-' }}</span>
             </div>
 
             <div class="medicalrecord-doctor-info">
                 <div class="medicalrecord-info-item">
                     <strong>Nama Dokter</strong>
-                    <span id="rf-nama-dokter">: -</span>
+                    <span id="rf-nama-dokter">: {{ optional($dokter)->nama_dokter ?? '-' }}</span>
                 </div>
                 <div class="medicalrecord-info-item">
                     <strong>Alamat</strong>
-                    <span id="rf-alamat-dokter">: -</span>
+                    <span id="rf-alamat-dokter">: {{ optional($dokter)->alamat ?? '-' }}</span>
                 </div>
             </div>
             
