@@ -56,7 +56,7 @@
                         @if ($reservasi->status === 'selesai')
                             <span>Selesai</span>
                         @elseif ($reservasi->status === 'batal')
-                            <span class="queue-btn-skipped">Dilewati</span>
+                            <p class="queue-btn-skipped">Dilewati</p>
                         @else
                             <form action="{{ route('resepsionis.reservasi.lewati', $reservasi->id) }}" method="POST">
                                 @csrf

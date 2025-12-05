@@ -350,3 +350,21 @@
     margin-top: 4px;    
     margin-bottom: 0;
 }
+
+@media print {
+    .medicalrecord-wrapper {
+        visibility: hidden;
+    }
+
+    .medicalrecord-content, 
+    .medicalrecord-content * {
+        visibility: visible;
+    }
+
+    .medicalrecord-content {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+    }
+}

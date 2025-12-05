@@ -76,11 +76,6 @@
     font-weight: 500;
 }
 
-.queue-list {
-    max-height: calc(100vh - 200px);
-    overflow-y: auto;
-}
-
 .queue-item {
     background-color: #E8EFFF;;
     width: 100%;
@@ -175,14 +170,18 @@
 }
 
 .queue-btn-skipped {
-            display:inline-block;
-            padding:8px 12px;
-            background:#FF0000;
-            color:#ffffff;
-            border-radius:8px;
-            font-weight:600;
-            cursor:default;
-        }
+    margin: 0;
+    background:#ff010150;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 15px;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: 500;
+}
 
 .queue-empty {
     text-align: center;

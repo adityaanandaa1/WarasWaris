@@ -79,7 +79,7 @@
                     <input type="hidden" name="remove_foto" id="remove_foto" value="0">
                 </label>
                 @if($fotoUrl)
-                <button type="button" id="removeDoctorPhotoBtn" class="text-sm text-red-600 hover:text-red-700 font-medium mt-2">
+                <button type="button" id="removeDoctorPhotoBtn" class="delete-btn">
                     Hapus Foto
                 </button>
                 @endif
