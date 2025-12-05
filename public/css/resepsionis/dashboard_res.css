@@ -9,6 +9,8 @@
     border-radius: 20px;
     margin: 10px 0px;
     box-shadow: 0px 0px 20px 5px rgba(0, 0, 0, 0.15);
+     animation: fadeInUp 0.6s ease-out;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .dashboard-welcome-date {
@@ -22,7 +24,13 @@
     align-items: center;
     gap: 10px;
     position: relative;
+    animation: slideInLeft 0.8s ease-out;
 }
+
+.dashboard-welcome-date svg {
+    animation: pulse 2s ease-in-out infinite;
+}
+
 
 .dashboard-welcome-today {
     color: #FFFFFF;
@@ -39,6 +47,7 @@
 
 .dashboard-greeting-text {
     padding-bottom: 30px;
+    animation: fadeInRight 1s ease-out;
 }
 
 .dashboard-greeting-title {
@@ -50,12 +59,27 @@
     color: #FFFFFF;
     font-weight: bolder;
     line-height: 2;
+    opacity: 0;
+    animation: fadeInRight 1s ease-out forwards;
+}
+
+.dashboard-greeting-title-subtitle:first-child {
+    animation-delay: 0.3s;
+}
+
+.dashboard-greeting-title-subtitle:last-child {
+    animation-delay: 0.5s;
 }
 
 .dashboard-greeting-subtitle {
     font-size: 15px;
     color: #FFFFFF;
     font-weight: lighter;
+    animation: fadeInRight 1s ease-out 0.7s backwards;
+}
+
+.dashboard-greeting-illustration img {
+    animation: float 3s ease-in-out infinite;
 }
 
 /* Dashboard Profile Section */
@@ -68,6 +92,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    animation: fadeInUp 0.6s ease-out 0.2s backwards;
 }
 
 .dashboard-profile-header {
@@ -82,6 +107,7 @@
     box-shadow: 0px 0px 27px 7px rgba(0, 0, 0, 0.15);
     position: relative;
     z-index: 2;
+    transition: transform 0.3s ease;
 }
 
 .dashboard-profile-title {
@@ -94,6 +120,7 @@
 .ri-edit-box-line {
     font-size: 18px;
     color: #FFFFFF;
+    transition: transform 0.3s ease;
 }
 
 .ri-edit-box-line:hover {
@@ -110,6 +137,7 @@
     margin-top: -15px;
     position: relative;
     z-index: 1;
+        animation: scaleIn 0.5s ease-out 0.3s backwards;
 }
 
 .dashboard-profile-name {
@@ -152,6 +180,15 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    animation: fadeInUp 0.5s ease-out forwards;
+}
+
+.dashboard-detail-item:first-child {
+    animation-delay: 0.5s;
+}
+
+.dashboard-detail-item:last-child {
+    animation-delay: 0.7s;
 }
 
 .dashboard-profile-separator {
@@ -206,6 +243,8 @@
     justify-content: center;
     align-items: center;
     gap: 10px;
+      animation: scaleIn 0.6s ease-out 0.4s backwards;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .dashboard-schedule-title {
@@ -250,6 +289,7 @@
     font-weight: bolder;
     color: #5A81FA;
     margin: 0;
+     animation: pulse 2s ease-in-out infinite;
 }
 
 .dashboard-time-separator {
@@ -288,8 +328,13 @@
     justify-content: center;
     align-items: center;
     gap: 10px;
+      animation: bounceIn 0.8s ease-out 0.6s backwards;
+    transition: transform 0.3s ease;
 }
 
+.dashboard-queue:hover {
+    transform: scale(1.05);
+}
 .dashboard-queue-title {
     font-size: 14px;
     font-weight: normal;
@@ -301,6 +346,7 @@
     font-size: 96px;
     font-weight: bold;
     color: #5A81FA;
+     animation: pulse 2s ease-in-out infinite;
 }
 
 /* Dashboard Report Section */
@@ -315,6 +361,7 @@
     align-items: center;
     padding: 25px;
     gap: 30px;
+     animation: fadeInUp 0.6s ease-out 0.5s backwards;
 }
 
 .dashboard-report-row {
@@ -341,6 +388,24 @@
     justify-content: center;
     align-items: center;
     gap: 5px;
+    animation: scaleIn 0.5s ease-out forwards;
+    transition: transform 0.3s ease;
+}
+
+.dashboard-report-item:hover {
+    transform: scale(1.1);
+}
+
+.dashboard-report-item:nth-child(2) {
+    animation-delay: 0.7s;
+}
+
+.dashboard-report-item:nth-child(3) {
+    animation-delay: 0.9s;
+}
+
+.dashboard-report-item:nth-child(4) {
+    animation-delay: 1.1s;
 }
 
 .dashboard-report-number-1 {
@@ -377,6 +442,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    animation: fadeInUp 0.6s ease-out 0.7s backwards;
 }
 
 .dashboard-calendar-header {
@@ -391,6 +457,7 @@
     box-shadow: 0px 0px 27px 7px rgba(0, 0, 0, 0.15);
     position: relative;
     z-index: 2;
+    transition: transform 0.3s ease;
 }
 
 .dashboard-calendar-title {
@@ -459,7 +526,15 @@
     cursor: pointer;
     transition: all 0.3s;
     border-radius: 30px;
+    animation: fadeInUp 0.3s ease-out forwards;
 }
+.date-cell:nth-child(1) { animation-delay: 0.05s; }
+.date-cell:nth-child(2) { animation-delay: 0.1s; }
+.date-cell:nth-child(3) { animation-delay: 0.15s; }
+.date-cell:nth-child(4) { animation-delay: 0.2s; }
+.date-cell:nth-child(5) { animation-delay: 0.25s; }
+.date-cell:nth-child(6) { animation-delay: 0.3s; }
+.date-cell:nth-child(7) { animation-delay: 0.35s; }
 
 .date-cell:nth-child(n+36) {
     display: none;
@@ -507,6 +582,11 @@
     box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
     width: 60%; 
     padding: 24px; 
+}
+
+.dashboard-modal-overlay:not(.hidden) .dashboard-modal-container {
+    transform: scale(1);
+    animation: bounceIn 0.5s ease-out;
 }
 
 .dashboard-modal-close-btn {
@@ -609,6 +689,7 @@
     width: 60%;
     margin: 5px;
     box-shadow: 0px 0px 20px 5px rgba(0, 0, 0, 0.15);
+    animation: fadeInUp 0.5s ease-out;
 }
 
 .dashboard-jam-title {
@@ -684,4 +765,102 @@
 /* --- UTILITY CSS --- */
 .hidden {
     display: none !important;
+}
+
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInRight {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -1000px 0;
+    }
+    100% {
+        background-position: 1000px 0;
+    }
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes bounceIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.3);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    70% {
+        transform: scale(0.9);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
 }

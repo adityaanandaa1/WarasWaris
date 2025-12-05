@@ -10,6 +10,7 @@
     justify-content: space-between;
     margin-right: 20px;
     grid-column: span 3 / span 3;
+    animation: fadeInRight 1s ease-out forwards;
 }
 
 .queue-header-date {
@@ -25,6 +26,8 @@
     padding: 10px 20px;
     font-size: 14px;
     margin-left: 5px;
+     animation: fadeInUp 0.6s ease-out;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .queue-date-header {
@@ -40,6 +43,7 @@
     font-size: 14px;
     background-color: white;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    animation: slideInLeft 0.8s ease-out;
 }
 
 .queue-search input:focus {
@@ -61,6 +65,8 @@
     border-radius: 20px;
     box-shadow: 0 15px 27px rgba(0, 0, 0, 0.2);
     padding: 25px 35px;
+    animation: fadeInUp 0.6s ease-out;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .queue-body-header {
@@ -85,6 +91,7 @@
     display: flex;
     align-items: center;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    animation: fadeInRight 1s ease-out;
 }
 
 .queue-item-data {
@@ -203,6 +210,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+        animation: scaleIn 0.5s ease-out 0.3s backwards;
 }
 
 .queue-schedule h3 {
@@ -272,6 +280,8 @@
     flex-direction: column;
     justify-content: center;
     padding: 30px 20px;
+    animation: scaleIn 0.6s ease-out 0.4s backwards;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
  
 .queue-current h3 {
@@ -317,6 +327,7 @@
     justify-content: center;
     padding: 30px 20px;
     color: white;
+    animation: slideInLeft 0.8s ease-out;
 }
 
 .queue-total h3 {
@@ -551,4 +562,48 @@
     font-size: 20px;
     font-weight: bold;
     color: #d91f1f;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInRight {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
