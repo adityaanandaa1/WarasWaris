@@ -293,6 +293,7 @@ class dokter_controller extends Controller
             'tanggal_lahir_dokter'    => 'nullable|date|before:today',
             'sip_file'         => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
             'foto'             => 'nullable|image|mimes:jpeg,jpg,png|max:2048',
+            'foto_cropped'     => 'nullable|string',
         ]);
 
         // update field teks
@@ -316,7 +317,34 @@ class dokter_controller extends Controller
             $dokter->sip_path = $path;
         }
 
-        if ($request->hasFile('foto')) {
+        if ($request->filled('foto_cropped')) {
+            $imageData = $request->foto_cropped;
+
+            if (preg_match('/^data:image\/(\w+);base64,/', $imageData, $type)) {
+                $imageData = substr($imageData, strpos($imageData, ',') + 1);
+                $type = strtolower($type[1]);
+                if (!in_array($type, ['jpg', 'jpeg', 'png'])) {
+                    return back()->withErrors(['error' => 'Format foto tidak valid.'])->withInput();
+                }
+                $imageData = base64_decode($imageData);
+                if ($imageData === false) {
+                    return back()->withErrors(['error' => 'Gagal decode foto.'])->withInput();
+                }
+            } else {
+                return back()->withErrors(['error' => 'Data foto tidak valid.'])->withInput();
+            }
+
+            if ($dokter->foto_path && Storage::disk('public')->exists($dokter->foto_path)) {
+                Storage::disk('public')->delete($dokter->foto_path);
+            }
+
+            $folder = 'foto_dokter/' . $dokter->id;
+            Storage::disk('public')->makeDirectory($folder);
+            $fileName = 'dokter_' . $dokter->id . '_' . time() . '.jpg';
+            Storage::disk('public')->put($folder . '/' . $fileName, $imageData);
+            $dokter->foto_path = $folder . '/' . $fileName;
+
+        } elseif ($request->hasFile('foto')) {
             if ($dokter->foto_path && Storage::disk('public')->exists($dokter->foto_path)) {
                 Storage::disk('public')->delete($dokter->foto_path);
             }
