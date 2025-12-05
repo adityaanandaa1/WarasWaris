@@ -376,19 +376,31 @@
 }
 
 @media print {
-    .medicalrecord-wrapper {
+    .medicalrecord-action-buttons {
         visibility: hidden;
     }
 
-    .medicalrecord-content, 
-    .medicalrecord-content * {
+    .medicalrecord-header-inner, 
+    .medicalrecord-header-inner  {
         visibility: visible;
     }
 
-    .medicalrecord-content {
+    .medicalrecord-physical-grid {
+        gap:10px;
+    }
+
+    .medicalrecord-header-inner {
         position: absolute;
-        left: 0;
+        left: 0;    
         top: 0;
         width: 100%;
+    }
+
+    .medicalrecord-info-box {
+        visibility: hidden !important;
+    }
+    
+    .medicalrecord-info-btext {
+        visibility: hidden !important;
     }
 }
