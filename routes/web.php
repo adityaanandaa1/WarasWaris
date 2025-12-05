@@ -13,20 +13,12 @@ use App\Http\Controllers\dokter\reservasi_controller_dokter;
 use App\Http\Controllers\pasien\reservasi_controller;
 use App\Http\Controllers\dokter\daftar_antrian_controller;
 use App\Http\Controllers\dokter\daftar_pasien_controller;
-use App\Http\Controllers\Dokter\laporan_controller;
+use App\Http\Controllers\dokter\laporan_controller;
 use App\Http\Controllers\resepsionis\daftar_antrian_res_controller;
 use App\Http\Controllers\resepsionis\daftar_pasien_res_controller;
 use App\Http\Controllers\resepsionis\laporan_res_controller;
 
 Route::get('/', [homepage_controller::class, 'homepage'])->name('homepage');
-
-Route::get('/dbajax', function () {
-    return view('pasien.dbpakeajax');
-});
-
-Route::get('/dashboardtest', function (){
-    return view('pasien.dashboardtest');
-});
 
 Route::get('/dashboarddok', function (){
     return view('dokter.dashboard');

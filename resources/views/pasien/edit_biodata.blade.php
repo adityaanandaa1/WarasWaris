@@ -3,6 +3,8 @@
 @section('title', 'Edit Biodata - WarasWaris')
 
 @section('content')
+<link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" rel="stylesheet">
+
 <div class="min-h-screen bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl shadow-2xl w-full max-w-4xl relative">
         <a href="{{ route('pasien.dashboard') }}" class="absolute top-6 left-6 w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center text-gray-600 transition">
@@ -250,13 +252,14 @@
                     <!-- File Input -->
                     <input 
                         type="file" 
-                        name="foto" 
                         accept="image/jpeg,image/jpg,image/png"
                         class="hidden"
                         id="foto-input"
-                        onchange="previewPhoto(event)"
+                        onchange="openCropModal(event)"
                     >
                     <input type="hidden" name="remove_foto" id="remove_foto" value="0">
+                    <!-- Hidden input untuk hasil crop (base64) -->
+                    <input type="hidden" name="foto_cropped" id="foto-cropped">
   
                     <!-- Remove Button (if has photo) -->
                     @if($pasien->foto_path)
@@ -306,9 +309,105 @@
     </div>
 </div>
 
+<!-- Modal Crop -->
+<div id="cropModal" class="fixed inset-0 bg-black bg-opacity-75 z-[9999] hidden items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-auto">
+        <div class="p-6">
+            <!-- Header -->
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-gray-800">Crop Foto</h3>
+                <button type="button" onclick="closeCropModal()" class="text-gray-500 hover:text-gray-700">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Aspect Ratio Buttons -->
+            <div class="flex gap-2 mb-4 flex-wrap">
+                <button type="button" class="aspect-btn active" data-ratio="1" onclick="setAspectRatio(1, this)">
+                    1:1 Bulat
+                </button>
+                <button type="button" class="aspect-btn" data-ratio="1.5" onclick="setAspectRatio(1.5, this)">
+                    3:2 Portrait
+                </button>
+                <button type="button" class="aspect-btn" data-ratio="0.75" onclick="setAspectRatio(0.75, this)">
+                    4:3 Landscape
+                </button>
+                <button type="button" class="aspect-btn" data-ratio="NaN" onclick="setAspectRatio(NaN, this)">
+                    Bebas
+                </button>
+            </div>
+
+            <!-- Cropper Container -->
+            <div class="mb-4" style="max-height: 400px; overflow: hidden;">
+                <img id="cropperImage" src="" style="max-width: 100%; display: block;">
+            </div>
+
+            <!-- Controls -->
+            <div class="flex gap-2 mb-4 flex-wrap">
+                <button type="button" onclick="cropperRotateLeft()" class="btn-crop-control">Putar Kiri</button>
+                <button type="button" onclick="cropperRotateRight()" class="btn-crop-control">Putar Kanan</button>
+                <button type="button" onclick="cropperFlipH()" class="btn-crop-control">Flip</button>
+                <button type="button" onclick="cropperZoomIn()" class="btn-crop-control">Zoom In</button>
+                <button type="button" onclick="cropperZoomOut()" class="btn-crop-control">Zoom Out</button>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex gap-2">
+                <button type="button" onclick="closeCropModal()" class="flex-1 px-4 py-3 bg-gray-200 hover:bg-gray-300 rounded-xl font-semibold">
+                    Batal
+                </button>
+                <button type="button" onclick="applyCrop()" class="flex-1 px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold">
+                    Terapkan
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .aspect-btn {
+        padding: 8px 16px;
+        background: #f3f4f6;
+        border: 2px solid transparent;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s;
+        font-size: 13px;
+        font-weight: 500;
+    }
+    .aspect-btn:hover {
+        background: #e5e7eb;
+    }
+    .aspect-btn.active {
+        background: #3b82f6;
+        color: white;
+        border-color: #2563eb;
+    }
+    .btn-crop-control {
+        padding: 8px 12px;
+        background: #f3f4f6;
+        border-radius: 8px;
+        font-size: 13px;
+        cursor: pointer;
+        transition: all 0.3s;
+        border: none;
+    }
+    .btn-crop-control:hover {
+        background: #e5e7eb;
+    }
+    #cropModal.active {
+        display: flex !important;
+    }
+</style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
 <!-- Script for image preview -->
 <script>
-    function previewPhoto(event) {
+    let cropper = null;
+    // Open crop modal
+    function openCropModal(event) {
         const file = event.target.files[0];
         if (!file) return;
 
@@ -326,38 +425,154 @@
             return;
         }
 
-        document.getElementById('remove_foto'). value = '0';
-        // Preview
+        // Baca file dan tampilkan di cropper
         const reader = new FileReader();
         reader.onload = function(e) {
-            const container = document.getElementById('photoPreview');
-            container.innerHTML = `
-                <img id="previewImage" src="${e.target.result}" alt="Preview" class="w-full h-full object-cover">
-            `;
+            const cropperImage = document.getElementById('cropperImage');
+            cropperImage.src = e.target.result;
             
-            // Show remove button
-            const removeBtn = document.getElementById('removePhotoBtn');
-            if (removeBtn) removeBtn.classList.remove('hidden');
-        }
+            // Show modal
+            const modal = document.getElementById('cropModal');
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            
+            // Initialize cropper
+            setTimeout(() => {
+                if (cropper) cropper.destroy();
+                
+                cropper = new Cropper(cropperImage, {
+                    aspectRatio: 1,
+                    viewMode: 2,
+                    dragMode: 'move',
+                    autoCropArea: 0.8,
+                    cropBoxMovable: true,
+                    cropBoxResizable: true,
+                    responsive: true,
+                    guides: true,
+                    center: true,
+                    highlight: false,
+                    minContainerWidth: 300,
+                    minContainerHeight: 300,
+                });
+            }, 100);
+        };
         reader.readAsDataURL(file);
     }
 
-    function removePhoto() {
-        const input = document.getElementById('foto-input');
-        input.value = '';
+    // Close crop modal
+    function closeCropModal() {
+        const modal = document.getElementById('cropModal');
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
         
-        // Reset ke inisial placeholder
+        if (cropper) {
+            cropper.destroy();
+            cropper = null;
+        }
+        
+        // Reset file input
+        document.getElementById('foto-input').value = '';
+    }
+
+    // Set aspect ratio
+    function setAspectRatio(ratio, btn) {
+        document.querySelectorAll('.aspect-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        if (cropper) cropper.setAspectRatio(ratio);
+    }
+
+    // Cropper controls
+    function cropperRotateLeft() {
+        if (cropper) cropper.rotate(-45);
+    }
+
+    function cropperRotateRight() {
+        if (cropper) cropper.rotate(45);
+    }
+
+    function cropperFlipH() {
+        if (cropper) {
+            const scaleX = cropper.getData().scaleX || 1;
+            cropper.scaleX(-scaleX);
+        }
+    }
+
+    function cropperZoomIn() {
+        if (cropper) cropper.zoom(0.1);
+    }
+
+    function cropperZoomOut() {
+        if (cropper) cropper.zoom(-0.1);
+    }
+
+    // Apply crop
+    function applyCrop() {
+        if (!cropper) return;
+
+        cropper.getCroppedCanvas({
+            width: 400,
+            height: 400,
+            imageSmoothingEnabled: true,
+            imageSmoothingQuality: 'high',
+        }).toBlob(function(blob) {
+            // Convert to base64
+            const reader = new FileReader();
+            reader.onloadend = function() {
+                // Simpan base64 ke hidden input
+                document.getElementById('foto-cropped').value = reader.result;
+                document.getElementById('remove_foto').value = '0';
+                
+                // Update preview
+                const container = document.getElementById('photoPreview');
+                const url = URL.createObjectURL(blob);
+                container.innerHTML = `
+                    <img id="previewImage" src="${url}" alt="Preview" class="w-full h-full object-cover">
+                `;
+                
+                // Show remove button jika ada
+                const removeBtn = document.getElementById('removePhotoBtn');
+                if (removeBtn) removeBtn.classList.remove('hidden');
+                
+                closeCropModal();
+                
+                // Toast notification
+                showToast('Foto berhasil di-crop!');
+            };
+            reader.readAsDataURL(blob);
+        }, 'image/jpeg', 0.9);
+    }
+
+    // Remove photo function
+    function removePhoto() {
+        document.getElementById('foto-input').value = '';
+        document.getElementById('foto-cropped').value = '';
+        document.getElementById('remove_foto').value = '1';
+        
+        // Reset ke placeholder
         const container = document.getElementById('photoPreview');
         container.innerHTML = `
             <div class="w-full h-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center">
                 <span class="text-white text-5xl font-bold">{{ strtoupper(substr($pasien->nama_pasien, 0, 1)) }}</span>
             </div>
         `;
-        document.getElementById('remove_foto').value = '1';
         
-        // Hide remove button
         const removeBtn = document.getElementById('removePhotoBtn');
         if (removeBtn) removeBtn.classList.add('hidden');
     }
+
+    // Toast notification
+    function showToast(message) {
+        const toast = document.createElement('div');
+        toast.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-[9999] transform transition-all duration-300';
+        toast.textContent = message;
+        document.body.appendChild(toast);
+        
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateY(-20px)';
+            setTimeout(() => toast.remove(), 300);
+        }, 2000);
+    }
 </script>
 @endsection
+

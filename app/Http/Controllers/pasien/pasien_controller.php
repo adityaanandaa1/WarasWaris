@@ -240,8 +240,76 @@ private function get_nomor_antrian_sekarang(Carbon $tanggal): int
             'no_telepon' => 'required|string|max:15',
             'pekerjaan' => 'nullable|string|max:255',
             'catatan_pasien' => 'nullable|string',
-            'foto' => 'nullable|image|mimes:jpeg,jpg,png|max:2048',
+            'foto_cropped' => 'nullable|string',
+            'remove_foto' => 'nullable|string',
         ]);
+
+        // Handle foto cropped (PRIORITAS)
+        if ($request->filled('foto_cropped')) {
+            try {
+                $imageData = $request->foto_cropped;
+                
+                // Decode base64
+                if (preg_match('/^data:image\/(\w+);base64,/', $imageData, $type)) {
+                    $imageData = substr($imageData, strpos($imageData, ',') + 1);
+                    $type = strtolower($type[1]);
+                    
+                    if (!in_array($type, ['jpg', 'jpeg', 'png'])) {
+                        throw new \Exception('Format tidak valid');
+                    }
+                    
+                    $imageData = base64_decode($imageData);
+                    
+                    if ($imageData === false) {
+                        throw new \Exception('Decode gagal');
+                    }
+                } else {
+                    throw new \Exception('Data tidak valid');
+                }
+                
+                // Hapus foto lama jika ada
+                if ($pasien->foto_path) {
+                    $oldPath = public_path($pasien->foto_path);
+                    if (file_exists($oldPath)) {
+                        unlink($oldPath);
+                    }
+                }
+                
+                // Tentukan path folder
+                $folderPath = public_path('pasien_photos');
+                
+                // Buat folder jika belum ada
+                if (!file_exists($folderPath)) {
+                    mkdir($folderPath, 0755, true);
+                }
+                
+                // Nama file unik
+                $fileName = 'pasien_' . $pasien->id . '_' . time() . '.jpg';
+                $fullPath = $folderPath . '/' . $fileName;
+                
+                // Simpan file
+                file_put_contents($fullPath, $imageData);
+                
+                // Update path di database
+                $pasien->foto_path = 'pasien_photos/' . $fileName;
+                
+            } catch (\Exception $e) {
+                return back()
+                    ->withErrors(['error' => 'Upload foto gagal: ' . $e->getMessage()])
+                    ->withInput();
+            }
+        }
+
+        // Handle hapus foto
+        if ($request->remove_foto == '1' && empty($request->foto_cropped)) {
+            if ($pasien->foto_path) {
+                $oldPath = public_path($pasien->foto_path);
+                if (file_exists($oldPath)) {
+                    unlink($oldPath);
+                }
+                $pasien->foto_path = null;
+            }
+        }
 
         if ($request->hasFile('foto')) {
             // Hapus foto lama jika ada

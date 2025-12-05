@@ -10,6 +10,7 @@ use App\Models\data_pasien;
 use App\Models\jadwal_praktik;
 use App\Models\reservasi;
 use App\Models\antrian;
+use App\Models\rekam_medis;
 use Carbon\Carbon;
 
 class reservasi_controller extends Controller
@@ -179,7 +180,8 @@ class reservasi_controller extends Controller
             ->withErrors(['error' => 'Lengkapi biodata pasien terlebih dahulu.']);
 
 
-        $riwayat = \App\Models\riwayat_pemeriksaan_view::where('id_pasien', $pasien->id)
+        $riwayat = rekam_medis::query()
+            ->where('id_pasien', $pasien->id)
             ->orderByDesc('tanggal_pemeriksaan')
             ->paginate(20);
 
@@ -235,4 +237,3 @@ class reservasi_controller extends Controller
     return $pasienUtama; // bisa null kalau belum punya biodata sama sekali
 }
 }
-
