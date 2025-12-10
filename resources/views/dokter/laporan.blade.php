@@ -197,9 +197,6 @@
             </div>
         </div>
 
-        <div class="pasien-button">
-            <a href="{{ route('dokter.riwayat_rekam_medis') }}" class="btn-rekam-medis">Lihat Rekam Medis</a>
-        </div>
     </div>
 </div>
 
