@@ -182,49 +182,175 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
 <style>
+    
     .doctor-crop-modal {
-        position: fixed;
-        inset: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0,0,0,0.75);
-        z-index: 1055;
-        padding: 1rem;
-        display: none;
-        align-items: center;
-        justify-content: center;
-    }
-    .doctor-crop-modal.active { display: flex !important; }
-    .doctor-crop-card {
-        background: #fff;
-        border-radius: 16px;
-        width: 100%;
-        max-width: 720px;
-        max-height: 90vh;
-        overflow: auto;
-    }
-    .aspect-btn {
-        padding: 8px 16px;
-        background: #f3f4f6;
-        border: 2px solid transparent;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: all 0.3s;
-        font-size: 13px;
-        font-weight: 500;
-    }
-    .aspect-btn:hover { background: #e5e7eb; }
-    .aspect-btn.active { background: #3b82f6; color: white; border-color: #2563eb; }
-    .btn-crop-control {
-        padding: 8px 12px;
-        background: #f3f4f6;
-        border-radius: 8px;
-        font-size: 13px;
-        cursor: pointer;
-        transition: all 0.3s;
-        border: none;
-    }
-    .btn-crop-control:hover { background: #e5e7eb; }
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.75);
+    z-index: 9999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.doctor-crop-modal.active {
+    display: flex !important;
+}
+
+.doctor-crop-card {
+    background-color: white;
+    border-radius: 1rem;
+    max-width: 42rem;
+    width: 100%;
+    max-height: 90vh;
+    overflow: auto;
+}
+
+/* Utility classes yang digunakan di HTML */
+.flex {
+    display: flex;
+}
+
+.justify-between {
+    justify-content: space-between;
+}
+
+.items-center {
+    align-items: center;
+}
+
+.gap-2 {
+    gap: 0.5rem;
+}
+
+.flex-wrap {
+    flex-wrap: wrap;
+}
+
+.flex-1 {
+    flex: 1 1 0%;
+}
+
+.mb-4 {
+    margin-bottom: 1rem;
+}
+
+.p-6 {
+    padding: 1.5rem;
+}
+
+.px-4 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.py-3 {
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+}
+
+.text-xl {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+}
+
+.text-gray-800 {
+    color: rgb(31, 41, 55);
+}
+
+.text-gray-500 {
+    color: rgb(107, 114, 128);
+}
+
+.text-white {
+    color: white;
+}
+
+.font-bold {
+    font-weight: 700;
+}
+
+.font-semibold {
+    font-weight: 600;
+}
+
+.w-6 {
+    width: 1.5rem;
+}
+
+.h-6 {
+    height: 1.5rem;
+}
+
+.bg-gray-200 {
+    background-color: rgb(229, 231, 235);
+}
+
+.bg-gray-300 {
+    background-color: rgb(209, 213, 219);
+}
+
+.bg-blue-600 {
+    background-color: rgb(37, 99, 235);
+}
+
+.bg-blue-700 {
+    background-color: rgb(29, 78, 216);
+}
+
+.rounded-xl {
+    border-radius: 0.75rem;
+}
+
+.hover\:text-gray-700:hover {
+    color: rgb(55, 65, 81);
+}
+
+.hover\:bg-gray-300:hover {
+    background-color: rgb(209, 213, 219);
+}
+
+.hover\:bg-blue-700:hover {
+    background-color: rgb(29, 78, 216);
+}
+
+/* Aspect Ratio Buttons */
+.aspect-btn {
+    padding: 0.5rem 1rem;
+    background-color: rgb(243, 244, 246);
+    border: 2px solid transparent;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 0.8125rem;
+    font-weight: 500;
+}
+
+.aspect-btn:hover {
+    background-color: rgb(229, 231, 235);
+}
+
+.aspect-btn.active {
+    background-color: rgb(59, 130, 246);
+    color: white;
+    border-color: rgb(37, 99, 235);
+}
+
+/* Crop Control Buttons */
+.btn-crop-control {
+    padding: 0.5rem 0.75rem;
+    background-color: rgb(243, 244, 246);
+    border-radius: 0.5rem;
+    font-size: 0.8125rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    border: none;
+}
+
+.btn-crop-control:hover {
+    background-color: rgb(229, 231, 235);
+}
 
     .doctor-photo-shell { width: 160px; height: 160px; }
     .doctor-photo-circle {

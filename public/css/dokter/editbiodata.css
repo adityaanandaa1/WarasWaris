@@ -13,7 +13,7 @@ body {
     margin: 30px;
     padding: 25px 50px;
     width: 95%;
-    height: 89%;
+    height: fit-content;
 }
 
 .editprofile-header {
