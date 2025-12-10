@@ -21,10 +21,11 @@ class reservasi_controller extends Controller
         //validasi input
         $validated = $request->validate([
             'tanggal_reservasi' => 'required|date|after_or_equal:today',
-            'keluhan' => 'nullable|string|max:500',
+            'keluhan' => 'required|string|max:500',
         ],[
             'tanggal_reservasi.required' => 'Tanggal reservasi wajib dipilih',
             'tanggal_reservasi.after_or_equal' => 'Tidak dapat reservasi untuk tanggal yang sudah lewat',
+            'keluhan.required' => 'Keluhan wajib diisi',
             'keluhan.max' => 'Keluhan maksimal 500 karakter',
         ]);
 
@@ -100,7 +101,7 @@ class reservasi_controller extends Controller
                 'id_pasien'         => $pasien_aktif->id,
                 'tanggal_reservasi' => $tanggal->toDateString(),
                 'nomor_antrian'     => $nomor_antrian,
-                'keluhan'           => $validated['keluhan'] ?? null,
+                'keluhan'           => $validated['keluhan'],
                 'status'            => 'menunggu',
             ]);
 

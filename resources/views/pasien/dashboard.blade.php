@@ -225,8 +225,8 @@
                                 </svg>
                                 Keluhan
                             </h4>
-                            <textarea name="keluhan" rows="4" maxlength="500" placeholder="Contoh: Demam 3 hari, batuk, pilek...">{{ old('keluhan') }}</textarea>
-                            <p class="note">* Isi keluhan anda sebelum melakukan reservasi</p>
+                            <textarea name="keluhan" rows="4" maxlength="500" required placeholder="Contoh: Demam 3 hari, batuk, pilek...">{{ old('keluhan') }}</textarea>
+                            <p class="note">* Keluhan wajib diisi (maksimal 500 karakter)</p>
 
                              <button type="submit" class="btn-primary">
                                 Reservasi

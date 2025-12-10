@@ -247,17 +247,18 @@
                                 <!-- Keluhan -->
                                 <div class="mb-6">
                                     <label for="keluhan" class="block text-sm font-medium text-gray-700 mb-2">
-                                        Keluhan (Opsional)
+                                        Keluhan <span class="text-red-500">*</span>
                                     </label>
                                     <textarea 
                                         name="keluhan" 
                                         id="keluhan" 
                                         rows="4"
                                         maxlength="500"
+                                        required
                                         class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
                                         placeholder="Contoh: Demam 3 hari, batuk, pilek..."
                                     >{{ old('keluhan') }}</textarea>
-                                    <p class="text-xs text-gray-500 mt-1">Maksimal 500 karakter</p>
+                                    <p class="text-xs text-gray-500 mt-1">Wajib diisi, maksimal 500 karakter</p>
                                 </div>
 
                                 <!-- Info -->
