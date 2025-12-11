@@ -57,7 +57,7 @@
         
             <div class="w-100 d-flex flex-column align-items-center justify-content-start pt-2">
                 @php
-                    $fotoUrl = $dokter->foto_path ? asset('storage/'.$dokter->foto_path) : null;
+                    $fotoUrl = $fotoUrl ?? ($dokter->foto_path ? asset($dokter->foto_path) : null);
                     $initial = strtoupper(mb_substr($dokter->nama_dokter ?? 'D', 0, 1));
                 @endphp
                 <div class="position-relative mb-3 doctor-photo-shell">

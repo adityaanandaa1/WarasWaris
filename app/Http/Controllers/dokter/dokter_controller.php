@@ -80,6 +80,8 @@ class dokter_controller extends Controller
             ->where('status', 'batal')
             ->count();
 
+        $fotoUrl = $this->getDokterFotoUrl($dokter);
+
         $reservasis = reservasi::where('tanggal_reservasi', $tanggal_statistik)
             ->whereIn('status', ['menunggu', 'sedang_dilayani'])
             ->with('data_pasien')
@@ -97,7 +99,8 @@ class dokter_controller extends Controller
             'pasien_batal',
             'hari_ini',
             'nama_hari',
-            'tanggal_dipilih'
+            'tanggal_dipilih',
+            'fotoUrl'
         ));
     }
     
@@ -275,7 +278,9 @@ class dokter_controller extends Controller
             abort(404, 'Data dokter tidak ditemukan.');
         }
 
-        return view('dokter.edit_biodata_dokter', compact('dokter'));
+        $fotoUrl = $this->getDokterFotoUrl($dokter);
+
+        return view('dokter.edit_biodata_dokter', compact('dokter', 'fotoUrl'));
     }
 
     // Simpan perubahan profil + SIP
@@ -318,47 +323,57 @@ class dokter_controller extends Controller
         }
 
         if ($request->filled('foto_cropped')) {
-            $imageData = $request->foto_cropped;
+            try {
+                $imageData = $request->foto_cropped;
 
-            if (preg_match('/^data:image\/(\w+);base64,/', $imageData, $type)) {
-                $imageData = substr($imageData, strpos($imageData, ',') + 1);
-                $type = strtolower($type[1]);
-                if (!in_array($type, ['jpg', 'jpeg', 'png'])) {
-                    return back()->withErrors(['error' => 'Format foto tidak valid.'])->withInput();
+                if (preg_match('/^data:image\/(\w+);base64,/', $imageData, $type)) {
+                    $imageData = substr($imageData, strpos($imageData, ',') + 1);
+                    $type = strtolower($type[1]);
+                    if (!in_array($type, ['jpg', 'jpeg', 'png'])) {
+                        throw new \Exception('Format foto tidak valid.');
+                    }
+                    $imageData = base64_decode($imageData);
+                    if ($imageData === false) {
+                        throw new \Exception('Gagal decode foto.');
+                    }
+                } else {
+                    throw new \Exception('Data foto tidak valid.');
                 }
-                $imageData = base64_decode($imageData);
-                if ($imageData === false) {
-                    return back()->withErrors(['error' => 'Gagal decode foto.'])->withInput();
+
+                $this->hapusFotoDokter($dokter->foto_path);
+
+                $folder = 'dokter_photos/' . $dokter->id;
+                $folderPath = public_path($folder);
+
+                if (!is_dir($folderPath)) {
+                    mkdir($folderPath, 0755, true);
                 }
-            } else {
-                return back()->withErrors(['error' => 'Data foto tidak valid.'])->withInput();
+
+                $fileName = 'dokter_' . $dokter->id . '_' . time() . '.jpg';
+                file_put_contents($folderPath . '/' . $fileName, $imageData);
+
+                $dokter->foto_path = $folder . '/' . $fileName;
+            } catch (\Exception $e) {
+                return back()
+                    ->withErrors(['error' => 'Upload foto gagal: ' . $e->getMessage()])
+                    ->withInput();
             }
-
-            if ($dokter->foto_path && Storage::disk('public')->exists($dokter->foto_path)) {
-                Storage::disk('public')->delete($dokter->foto_path);
-            }
-
-            $folder = 'foto_dokter/' . $dokter->id;
-            Storage::disk('public')->makeDirectory($folder);
-            $fileName = 'dokter_' . $dokter->id . '_' . time() . '.jpg';
-            Storage::disk('public')->put($folder . '/' . $fileName, $imageData);
-            $dokter->foto_path = $folder . '/' . $fileName;
-
         } elseif ($request->hasFile('foto')) {
-            if ($dokter->foto_path && Storage::disk('public')->exists($dokter->foto_path)) {
-                Storage::disk('public')->delete($dokter->foto_path);
+            $this->hapusFotoDokter($dokter->foto_path);
+
+            $folder = 'dokter_photos/' . $dokter->id;
+            $folderPath = public_path($folder);
+            if (!is_dir($folderPath)) {
+                mkdir($folderPath, 0755, true);
             }
 
-            $fotoPath = $request->file('foto')->store(
-                'foto_dokter/' . $dokter->id,
-                'public'
-            );
+            $file = $request->file('foto');
+            $fileName = 'dokter_' . $dokter->id . '_' . time() . '.' . $file->getClientOriginalExtension();
 
-            $dokter->foto_path = $fotoPath;
+            $file->move($folderPath, $fileName);
+            $dokter->foto_path = $folder . '/' . $fileName;
         } elseif ($request->boolean('remove_foto')) {
-            if ($dokter->foto_path && Storage::disk('public')->exists($dokter->foto_path)) {
-                Storage::disk('public')->delete($dokter->foto_path);
-            }
+            $this->hapusFotoDokter($dokter->foto_path);
             $dokter->foto_path = null;
         }
 
@@ -384,7 +399,7 @@ class dokter_controller extends Controller
     }
 
 
-        private function get_pasien_aktif()
+    private function get_pasien_aktif()
     {
         $user = Auth::user();
             
@@ -414,6 +429,53 @@ class dokter_controller extends Controller
         }
             
         return $pasien_utama;
+    }
+
+    private function getDokterFotoUrl(?data_dokter $dokter): ?string
+    {
+        if (!$dokter || !$dokter->foto_path) {
+            return null;
+        }
+
+        $relativePath = ltrim($dokter->foto_path, '/');
+        $publicPath = public_path($relativePath);
+
+        if (is_file($publicPath)) {
+            return asset($relativePath);
+        }
+
+        if (Storage::disk('public')->exists($relativePath)) {
+            try {
+                $directory = dirname($publicPath);
+                if (!is_dir($directory)) {
+                    mkdir($directory, 0755, true);
+                }
+
+                file_put_contents($publicPath, Storage::disk('public')->get($relativePath));
+
+                return asset($relativePath);
+            } catch (\Exception $e) {
+                return null;
+            }
+        }
+
+        return null;
+    }
+
+    private function hapusFotoDokter(?string $path): void
+    {
+        if (!$path) {
+            return;
+        }
+
+        $publicPath = public_path($path);
+        if (is_file($publicPath)) {
+            @unlink($publicPath);
+        }
+
+        if (Storage::disk('public')->exists($path)) {
+            Storage::disk('public')->delete($path);
+        }
     }
 
     private function get_nama_hari($tanggal)

@@ -8,7 +8,7 @@
 @php($nama_hari = $nama_hari ?? $hari_ini->translatedFormat('l'))
 @php($isLibur = $jadwal && !$jadwal->is_active)
 @php($dokterData = $dokter ?? Auth::user()->dokter)
-@php($fotoDokter = $dokterData?->foto_path ? asset('storage/'.$dokterData->foto_path) : null)
+@php($fotoDokter = $fotoUrl ?? ($dokterData?->foto_path ? asset($dokterData->foto_path) : null))
 @php($initialDokter = strtoupper(mb_substr($dokterData->nama_dokter ?? 'D', 0, 1)))
 
 <div class="dashboard-doctor">
